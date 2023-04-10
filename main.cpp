@@ -83,8 +83,8 @@ public:
 };
 
 // 480, 270, 4, 4 will create a 1920x1080 Window, with 480x270 console pixels, each of which being 4 physical pixels. 512x320 also works
-int screenWidth = 512;
-int screenHeight = 320;
+int screenWidth = 480; // 512
+int screenHeight = 270; // 320
 int fontWidth = 4;
 int fontHeight = 4;
 
@@ -109,7 +109,7 @@ float vertices[] = {
          -1, -1, 16,
          1, -1, 16,
          1,  1, 16, // ...
-         // -1,  1, 16, // top left back
+         -1,  1, 16, // top left back
 
         // second square
         /*-1,  2, 14,
@@ -363,8 +363,128 @@ void draw() {
         }
     }
 
+    // only needs to be calculated once technically, but in case I ever want it to be changed dynamically during
+    // runtime, it's calculated every frame.
+    double hFov = (FOV / 2) * (PI/180);
+
+    // todo: arrays are filled with garbage values, if something fails and those are accessed, the program may crash!
+    // iterates through the first of three vertex-indices of each triangle
+    for (int t = 0; t < sizeof(triangles)/sizeof(int); t += 3) {
+        // stores the transformed x,y and z components of each vertex
+        float screenSpaceVertices[9];
+        // stores the screenX,Y as well as transformed Z component of each vertex / point
+        float screenPoints[9];
+
+        for (int i = 0; i < 3; i++) {
+            // one vertex relative to the player
+            int point = triangles[t+i];
+            float x = vertices[point*3] - playerX;
+            float y = vertices[point*3+1] - playerY;
+            float z = vertices[point*3+2] - playerZ;
+
+            // transform (rotate) the vertices directly in here, before filling in screenSpaceVertices[]
+            float xPos = x * cos(radPlayerAngleX) - z  * sin(radPlayerAngleX);
+            float zPos = x * sin(radPlayerAngleX) + z * cos(radPlayerAngleX);
+            x = xPos;
+            z = zPos;
+
+            // don't want to get a 'divide by zero' error (although it isn't even an official exception in c++)
+            if (z == 0) {
+                z = 0.01f;
+            }
+
+            // calculate the screenX and screenY of each point, check if they are within bounds beforehand.
+            bool inDistance = z < farClippingPlane;
+            bool inBoundsX = x < tan(hFov) * z && x > -tan(hFov) * z;
+            bool inBoundsY = y < tan(hFov) * z && y > (tan(hFov) * z) * -1;
+
+            if (!inDistance) { // this is just a bunch of debug code todo: remove later.
+                screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[1].Attributes = FG_RED;
+            }
+            if (!inBoundsX) {
+                screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[2].Attributes = FG_RED;
+            }
+            if (!inBoundsY) {
+                screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[3].Attributes = FG_RED;
+            }
+
+            if (inDistance && inBoundsX && inBoundsY) {
+                // now populate screenSpaceVertices[]
+                screenSpaceVertices[i*3] = x;
+                screenSpaceVertices[i*3+1] = y;
+                screenSpaceVertices[i*3+2] = z;
+
+                double ratioX = x * (1 / (tan(hFov) * z)); // how much of half a screen wide/high is occupied
+                double ratioY = /*(screenWidth / screenHeight) * */y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
+
+                // Now calculate it into screenSpace, populate screenPoints[] array
+                screenPoints[i*3] = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
+                screenPoints[i*3+1] = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
+                screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later.
+            }
+        }
+
+        // Now that all corners of the triangle are calculated, we can start drawing it.
+        for (int i = 0; i < 3; i++) {
+            int curX = (int)screenPoints[i*3]; // should always be int values, the array is only float because of z
+            int curY = (int)screenPoints[i+3+1];
+            int targetX;
+            int targetY;
+
+            if (i < 2) {
+                targetX = (int)screenPoints[(i+1)*3];
+                targetY = (int)screenPoints[(i+1)*3+1];
+            }
+            else {
+                targetX = (int)screenPoints[0];
+                targetY = (int)screenPoints[1];
+            }
+
+            // calculating the distance of each pixel to the next one, just need to draw a line now.
+            float deltaX = targetX - curX;
+            float deltaY = targetY - curY;
+            float xRat = deltaX/deltaX;
+            float yRat = deltaY/deltaX;
+
+            screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
+
+            // whenever it passes the threshold to a new pixel, round off and draw.
+            /*while(curX != targetX && curY != targetY) {
+                float xOff = curX;
+                float yOff = curY;
+                xOff += xRat;
+                yOff += yRat;
+                if ((xOff >= curX + 1 && yOff >= curY + 1) || (xOff <= curX -1 && yOff >= curY + 1) || (xOff >= curX + 1 && yOff <= curY - 1) || (xOff <= curX - 1 && yOff <= curY - 1)) {
+                    curX = (int) xOff;
+                    curY = (int) yOff;
+                    screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
+                    screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
+                }
+                else if (xOff >= curX + 1 || xOff <= curX - 1) {
+                    curX = (int) xOff;
+                    screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
+                    screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
+                }
+                else if (yOff >= curY + 1 || yOff <= curY - 1) {
+                    curY = (int) yOff;
+                    screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
+                    screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
+                }
+            }*/
+        }
+
+        /*for (int i = 0; i < 3; i++) {
+            screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Attributes = FG_GREEN;
+        }*/
+    }
+
     // trying to fix the angle rotation thing here.
-    for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
+    /*for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
         // getting initial position relative to the player for each vertex
         float vertex[] = {(vertices[e] - playerX), vertices[e+1] - playerY, (vertices[e+2] - playerZ)};
 
@@ -390,7 +510,6 @@ void draw() {
         }
 
         // Now only continue rendering if the vertex is within the bounds of the fov. In radians
-        double hFov = (FOV / 2) * (PI/180);
         double vFov = (screenHeight / screenWidth) * hFov;
         bool inDistance = vertex[Z] < farClippingPlane;
         bool inBoundsX = vertex[X] < tan(hFov) * vertex[Z] && vertex[X] > -tan(hFov) * vertex[Z];
@@ -415,7 +534,7 @@ void draw() {
             double ratioX = vertex[X] * (1 / (tan(hFov) * vertex[Z]));
             // the commented part makes no difference for some reason. Even though it should increase the portion of
             // the screen that is taken up in a vertical direction. (Assuming Width is greater than Height)
-            double ratioY = /*(screenWidth / screenHeight) * */vertex[Y] * (1 / (tan(hFov) * vertex[Z]));
+            double ratioY = /*(screenWidth / screenHeight) * *//*vertex[Y] * (1 / (tan(hFov) * vertex[Z]));
 
             // Now calculate it into screenSpace
             int screenX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
@@ -432,7 +551,7 @@ void draw() {
                 screenBuffer[4].Attributes = FG_RED;
             }
         }
-    }
+    }*/
 
     // draw pixels to the corners to mark the bounds of screenBuffer array
     // I do this last to render it on top of everything else
