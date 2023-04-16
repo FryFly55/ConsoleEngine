@@ -361,12 +361,14 @@ void draw() {
         screenBuffer[j].Char.UnicodeChar = PIXEL_SOLID;
         screenBuffer[j].Attributes = FG_GREEN;
         if (j % 2 == 0) {
-            screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[screenWidth + j].Attributes = FG_WHITE;
+            /*screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[screenWidth + j].Attributes = FG_WHITE;*/
+            safeDraw(j, 1, PIXEL_SOLID, FG_WHITE);
         }
         else {
-            screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[screenWidth + j].Attributes = FG_DARK_BLUE;
+            /*screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[screenWidth + j].Attributes = FG_DARK_BLUE;*/
+            safeDraw(j, 1, PIXEL_SOLID, FG_BLACK);
         }
     }
 
@@ -406,16 +408,19 @@ void draw() {
             bool inBoundsY = y < tan(hFov) * z && y > -tan(hFov) * z;
 
             if (!inDistance) { // this is just a bunch of debug code todo: remove later.
-                screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[1].Attributes = FG_RED;
+                /*screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[1].Attributes = FG_RED;*/
+                safeDraw(1, 0, PIXEL_SOLID, FG_RED);
             }
             if (!inBoundsX) {
-                screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[2].Attributes = FG_RED;
+                /*screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[2].Attributes = FG_RED;*/
+                safeDraw(2, 0, PIXEL_SOLID, FG_RED);
             }
             if (!inBoundsY) {
-                screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[3].Attributes = FG_RED;
+                /*screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[3].Attributes = FG_RED;*/
+                safeDraw(3, 0, PIXEL_SOLID, FG_RED);
             }
 
             if (inDistance && inBoundsX && inBoundsY) {
@@ -571,8 +576,9 @@ void draw() {
         }
 
         for (int i = 0; i < 3; i++) {
-            screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Attributes = FG_GREEN;
+            /*screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Attributes = FG_GREEN;*/
+            safeDraw((int)screenPoints[i*3], (int)screenPoints[i*3+1], PIXEL_SOLID, FG_GREEN);
         }
     }
 
@@ -674,7 +680,8 @@ void safeDraw(int x, int y, wchar_t chars, COLOUR colour) {
     }
 }
 
-// defining the pixel maps for each digit
+namespace digits {
+// defining the pixel maps for each digit, maybe letters later.
 const char* zero = {
         ".##."
         "#..#"
@@ -754,6 +761,8 @@ const char* nine = {
         "...#"
         ".###"
 };
+}
+
 
 // drawing a pixelMap to the screen, x, y mark the top left corner.
 void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY) {
@@ -774,25 +783,25 @@ void drawDigits(int i, int digit, int initialX, int initialY) {
     // todo: make an array implementation, for now a switch statement will do though
     switch(digit) {
         case 0:
-            drawPixelMap(initialX + i*6, initialY, zero, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::zero, 4, 5);
         case 1:
-            drawPixelMap(initialX + i*6, initialY, one, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::one, 4, 5);
         case 2:
-            drawPixelMap(initialX + i*6, initialY, two, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::two, 4, 5);
         case 3:
-            drawPixelMap(initialX + i*6, initialY, three, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::three, 4, 5);
         case 4:
-            drawPixelMap(initialX + i*6, initialY, four, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::four, 4, 5);
         case 5:
-            drawPixelMap(initialX + i*6, initialY, five, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::five, 4, 5);
         case 6:
-            drawPixelMap(initialX + i*6, initialY, six, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::six, 4, 5);
         case 7:
-            drawPixelMap(initialX + i*6, initialY, seven, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::seven, 4, 5);
         case 8:
-            drawPixelMap(initialX + i*6, initialY, eight, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::eight, 4, 5);
         case 9:
-            drawPixelMap(initialX + i*6, initialY, nine, 4, 5);
+            drawPixelMap(initialX + i*6, initialY, digits::nine, 4, 5);
         /*default:
             drawPixelMap(initialX + i*6, initialY, zero, 4, 5);*/
     }
