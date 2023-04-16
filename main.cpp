@@ -4,19 +4,13 @@
 
 #include <windows.h>
 
-#include <iostream>
 #include <chrono>
-#include <vector>
 #include <list>
 #include <thread>
 #include <atomic>
 #include <cstring>
+#include <string>
 #include <cmath>
-
-int Error(const wchar_t* msg);
-static BOOL CloseHandler(DWORD evt);
-void draw();
-void getInput();
 
 enum COLOUR
 {
@@ -81,6 +75,14 @@ public:
     float z;
 
 };
+
+int Error(const wchar_t* msg);
+static BOOL CloseHandler(DWORD evt);
+void draw();
+void getInput();
+void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour);
+void safeDraw(int x, int y, wchar_t chars, COLOUR colour); // function overloading
+void drawDigits(int i, int digit, int initialX, int initialY);
 
 // 480, 270, 4, 4 will create a 1920x1080 Window, with 480x270 console pixels, each of which being 4 physical pixels. 512x320 also works
 int screenWidth = 480; // 512
@@ -198,7 +200,7 @@ int triangles[] = {
         5, 6, 2,
         4, 5, 7, // back face
         5, 6, 7,
-        1, 4, 3, // left face
+        0, 4, 3, // left face
         4, 7, 3,
         3, 2, 7, // top face
         2, 6, 7,
@@ -210,7 +212,7 @@ int triangles[] = {
 const double FOV = 90;
 // FOV in radians
 const double radFOV = FOV * (PI/180);
-const double farClippingPlane = 50.0f;
+const double farClippingPlane = 100.0f;
 
 float playerX = 0.0f;
 float playerY = 0.0f;
@@ -224,6 +226,7 @@ float playerSpeed = 3.0f;
 float turnSpeed = 30.0f;
 
 float dt;
+float fps;
 
 // Set everything you need inside the game-loop or draw-cycle here.
 float colourOffset = 0;
@@ -307,7 +310,7 @@ int main() {
     // Game initialisation logic
     playerSpeed = playerBaseSpeed;
 
-    // calculate first dt timestep
+    // calculate first dt timestep (or is it a delta-timestep? delta-time-step? delta time-step? To not use time twice?)
     dt = 0.0f;
     auto tpLast = std::chrono::system_clock::now();
 
@@ -321,6 +324,10 @@ int main() {
         // after getting input, update everything needed inside draw()
         radPlayerAngleX = playerAngleX * (PI/180);
         radPlayerAngleY = playerAngleY * (PI/180);
+
+        // we need the fps value in draw(), so initialise it earlier.
+        fps = 1 / dt;
+        fps = std::floor(fps + 0.5f); // rounding by flooring the value + 0.5
 
         draw();
 
@@ -371,9 +378,9 @@ void draw() {
     // iterates through the first of three vertex-indices of each triangle
     for (int t = 0; t < sizeof(triangles)/sizeof(int); t += 3) {
         // stores the transformed x,y and z components of each vertex
-        float screenSpaceVertices[9];
+        float screenSpaceVertices[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
         // stores the screenX,Y as well as transformed Z component of each vertex / point
-        float screenPoints[9];
+        float screenPoints[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
         for (int i = 0; i < 3; i++) {
             // one vertex relative to the player
@@ -396,7 +403,7 @@ void draw() {
             // calculate the screenX and screenY of each point, check if they are within bounds beforehand.
             bool inDistance = z < farClippingPlane;
             bool inBoundsX = x < tan(hFov) * z && x > -tan(hFov) * z;
-            bool inBoundsY = y < tan(hFov) * z && y > (tan(hFov) * z) * -1;
+            bool inBoundsY = y < tan(hFov) * z && y > -tan(hFov) * z;
 
             if (!inDistance) { // this is just a bunch of debug code todo: remove later.
                 screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
@@ -430,7 +437,7 @@ void draw() {
         // Now that all corners of the triangle are calculated, we can start drawing it.
         for (int i = 0; i < 3; i++) {
             int curX = (int)screenPoints[i*3]; // should always be int values, the array is only float because of z
-            int curY = (int)screenPoints[i+3+1];
+            int curY = (int)screenPoints[i*3+1];
             int targetX;
             int targetY;
 
@@ -446,121 +453,145 @@ void draw() {
             // calculating the distance of each pixel to the next one, just need to draw a line now.
             float deltaX = targetX - curX;
             float deltaY = targetY - curY;
-            float xRat = deltaX/deltaX;
+            float xRat = deltaX/deltaY;
             float yRat = deltaY/deltaX;
 
-            screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
-
             // whenever it passes the threshold to a new pixel, round off and draw.
-            /*while(curX != targetX && curY != targetY) {
-                float xOff = curX;
-                float yOff = curY;
-                xOff += xRat;
-                yOff += yRat;
-                if ((xOff >= curX + 1 && yOff >= curY + 1) || (xOff <= curX -1 && yOff >= curY + 1) || (xOff >= curX + 1 && yOff <= curY - 1) || (xOff <= curX - 1 && yOff <= curY - 1)) {
-                    curX = (int) xOff;
-                    curY = (int) yOff;
-                    screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
-                    screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
+            float xOff = curX;
+            float yOff = curY;
+            // use deltaX as baseline, yRat is the slope
+            if (abs(deltaX) >= abs(deltaY)) {
+                if (deltaX >= 0) {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            xOff += 1;
+                            yOff += yRat;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            xOff += 1;
+                            yOff += yRat;
+                            curX = xOff;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
                 }
-                else if (xOff >= curX + 1 || xOff <= curX - 1) {
-                    curX = (int) xOff;
-                    screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
-                    screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
+                else {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            xOff -= 1;
+                            yOff += yRat;
+                            curX = xOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            xOff -= 1;
+                            yOff += yRat;
+                            curX = xOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
                 }
-                else if (yOff >= curY + 1 || yOff <= curY - 1) {
-                    curY = (int) yOff;
-                    screenBuffer[curY * screenWidth + curX].Char.UnicodeChar = PIXEL_SOLID;
-                    screenBuffer[curY * screenWidth + curX].Attributes = FG_BLUE;
+            }
+            // use deltaY as baseline, xRat is the slope
+            else {
+                if (deltaX >= 0) {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            yOff += 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            yOff -= 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
                 }
-            }*/
+                else {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            yOff += 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            yOff -= 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                }
+            }
         }
 
-        /*for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Char.UnicodeChar = PIXEL_SOLID;
             screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Attributes = FG_GREEN;
-        }*/
+        }
     }
 
-    // trying to fix the angle rotation thing here.
-    /*for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
-        // getting initial position relative to the player for each vertex
-        float vertex[] = {(vertices[e] - playerX), vertices[e+1] - playerY, (vertices[e+2] - playerZ)};
-
-        // rotating the point accordingly. In order for this to work, we need to get the distance from the player
-        // (length of a vector) first. Pythagorean Theorem time.
-        // Also don't use pow(), because some implementation suffer from floating point issues
-        // Legacy rotation (doesn't fully work anyway)
-        //float radius = sqrt((vertex[X] * vertex[X]) + (vertex[Z] * vertex[Z]));
-        //vertex[X] = vertex[X] + sin(-radPlayerAngleX) * radius;
-        //vertex[Z] = vertex[Z] + ((radius * cos(-radPlayerAngleX)) - radius);
-        // new implementation below this comment, radius isn't needed too. Does work, although the points are rotated
-        // around the initial player position, and not relative to the player.
-        // todo: fix this. ^
-        float xPos = vertex[X] * cos(radPlayerAngleX) - vertex[Z]  * sin(radPlayerAngleX);
-        float zPos = vertex[X] * sin(radPlayerAngleX) + vertex[Z] * cos(radPlayerAngleX);
-        vertex[X] = xPos;
-        vertex[Z] = zPos;
-
-        // may divide by zero otherwise later in the code. Instead of just not rendering it in that case, I risk the
-        // visual inaccuracy and just render the point slightly wrong. Too lazy to figure out a better solution.
-        if (vertex[Z] == 0) {
-            vertex[Z] = 0.01f;
+    // render the fps-counter
+    std::string sFps = std::to_string(fps);
+    int digits = sFps.length(); // u_long would be better, but int is fine for our purposes.
+    // I will assume that the fps will never exceed 6 digits (unlikely anyway considering my (non-) optimisation)
+    for (int i = 0; i < digits && i < 6; i++) {
+        int digit = sFps[i] - '0'; // converts a char to a number value, by shifting it 48 ascii positions
+        if (digit <= 9 && digit >= 0) {
+            drawDigits(i, digit, screenWidth / 2, 0);
         }
-
-        // Now only continue rendering if the vertex is within the bounds of the fov. In radians
-        double vFov = (screenHeight / screenWidth) * hFov;
-        bool inDistance = vertex[Z] < farClippingPlane;
-        bool inBoundsX = vertex[X] < tan(hFov) * vertex[Z] && vertex[X] > -tan(hFov) * vertex[Z];
-        bool inBoundsY = vertex[Y] < tan(hFov) * vertex[Z] && vertex[Y] > (tan(hFov) * vertex[Z]) * -1;
-        // displaying results of each test individually
-        if (!inDistance) {
-            screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[1].Attributes = FG_RED;
-        }
-        if (!inBoundsX) {
-            screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[2].Attributes = FG_RED;
-        }
-        if (!inBoundsY) {
-            screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[3].Attributes = FG_RED;
-        }
-
-        if (inDistance && inBoundsX && inBoundsY) {
-            // how much of half a screen wide/high is occupied
-            // divide by zero might occur, this is why I checked for (vertex[Z] == 0) earlier.
-            double ratioX = vertex[X] * (1 / (tan(hFov) * vertex[Z]));
-            // the commented part makes no difference for some reason. Even though it should increase the portion of
-            // the screen that is taken up in a vertical direction. (Assuming Width is greater than Height)
-            double ratioY = /*(screenWidth / screenHeight) * *//*vertex[Y] * (1 / (tan(hFov) * vertex[Z]));
-
-            // Now calculate it into screenSpace
-            int screenX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
-            int screenY = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
-
-            // Only draw if the results do not exceed the screenBuffer and aren't negative
-            int index = screenY * screenWidth + screenX;
-            if (index < screenWidth * screenHeight && index > (-screenWidth * screenHeight)) {
-                screenBuffer[index].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[index].Attributes = FG_GREEN;
-            }
-            else {
-                screenBuffer[4].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[4].Attributes = FG_RED;
-            }
-        }
-    }*/
+    }
 
     // draw pixels to the corners to mark the bounds of screenBuffer array
     // I do this last to render it on top of everything else
-    screenBuffer[0].Char.UnicodeChar = PIXEL_SOLID;
-    screenBuffer[0].Attributes = FG_RED;
-    screenBuffer[screenWidth * screenHeight - 1].Char.UnicodeChar = PIXEL_SOLID;
-    screenBuffer[screenWidth * screenHeight - 1].Attributes = FG_RED;
-    screenBuffer[(screenWidth * screenHeight) / 2 + (screenWidth / 2)].Char.UnicodeChar = PIXEL_SOLID;
-    screenBuffer[(screenWidth * screenHeight) / 2 + (screenWidth / 2)].Attributes = FG_RED;
+    safeDraw(0, 0, PIXEL_SOLID, FG_RED);
+    safeDraw(screenWidth - 1, screenHeight - 1, PIXEL_SOLID, FG_RED);
+    safeDraw(screenWidth / 2, screenHeight / 2, PIXEL_SOLID, FG_RED);
 }
 
 // crappy way to get input ik. No idea how to register mouse inputs yet as well.
@@ -627,4 +658,142 @@ int Error(const wchar_t* msg)
 static BOOL CloseHandler(DWORD evt)
 {
     return false;
+}
+
+void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour) {
+    if (y * screenWidth + x < screenWidth * screenHeight) {
+        screenBuffer[y * screenWidth + x].Char.UnicodeChar = pixelType;
+        screenBuffer[y * screenWidth + x].Attributes = colour;
+    }
+}
+
+void safeDraw(int x, int y, wchar_t chars, COLOUR colour) {
+    if (y * screenWidth + x < screenWidth * screenHeight) {
+        screenBuffer[y * screenWidth + x].Char.UnicodeChar = chars;
+        screenBuffer[y * screenWidth + x].Char.UnicodeChar = colour;
+    }
+}
+
+// defining the pixel maps for each digit
+const char* zero = {
+        ".##."
+        "#..#"
+        "#..#"
+        "#..#"
+        ".##."
+};
+
+const char* one = {
+        ".##."
+        "..#."
+        "..#."
+        "..#."
+        "..#."
+};
+
+const char* two = {
+        ".##."
+        "#..#"
+        "..#."
+        ".#.."
+        "####"
+};
+
+const char* three = {
+        "####"
+        "...#"
+        ".###"
+        "...#"
+        "####"
+};
+
+const char* four = {
+        "#..#"
+        "#..#"
+        "####"
+        "...#"
+        "...#"
+};
+
+const char* five = {
+        "####"
+        "#..."
+        "####"
+        "...#"
+        "####"
+};
+
+const char* six = {
+        "####"
+        "#..."
+        "####"
+        "#..#"
+        "####"
+};
+
+const char* seven = {
+        "####"
+        "...#"
+        "..#."
+        ".#.."
+        "#..."
+};
+
+const char* eight = {
+        "####"
+        "#..#"
+        ".##."
+        "#..#"
+        "####"
+};
+
+const char* nine = {
+        "####"
+        "#..#"
+        "####"
+        "...#"
+        ".###"
+};
+
+// drawing a pixelMap to the screen, x, y mark the top left corner.
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY) {
+    for (int i = 0; i < mapX * mapY; i++) {
+        int screenY = y + ((int) i / mapX); // division
+        int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
+        if (pixelMap[i] == '#') {
+            safeDraw(screenX, screenY, PIXEL_SOLID, FG_WHITE);
+        }
+        else {
+            safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
+        }
+    }
+}
+
+// x, y mark the top left corner
+void drawDigits(int i, int digit, int initialX, int initialY) {
+    // todo: make an array implementation, for now a switch statement will do though
+    switch(digit) {
+        case 0:
+            drawPixelMap(initialX + i*6, initialY, zero, 4, 5);
+        case 1:
+            drawPixelMap(initialX + i*6, initialY, one, 4, 5);
+        case 2:
+            drawPixelMap(initialX + i*6, initialY, two, 4, 5);
+        case 3:
+            drawPixelMap(initialX + i*6, initialY, three, 4, 5);
+        case 4:
+            drawPixelMap(initialX + i*6, initialY, four, 4, 5);
+        case 5:
+            drawPixelMap(initialX + i*6, initialY, five, 4, 5);
+        case 6:
+            drawPixelMap(initialX + i*6, initialY, six, 4, 5);
+        case 7:
+            drawPixelMap(initialX + i*6, initialY, seven, 4, 5);
+        case 8:
+            drawPixelMap(initialX + i*6, initialY, eight, 4, 5);
+        case 9:
+            drawPixelMap(initialX + i*6, initialY, nine, 4, 5);
+        /*default:
+            drawPixelMap(initialX + i*6, initialY, zero, 4, 5);*/
+    }
 }
