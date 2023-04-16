@@ -227,6 +227,7 @@ float turnSpeed = 30.0f;
 
 float dt;
 float fps;
+int fpsOffset = 10; // fps-display distance from the right screen borderö
 
 // Set everything you need inside the game-loop or draw-cycle here.
 float colourOffset = 0;
@@ -327,6 +328,7 @@ int main() {
 
         // we need the fps value in draw(), so initialise it earlier.
         fps = 1 / dt;
+        // remove the line below if you want fps shown with decimal places (kinda useless in most situations)
         fps = std::floor(fps + 0.5f); // rounding by flooring the value + 0.5
 
         draw();
@@ -587,9 +589,9 @@ void draw() {
     int digits = sFps.length(); // u_long would be better, but int is fine for our purposes.
     // I will assume that the fps will never exceed 6 digits (unlikely anyway considering my (non-) optimisation)
     for (int i = 0; i < digits && i < 6; i++) {
-        int digit = sFps[i] - '0'; // converts a char to a number value, by shifting it 48 ascii positions
+        int digit = sFps[i] - 48; // converts a char to a number value, by shifting it 48 ascii positions
         if (digit <= 9 && digit >= 0) {
-            drawDigits(i, digit, screenWidth / 2, 0);
+            drawDigits(i, digit, screenWidth - (6 * 4) - fpsOffset, 0);
         }
     }
 
@@ -783,26 +785,36 @@ void drawDigits(int i, int digit, int initialX, int initialY) {
     // todo: make an array implementation, for now a switch statement will do though
     switch(digit) {
         case 0:
-            drawPixelMap(initialX + i*6, initialY, digits::zero, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::zero, 4, 5);
+            break;
         case 1:
-            drawPixelMap(initialX + i*6, initialY, digits::one, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::one, 4, 5);
+            break;
         case 2:
-            drawPixelMap(initialX + i*6, initialY, digits::two, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::two, 4, 5);
+            break;
         case 3:
-            drawPixelMap(initialX + i*6, initialY, digits::three, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::three, 4, 5);
+            break;
         case 4:
-            drawPixelMap(initialX + i*6, initialY, digits::four, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::four, 4, 5);
+            break;
         case 5:
-            drawPixelMap(initialX + i*6, initialY, digits::five, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::five, 4, 5);
+            break;
         case 6:
-            drawPixelMap(initialX + i*6, initialY, digits::six, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::six, 4, 5);
+            break;
         case 7:
-            drawPixelMap(initialX + i*6, initialY, digits::seven, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::seven, 4, 5);
+            break;
         case 8:
-            drawPixelMap(initialX + i*6, initialY, digits::eight, 4, 5);
+            drawPixelMap(initialX + i*5, initialY, digits::eight, 4, 5);
+            break;
         case 9:
-            drawPixelMap(initialX + i*6, initialY, digits::nine, 4, 5);
-        /*default:
-            drawPixelMap(initialX + i*6, initialY, zero, 4, 5);*/
+            drawPixelMap(initialX + i*5, initialY, digits::nine, 4, 5);
+            break;
+        default:
+            drawPixelMap(initialX + i*5, initialY, digits::zero, 4, 5);
     }
 }
