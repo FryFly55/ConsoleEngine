@@ -445,16 +445,12 @@ void draw() {
         for (int i = 0; i < 3; i++) {
             int curX = (int)screenPoints[i*3]; // should always be int values, the array is only float because of z
             int curY = (int)screenPoints[i*3+1];
-            int targetX;
-            int targetY;
+            int targetX = screenPoints[0];
+            int targetY = screenPoints[1];
 
             if (i < 2) {
                 targetX = (int)screenPoints[(i+1)*3];
                 targetY = (int)screenPoints[(i+1)*3+1];
-            }
-            else {
-                targetX = (int)screenPoints[0];
-                targetY = (int)screenPoints[1];
             }
 
             // calculating the distance of each pixel to the next one, just need to draw a line now.
@@ -462,117 +458,33 @@ void draw() {
             float deltaY = targetY - curY;
             float xRat = deltaX/deltaY;
             float yRat = deltaY/deltaX;
+            int xSign = 0;
+            int ySign = 0;
+            if (deltaX != 0)
+                xSign = (int) deltaX / abs(deltaX); // calculate it now to save performance, is either 1, -1
+            if (deltaY != 0)
+                ySign = (int) deltaY / abs(deltaY);
 
             // whenever it passes the threshold to a new pixel, round off and draw.
             float xOff = curX;
             float yOff = curY;
-            // use deltaX as baseline, yRat is the slope
+
             if (abs(deltaX) >= abs(deltaY)) {
-                if (deltaX >= 0) {
-                    if (deltaY >= 0) {
-                        while (curX != targetX && curY != targetY) {
-                            xOff += 1;
-                            yOff += yRat;
-                            if (xOff >= curX + 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff >= curY + 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
-                    else {
-                        while (curX != targetX && curY != targetY) {
-                            xOff += 1;
-                            yOff += yRat;
-                            curX = xOff;
-                            if (xOff >= curX + 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff <= curY - 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
-                }
-                else {
-                    if (deltaY >= 0) {
-                        while (curX != targetX && curY != targetY) {
-                            xOff -= 1;
-                            yOff += yRat;
-                            curX = xOff;
-                            if (xOff <= curX - 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff >= curY + 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
-                    else {
-                        while (curX != targetX && curY != targetY) {
-                            xOff -= 1;
-                            yOff += yRat;
-                            curX = xOff;
-                            if (xOff <= curX - 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff <= curY - 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
+                while (curX != targetX && curY != targetY) {
+                    curX += xSign;
+                    yOff += yRat;
+                    if (yOff >= curY + ySign)
+                        curY = (int) yOff;
+                    safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
                 }
             }
-            // use deltaY as baseline, xRat is the slope
-            else {
-                if (deltaX >= 0) {
-                    if (deltaY >= 0) {
-                        while (curX != targetX && curY != targetY) {
-                            yOff += 1;
-                            xOff += xRat;
-                            curY = yOff;
-                            if (xOff >= curX + 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff >= curY + 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
-                    else {
-                        while (curX != targetX && curY != targetY) {
-                            yOff -= 1;
-                            xOff += xRat;
-                            curY = yOff;
-                            if (xOff >= curX + 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff <= curY - 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
-                }
-                else {
-                    if (deltaY >= 0) {
-                        while (curX != targetX && curY != targetY) {
-                            yOff += 1;
-                            xOff += xRat;
-                            curY = yOff;
-                            if (xOff <= curX - 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff >= curY + 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
-                    else {
-                        while (curX != targetX && curY != targetY) {
-                            yOff -= 1;
-                            xOff += xRat;
-                            curY = yOff;
-                            if (xOff <= curX - 1)
-                                curX = (int) std::round(xOff);
-                            if (yOff <= curY - 1)
-                                curY = (int) std::round(yOff);
-                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
-                        }
-                    }
+            else if (abs(deltaY) > abs(deltaX)) {
+                while (curX != targetX && curY != targetY) {
+                    curY += ySign;
+                    xOff += xRat;
+                    if (xOff >= curX + xSign)
+                        curX = (int) xOff;
+                    safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
                 }
             }
         }
@@ -818,3 +730,112 @@ void drawDigits(int i, int digit, int initialX, int initialY) {
             drawPixelMap(initialX + i*5, initialY, digits::zero, 4, 5);
     }
 }
+
+/*if (abs(deltaX) >= abs(deltaY)) {
+                if (deltaX >= 0) {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            xOff += 1;
+                            yOff += yRat;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            xOff += 1;
+                            yOff += yRat;
+                            curX = xOff;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                }
+                else {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            xOff -= 1;
+                            yOff += yRat;
+                            curX = xOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            xOff -= 1;
+                            yOff += yRat;
+                            curX = xOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                }
+            }
+            // use deltaY as baseline, xRat is the slope
+            else {
+                if (deltaX >= 0) {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            yOff += 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            yOff -= 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff >= curX + 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                }
+                else {
+                    if (deltaY >= 0) {
+                        while (curX != targetX && curY != targetY) {
+                            yOff += 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff >= curY + 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                    else {
+                        while (curX != targetX && curY != targetY) {
+                            yOff -= 1;
+                            xOff += xRat;
+                            curY = yOff;
+                            if (xOff <= curX - 1)
+                                curX = (int) std::round(xOff);
+                            if (yOff <= curY - 1)
+                                curY = (int) std::round(yOff);
+                            safeDraw(curX, curY, PIXEL_SOLID, FG_BLUE);
+                        }
+                    }
+                }
+            }*/
