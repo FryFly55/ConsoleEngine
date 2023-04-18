@@ -4,19 +4,13 @@
 
 #include <windows.h>
 
-#include <iostream>
 #include <chrono>
-#include <vector>
 #include <list>
 #include <thread>
 #include <atomic>
 #include <cstring>
+#include <string>
 #include <cmath>
-
-int Error(const wchar_t* msg);
-static BOOL CloseHandler(DWORD evt);
-void draw();
-void getInput();
 
 enum COLOUR
 {
@@ -82,9 +76,17 @@ public:
 
 };
 
+int Error(const wchar_t* msg);
+static BOOL CloseHandler(DWORD evt);
+void draw();
+void getInput();
+void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour);
+void safeDraw(int x, int y, wchar_t chars, COLOUR colour); // function overloading
+void drawDigits(int i, int digit, int initialX, int initialY);
+
 // 480, 270, 4, 4 will create a 1920x1080 Window, with 480x270 console pixels, each of which being 4 physical pixels. 512x320 also works
-int screenWidth = 512;
-int screenHeight = 320;
+int screenWidth = 480; // 512
+int screenHeight = 270; // 320
 int fontWidth = 4;
 int fontHeight = 4;
 
@@ -112,7 +114,7 @@ float vertices[] = {
          -1,  1, 16, // top left back
 
         // second square
-        -1,  2, 14,
+        /*-1,  2, 14,
          1,  2, 14,
          1,  4, 14,
         -1,  4, 14,
@@ -185,14 +187,32 @@ float vertices[] = {
         -5, -4, 26,
         -7, -4, 26,
         -7, -2, 26,
-        -5, -2, 26,
+        -5, -2, 26,*/
+};
+
+// this array stores the indices of all the points that are supposed to be rendered as a triangle.
+int triangles[] = {
+        // cube consists of 12 triangles, 2 per side
+        // each of the entries references a vertex (3 floats) from the vertices array.
+        0, 1, 3, // first triangle + front face
+        1, 2, 3, // second triangle
+        1, 5, 2, // ... + right face
+        5, 6, 2,
+        4, 5, 7, // back face
+        5, 6, 7,
+        0, 4, 3, // left face
+        4, 7, 3,
+        3, 2, 7, // top face
+        2, 6, 7,
+        0, 1, 4, // bottom face
+        1, 5, 4
 };
 
 // FOV in degrees
 const double FOV = 90;
 // FOV in radians
 const double radFOV = FOV * (PI/180);
-const double farClippingPlane = 50.0f;
+const double farClippingPlane = 100.0f;
 
 float playerX = 0.0f;
 float playerY = 0.0f;
@@ -205,7 +225,20 @@ const float playerBaseSpeed = 3.0f;
 float playerSpeed = 3.0f;
 float turnSpeed = 30.0f;
 
+// game variables and toggles
+// starting with the line render option
+bool doLineRender = true;
+float lineToggleCD = 0.5f;
+float lineToggleCounter = 0.0f;
+
+// coloured edges and faces
+bool doColourDebug = false;
+float colourDebugToggleCD = 0.5f;
+float colourDebugCounter = 0.0f;
+
 float dt;
+float fps;
+int fpsOffset = 10; // fps-display distance from the right screen border
 
 // Set everything you need inside the game-loop or draw-cycle here.
 float colourOffset = 0;
@@ -289,7 +322,7 @@ int main() {
     // Game initialisation logic
     playerSpeed = playerBaseSpeed;
 
-    // calculate first dt timestep
+    // calculate first dt timestep (or is it a delta-timestep? delta-time-step? delta time-step? To not use time twice?)
     dt = 0.0f;
     auto tpLast = std::chrono::system_clock::now();
 
@@ -299,6 +332,19 @@ int main() {
         std::memset(screenBuffer, 0, sizeof(CHAR_INFO) * screenWidth * screenHeight);
 
         getInput();
+
+        // after getting input, update everything needed inside draw()
+        radPlayerAngleX = playerAngleX * (PI/180);
+        radPlayerAngleY = playerAngleY * (PI/180);
+
+        // we need the fps value in draw(), so initialise it earlier.
+        fps = 1 / dt;
+        // remove the line below if you want fps shown with decimal places (kinda useless in most situations)
+        fps = std::floor(fps + 0.5f); // rounding by flooring the value + 0.5
+
+        lineToggleCounter += dt;
+        colourDebugCounter += dt;
+
         draw();
 
         // Refresh screen buffer
@@ -331,277 +377,192 @@ void draw() {
         screenBuffer[j].Char.UnicodeChar = PIXEL_SOLID;
         screenBuffer[j].Attributes = FG_GREEN;
         if (j % 2 == 0) {
-            screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[screenWidth + j].Attributes = FG_WHITE;
+            /*screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[screenWidth + j].Attributes = FG_WHITE;*/
+            safeDraw(j, 1, PIXEL_SOLID, FG_WHITE);
         }
         else {
-            screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[screenWidth + j].Attributes = FG_DARK_BLUE;
+            /*screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[screenWidth + j].Attributes = FG_DARK_BLUE;*/
+            safeDraw(j, 1, PIXEL_SOLID, FG_BLACK);
         }
     }
 
-    // noisy color test bars - Use to test
-    /*colourOffset += dt;
-    for (int i = 0; i < screenHeight; i++) {
-        for (int j = 0; j < screenWidth; j++) {
-            if ((i + (int) colourOffset) % 3 == 0) {
-                screenBuffer[i * screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[i * screenWidth + j].Attributes = FG_DARK_RED;
+    // only needs to be calculated once technically, but in case I ever want it to be changed dynamically during
+    // runtime, it's calculated every frame.
+    double hFov = (FOV / 2) * (PI/180);
+
+    // todo: arrays are filled with garbage values, if something fails and those are accessed, the program may crash!
+    // iterates through the first of three vertex-indices of each triangle
+    for (int t = 0; t < sizeof(triangles)/sizeof(int); t += 3) {
+        // stores the transformed x,y and z components of each vertex
+        float screenSpaceVertices[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        // stores the screenX,Y as well as transformed Z component of each vertex / point
+        float screenPoints[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+        for (int i = 0; i < 3; i++) {
+            // one vertex relative to the player
+            int point = triangles[t+i];
+            float x = vertices[point*3] - playerX;
+            float y = vertices[point*3+1] - playerY;
+            float z = vertices[point*3+2] - playerZ;
+
+            // transform (rotate) the vertices directly in here, before filling in screenSpaceVertices[]
+            float xPos = x * cos(radPlayerAngleX) - z  * sin(radPlayerAngleX);
+            float zPos = x * sin(radPlayerAngleX) + z * cos(radPlayerAngleX);
+            x = xPos;
+            z = zPos;
+
+            // don't want to get a 'divide by zero' error (although it isn't even an official exception in c++)
+            if (z == 0) {
+                z = 0.01f;
             }
-            else if ((i + (int) colourOffset) % 3 == 1) {
-                screenBuffer[i * screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[i * screenWidth + j].Attributes = FG_DARK_GREEN;
+
+            // calculate the screenX and screenY of each point, check if they are within bounds beforehand.
+            bool inDistance = z < farClippingPlane;
+            bool inBoundsX = x < tan(hFov) * z && x > -tan(hFov) * z;
+            bool inBoundsY = y < tan(hFov) * z && y > -tan(hFov) * z;
+
+            if (!inDistance) { // this is just a bunch of debug code todo: remove later.
+                /*screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[1].Attributes = FG_RED;*/
+                safeDraw(1, 0, PIXEL_SOLID, FG_RED);
             }
-            else if ((i + (int) colourOffset) % 3 == 2) {
-                screenBuffer[i * screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[i * screenWidth + j].Attributes = FG_DARK_BLUE;
+            if (!inBoundsX) {
+                /*screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[2].Attributes = FG_RED;*/
+                safeDraw(2, 0, PIXEL_SOLID, FG_RED);
             }
-                // This should never happen. If it does, I have no idea why
-            else {
-                screenBuffer[i * screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[i * screenWidth + j].Attributes = FG_YELLOW;
+            if (!inBoundsY) {
+                /*screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
+                screenBuffer[3].Attributes = FG_RED;*/
+                safeDraw(3, 0, PIXEL_SOLID, FG_RED);
             }
-        }
-    }*/
 
-    // Perspective is not quite right, but it works. (kinda)
-    // the variable i is used to set the color of certain cubes, to distinguish them from others
-    int i = 0;
-    /*for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
-        float vertex[] = {vertices[e], vertices[e+1], vertices[e+2]};
-        int screenX = (screenWidth / 2) + (int)(vertex[X] * (1 / (vertex[Z] * tan((FOV/2) * (PI/180)) * 1)) * (screenWidth / 2));
-        int screenY = (screenHeight / 2) + (int)(vertex[Y] * (1 / (vertex[Z] * tan((FOV/2) * (PI/180)) * 1)) * (screenHeight / 2));
-        if (screenX * screenY < screenWidth * screenHeight)
-            screenBuffer[screenY * screenWidth + screenX].Char.UnicodeChar = PIXEL_SOLID;
-        else {
-            screenBuffer[10 * screenWidth].Char.UnicodeChar = PIXEL_SOLID;
-        }
-        if (i <= 7 && screenX * screenY < screenWidth * screenHeight)
-            screenBuffer[screenY * screenWidth + screenX].Attributes = colours[i];
-        else if (screenX * screenY < screenWidth * screenHeight) {
-            screenBuffer[screenY * screenWidth + screenX].Attributes = FG_BLUE;
-        }
-        else{
-            screenBuffer[1].Attributes = FG_RED;
-        }
-        i++;
-    }*/
+            if (inDistance && inBoundsX && inBoundsY) {
+                // now populate screenSpaceVertices[]
+                screenSpaceVertices[i*3] = x;
+                screenSpaceVertices[i*3+1] = y;
+                screenSpaceVertices[i*3+2] = z;
 
-    // playing field to fix perspective, best working version to my knowledge. Still not (fully) functional
-    /*for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
-        float vertex[] = {(vertices[e] - playerX), vertices[e+1] - playerY, (vertices[e+2] - playerZ)};
-        int screenX = 0;
-        int screenY = 0;
-        if (vertex[X] != 0 && vertex[Y] != 0 && vertex[Z] != 0) {
-            screenX = (screenWidth / 2) + (int)(vertex[X] * (1 / (vertex[Z] / 2 * tan(45 * (PI/180)))) * (screenHeight / 4));
-            screenY = (screenHeight / 2) + (int)(vertex[Y] * (1 / (vertex[Z] / 2 * tan(45 * (PI/180)))) * (screenHeight / 4));
-        }
-        if ((screenY * screenWidth + screenX < screenWidth * screenHeight) && (screenY * screenWidth + screenX >= 0))
-            screenBuffer[screenY * screenWidth + screenX].Char.UnicodeChar = PIXEL_SOLID;
-        else {
-            screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
-        }
-        if ((i <= 7) && (screenY * screenWidth + screenX < screenWidth * screenHeight) && (screenY * screenWidth + screenX >= 0))
-            screenBuffer[screenY * screenWidth + screenX].Attributes = colours[i];
-        else if ((screenY * screenWidth + screenX < screenWidth * screenHeight) && (screenY * screenWidth + screenX >= 0)) {
-            screenBuffer[screenY * screenWidth + screenX].Attributes = FG_BLUE;
-        }
-        else{
-            screenBuffer[1].Attributes = FG_RED;
-        }
-        i++;
-    }*/
+                double ratioX = x * (1 / (tan(hFov) * z)); // how much of half a screen wide/high is occupied
+                double ratioY = /*(screenWidth / screenHeight) * */y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
 
-    // the somewhat working implementation, just trying to allow angles and rotations and shit now
-    // playing field to fix perspective, best working version to my knowledge. Still not functional
-    /*radPlayerAngleX = playerAngleX * (PI/180); // cmath works with radians, not degrees
-    for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
-        float vertex[] = {(vertices[e] - playerX), vertices[e+1] - playerY, (vertices[e+2] - playerZ)};
-        double radius = sqrt(pow(vertex[X], 2) + pow(vertex[Z], 2));
-        float xRotationOffset = sin(radPlayerAngleX) * radius;
-        float zRotationOffset = radius - (radius * cos(radPlayerAngleX));
-        vertex[X] = vertex[X] + xRotationOffset; vertex[Z] = vertex[Z] - zRotationOffset;
-        int screenX = 0;
-        int screenY = 0;
-        if (vertex[X] != 0 && vertex[Y] != 0 && vertex[Z] != 0) {
-            screenX = (screenWidth / 2) + (int)(vertex[X] * (1 / (vertex[Z] / 2 * tan(radFOV / 2))) * (screenHeight / 4));
-            screenY = (screenHeight / 2) + (int)(vertex[Y] * (1 / (vertex[Z] / 2 * tan(radFOV / 2))) * (screenHeight / 4));
-        }
-        if ((screenY * screenWidth + screenX < screenWidth * screenHeight) && (screenY * screenWidth + screenX >= 0))
-            screenBuffer[screenY * screenWidth + screenX].Char.UnicodeChar = PIXEL_SOLID;
-        else {
-            screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
-        }
-        if ((i <= 7) && (screenY * screenWidth + screenX < screenWidth * screenHeight) && (screenY * screenWidth + screenX >= 0))
-            screenBuffer[screenY * screenWidth + screenX].Attributes = colours[i];
-        else if ((screenY * screenWidth + screenX < screenWidth * screenHeight) && (screenY * screenWidth + screenX >= 0)) {
-            screenBuffer[screenY * screenWidth + screenX].Attributes = FG_BLUE;
-        }
-        else{
-            screenBuffer[1].Attributes = FG_RED;
-        }
-        i++;
-    }*/
-
-    // New designed algorithm, hopefully cleaned up and accounting for horizontal viewing angles
-    // Rotations still don't really work, I will fix them in the version below.
-    // This one does not "wrap" anymore, but it still crashes when getting to close. (I assume when relative Z position gets negative)
-    /*radPlayerAngleX = playerAngleX * (PI/180);
-    for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
-        // getting initial position relative to the player
-        float vertex[] = {(vertices[e] - playerX), vertices[e+1] - playerY, (vertices[e+2] - playerZ)};
-
-        // rotating the point accordingly. In order for this to work, we need to get the distance from the player
-        // (length of a vector) first. Pythagorean Theorem time.
-        // Also don't use pow(), because some implementation suffer from floating point issues
-        float radius = sqrt((vertex[X] * vertex[X]) + (vertex[Z] * vertex[Z]));
-        vertex[X] = vertex[X] + sin(-radPlayerAngleX) * radius;
-        vertex[Z] = vertex[Z] + ((radius * cos(-radPlayerAngleX)) - radius);
-
-        // Now only continue rendering if the vertex is within the bounds of the fov. In radians
-        double hFov = (FOV / 2) * (PI/180);
-        double vFov = (screenHeight / screenWidth) * hFov;
-        bool inDistance = vertex[Z] < farClippingPlane;
-        bool inBoundsX = vertex[X] < tan(hFov) * vertex[Z] && vertex[X] > -tan(hFov) * vertex[Z];
-        bool inBoundsY = vertex[Y] < tan(hFov) * vertex[Z] && vertex[Y] > -tan(hFov) * vertex[Z];
-        // displaying results of each test individually
-        if (!inDistance) {
-            screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[1].Attributes = FG_RED;
-        }
-        if (!inBoundsX) {
-            screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[2].Attributes = FG_RED;
-        }
-        if (!inBoundsY) {
-            screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[3].Attributes = FG_RED;
-        }
-
-        if (inDistance && inBoundsX && inBoundsY) {
-            // how much of half a screen wide/high is occupied
-            double ratioX = vertex[X] * (1 / (tan(hFov) * vertex[Z]));
-            double ratioY = vertex[Y] * (1 / (tan(hFov) * vertex[Z]));
-
-            // Now calculate it into screenSpace
-            int screenX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
-            int screenY = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
-
-            // Only draw if the results do not exceed the screenBuffer and aren't negative
-            int index = screenY * screenWidth + screenX;
-            if (index < screenWidth * screenHeight && index > (-screenWidth * screenHeight)) {
-                screenBuffer[index].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[index].Attributes = FG_GREEN;
-            }
-            else {
-                screenBuffer[4].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[4].Attributes = FG_RED;
+                // Now calculate it into screenSpace, populate screenPoints[] array
+                screenPoints[i*3] = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
+                screenPoints[i*3+1] = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
+                screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later.
             }
         }
-    }*/
 
-    // trying to fix the angle rotation thing here.
-    radPlayerAngleX = playerAngleX * (PI/180);
-    radPlayerAngleY = playerAngleY * (PI/180);
-    for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
-        // getting initial position relative to the player for each vertex
-        float vertex[] = {(vertices[e] - playerX), vertices[e+1] - playerY, (vertices[e+2] - playerZ)};
+        // Now that all corners of the triangle are calculated, we can start drawing it.
+        for (int i = 0; i < 3 && doLineRender; i++) {
+            int curX = (int)screenPoints[i*3]; // should always be int values, the array is only float because of z
+            int curY = (int)screenPoints[i*3+1];
+            int targetX = screenPoints[0];
+            int targetY = screenPoints[1];
 
-        // rotating the point accordingly. In order for this to work, we need to get the distance from the player
-        // (length of a vector) first. Pythagorean Theorem time.
-        // Also don't use pow(), because some implementation suffer from floating point issues
-        // Legacy rotation (doesn't fully work anyway)
-        //float radius = sqrt((vertex[X] * vertex[X]) + (vertex[Z] * vertex[Z]));
-        //vertex[X] = vertex[X] + sin(-radPlayerAngleX) * radius;
-        //vertex[Z] = vertex[Z] + ((radius * cos(-radPlayerAngleX)) - radius);
-        // new implementation below this comment, radius isn't needed too. Does work, although the points are rotated
-        // around the initial player position, and not relative to the player.
-        // todo: fix this. ^
-        float xPos = vertex[X] * cos(radPlayerAngleX) - vertex[Z]  * sin(radPlayerAngleX);
-        float zPos = vertex[X] * sin(radPlayerAngleX) + vertex[Z] * cos(radPlayerAngleX);
-        vertex[X] = xPos;
-        vertex[Z] = zPos;
-
-        // may divide by zero otherwise later in the code. Instead of just not rendering it in that case, I risk the
-        // visual inaccuracy and just render the point slightly wrong. Too lazy to figure out a better solution.
-        if (vertex[Z] == 0) {
-            vertex[Z] = 0.01f;
-        }
-
-        // Now only continue rendering if the vertex is within the bounds of the fov. In radians
-        double hFov = (FOV / 2) * (PI/180);
-        double vFov = (screenHeight / screenWidth) * hFov;
-        bool inDistance = vertex[Z] < farClippingPlane;
-        bool inBoundsX = vertex[X] < tan(hFov) * vertex[Z] && vertex[X] > -tan(hFov) * vertex[Z];
-        bool inBoundsY = vertex[Y] < tan(hFov) * vertex[Z] && vertex[Y] > (tan(hFov) * vertex[Z]) * -1;
-        // displaying results of each test individually
-        if (!inDistance) {
-            screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[1].Attributes = FG_RED;
-        }
-        if (!inBoundsX) {
-            screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[2].Attributes = FG_RED;
-        }
-        if (!inBoundsY) {
-            screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[3].Attributes = FG_RED;
-        }
-
-        if (inDistance && inBoundsX && inBoundsY) {
-            // how much of half a screen wide/high is occupied
-            // divide by zero might occur, this is why I checked for (vertex[Z] == 0) earlier.
-            double ratioX = vertex[X] * (1 / (tan(hFov) * vertex[Z]));
-            // the commented part makes no difference for some reason. Even though it should increase the portion of
-            // the screen that is taken up in a vertical direction. (Assuming Width is greater than Height)
-            double ratioY = /*(screenWidth / screenHeight) * */vertex[Y] * (1 / (tan(hFov) * vertex[Z]));
-
-            // Now calculate it into screenSpace
-            int screenX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
-            int screenY = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
-
-            // Only draw if the results do not exceed the screenBuffer and aren't negative
-            int index = screenY * screenWidth + screenX;
-            if (index < screenWidth * screenHeight && index > (-screenWidth * screenHeight)) {
-                screenBuffer[index].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[index].Attributes = FG_GREEN;
+            if (i < 2) {
+                targetX = (int)screenPoints[(i+1)*3];
+                targetY = (int)screenPoints[((i+1)*3)+1];
             }
-            else {
-                screenBuffer[4].Char.UnicodeChar = PIXEL_SOLID;
-                screenBuffer[4].Attributes = FG_RED;
+
+            // calculating the distance of each pixel to the next one, just need to draw a line now.
+            // Also getting the sign of each delta, and the y's per x as well as x's per y
+            float deltaX = targetX - curX;
+            float deltaY = targetY - curY;
+
+            float xRat = deltaX/abs(deltaY);
+            if (deltaX < 1 && deltaX > -1)
+                xRat = 0;
+            float yRat = deltaY/abs(deltaX);
+            if (deltaY < 1 && deltaY > -1)
+                yRat = 0;
+
+            int xSign = 0;
+            int ySign = 0;
+            if (deltaX != 0)
+                xSign = (int) deltaX / abs(deltaX); // calculate it now to save performance, is either 1, -1
+            if (deltaY != 0)
+                ySign = (int) deltaY / abs(deltaY);
+
+            // whenever it passes the threshold to a new pixel, round off and draw.
+            float xOff = curX;
+            float yOff = curY;
+
+            // rendering in different colors to help differentiate faces. (edges are used by more than one triangle,
+            // so it isn't always 100% perfect, but still helps to find bugs)
+            COLOUR renderColour = FG_RED;
+            float triangle = t/3;
+            if (triangle == 0 || triangle == 2)
+                renderColour = FG_WHITE;
+            else if (triangle == 1 || triangle == 3)
+                renderColour = FG_BLUE;
+            else if (triangle > 3)
+                renderColour = FG_YELLOW;
+
+            // set the std colour
+            if (!doColourDebug)
+                renderColour = FG_BLUE;
+
+            float bothZero = deltaX + deltaY;
+            // render the lines between points
+            if (deltaX < 1 && deltaX > -1 && bothZero != 0) {
+                while (curY != targetY) {
+                    curY += ySign;
+                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                }
             }
+            if (deltaY < 1 && deltaY > -1 && bothZero != 0) {
+                while (curX != targetX) {
+                    curX += xSign;
+                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                }
+            }
+
+            if (abs(deltaX) >= abs(deltaY) && bothZero != 0) {
+                while (curX != targetX && curY != targetY) {
+                    curX += xSign;
+                    yOff += yRat;
+                    if (yOff >= curY + ySign)
+                        curY = (int) std::floor(yOff);
+                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                }
+            }
+            else if (abs(deltaY) > abs(deltaX) && bothZero != 0) {
+                while (curX != targetX && curY != targetY) {
+                    curY += ySign;
+                    xOff += xRat;
+                    if (xOff >= curX + xSign)
+                        curX = (int) std::floor(xOff);
+                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                }
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            /*screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Char.UnicodeChar = PIXEL_SOLID;
+            screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Attributes = FG_GREEN;*/
+            safeDraw((int)screenPoints[i*3], (int)screenPoints[i*3+1], PIXEL_SOLID, FG_GREEN);
         }
     }
 
-    // different approach, looks good, but IDK if it will work long term with viewing angles and shit
-    /*for (int e = 0; e < sizeof(vertices) / sizeof(float); e += 3) {
-        float vertex[] = {vertices[e] - playerX, vertices[e+1] - playerY, vertices[e+2] - playerZ};
-        int screenX = (screenWidth / 2) + (1/vertex[Z]) * (screenHeight / 2) * vertex[X];
-        int screenY = (screenHeight / 2) + (1/vertex[Z]) * (screenHeight / 2) * vertex[Y];
-        if (screenX * screenY < screenWidth * screenHeight)
-            screenBuffer[screenY * screenWidth + screenX].Char.UnicodeChar = PIXEL_SOLID;
-        else {
-            screenBuffer[10 * screenWidth].Char.UnicodeChar = PIXEL_SOLID;
+    // render the fps-counter
+    std::string sFps = std::to_string(fps);
+    int digits = sFps.length(); // u_long would be better, but int is fine for our purposes.
+    // I will assume that the fps will never exceed 6 digits (unlikely anyway considering my (non-) optimisation)
+    for (int i = 0; i < digits && i < 6; i++) {
+        int digit = sFps[i] - 48; // converts a char to a number value, by shifting it 48 ascii positions
+        if (digit <= 9 && digit >= 0) {
+            drawDigits(i, digit, screenWidth - (6 * 4) - fpsOffset, 0);
         }
-        if (i <= 7 && screenX * screenY < screenWidth * screenHeight)
-            screenBuffer[screenY * screenWidth + screenX].Attributes = colours[i];
-        else if (screenX * screenY < screenWidth * screenHeight) {
-            screenBuffer[screenY * screenWidth + screenX].Attributes = FG_BLUE;
-        }
-        else{
-            screenBuffer[1].Attributes = FG_RED;
-        }
-        i++;
-    }*/
+    }
 
     // draw pixels to the corners to mark the bounds of screenBuffer array
     // I do this last to render it on top of everything else
-    screenBuffer[0].Char.UnicodeChar = PIXEL_SOLID;
-    screenBuffer[0].Attributes = FG_RED;
-    screenBuffer[screenWidth * screenHeight - 1].Char.UnicodeChar = PIXEL_SOLID;
-    screenBuffer[screenWidth * screenHeight - 1].Attributes = FG_RED;
-    screenBuffer[(screenWidth * screenHeight) / 2 + (screenWidth / 2)].Char.UnicodeChar = PIXEL_SOLID;
-    screenBuffer[(screenWidth * screenHeight) / 2 + (screenWidth / 2)].Attributes = FG_RED;
+    safeDraw(0, 0, PIXEL_SOLID, FG_RED);
+    safeDraw(screenWidth - 1, screenHeight - 1, PIXEL_SOLID, FG_RED);
+    safeDraw(screenWidth / 2, screenHeight / 2, PIXEL_SOLID, FG_RED);
 }
 
 // crappy way to get input ik. No idea how to register mouse inputs yet as well.
@@ -649,46 +610,15 @@ void getInput() {
         playerAngleY += turnSpeed * dt;
     if (GetAsyncKeyState((unsigned short)'K') & 0x8000)
         playerAngleY -= turnSpeed * dt;
-}
 
-// todo: Also switch to a system where a variable keeps track of the number of objects inside the vertices array,
-// this way you don't have to use sizeof() but can instead dedicate 10000 floats of memory for points, and just calculate
-// the index of the last useful value, replacing the garbage values inside the array as you go on.
-void generateCube(float verts[], int* objectCount, float centerX, float centerY, float centerZ, float halfSideLength) {
-    int startIndex = *objectCount * 8 * 3; //8 points per cube, 3 floats per point
-    // bottom left front corner of the cube
-    verts[startIndex + 0] = centerX - halfSideLength;
-    verts[startIndex + 1] = centerY - halfSideLength;
-    verts[startIndex + 2] = centerZ - halfSideLength;
-    // bottom right front
-    verts[startIndex + 3] = centerX + halfSideLength;
-    verts[startIndex + 4] = centerY - halfSideLength;
-    verts[startIndex + 5] = centerZ - halfSideLength;
-    // top right front
-    verts[startIndex + 6] = centerX + halfSideLength;
-    verts[startIndex + 7] = centerY + halfSideLength;
-    verts[startIndex + 8] = centerZ - halfSideLength;
-    // top left front
-    verts[startIndex + 9] = centerX - halfSideLength;
-    verts[startIndex + 10] = centerY + halfSideLength;
-    verts[startIndex + 11] = centerZ - halfSideLength;
-    // bottom left back
-    verts[startIndex + 12] = centerX - halfSideLength;
-    verts[startIndex + 13] = centerY - halfSideLength;
-    verts[startIndex + 14] = centerZ + halfSideLength;
-    // bottom right back
-    verts[startIndex + 15] = centerX + halfSideLength;
-    verts[startIndex + 16] = centerY - halfSideLength;
-    verts[startIndex + 17] = centerZ + halfSideLength;
-    // top right back
-    verts[startIndex + 18] = centerX + halfSideLength;
-    verts[startIndex + 19] = centerY + halfSideLength;
-    verts[startIndex + 20] = centerZ + halfSideLength;
-    // top left back
-    verts[startIndex + 21] = centerX - halfSideLength;
-    verts[startIndex + 22] = centerY + halfSideLength;
-    verts[startIndex + 23] = centerZ + halfSideLength;
-    *objectCount += 1;
+    if ((GetAsyncKeyState((unsigned short)'1') & 0x8000) && lineToggleCounter > lineToggleCD) {
+        doLineRender = !doLineRender;
+        lineToggleCounter = 0.0f;
+    }
+    if ((GetAsyncKeyState((unsigned short)'2') & 0x8000) && colourDebugCounter > colourDebugToggleCD) {
+        doColourDebug = !doColourDebug;
+        colourDebugCounter = 0.0f;
+    }
 }
 
 // quick tool to output error messages
@@ -708,4 +638,155 @@ int Error(const wchar_t* msg)
 static BOOL CloseHandler(DWORD evt)
 {
     return false;
+}
+
+void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour) {
+    if (y * screenWidth + x < screenWidth * screenHeight) {
+        screenBuffer[y * screenWidth + x].Char.UnicodeChar = pixelType;
+        screenBuffer[y * screenWidth + x].Attributes = colour;
+    }
+}
+
+void safeDraw(int x, int y, wchar_t chars, COLOUR colour) {
+    if (y * screenWidth + x < screenWidth * screenHeight) {
+        screenBuffer[y * screenWidth + x].Char.UnicodeChar = chars;
+        screenBuffer[y * screenWidth + x].Char.UnicodeChar = colour;
+    }
+}
+
+namespace digits {
+// defining the pixel maps for each digit, maybe letters later.
+const char* zero = {
+        ".##."
+        "#..#"
+        "#..#"
+        "#..#"
+        ".##."
+};
+
+const char* one = {
+        ".##."
+        "..#."
+        "..#."
+        "..#."
+        "..#."
+};
+
+const char* two = {
+        ".##."
+        "#..#"
+        "..#."
+        ".#.."
+        "####"
+};
+
+const char* three = {
+        "####"
+        "...#"
+        ".###"
+        "...#"
+        "####"
+};
+
+const char* four = {
+        "#..#"
+        "#..#"
+        "####"
+        "...#"
+        "...#"
+};
+
+const char* five = {
+        "####"
+        "#..."
+        "####"
+        "...#"
+        "####"
+};
+
+const char* six = {
+        "####"
+        "#..."
+        "####"
+        "#..#"
+        "####"
+};
+
+const char* seven = {
+        "####"
+        "...#"
+        "..#."
+        ".#.."
+        "#..."
+};
+
+const char* eight = {
+        "####"
+        "#..#"
+        ".##."
+        "#..#"
+        "####"
+};
+
+const char* nine = {
+        "####"
+        "#..#"
+        "####"
+        "...#"
+        ".###"
+};
+}
+
+
+// drawing a pixelMap to the screen, x, y mark the top left corner.
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY) {
+    for (int i = 0; i < mapX * mapY; i++) {
+        int screenY = y + ((int) i / mapX); // division
+        int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
+        if (pixelMap[i] == '#') {
+            safeDraw(screenX, screenY, PIXEL_SOLID, FG_WHITE);
+        }
+        else {
+            safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
+        }
+    }
+}
+
+// x, y mark the top left corner
+void drawDigits(int i, int digit, int initialX, int initialY) {
+    // todo: make an array implementation, for now a switch statement will do though
+    switch(digit) {
+        case 0:
+            drawPixelMap(initialX + i*5, initialY, digits::zero, 4, 5);
+            break;
+        case 1:
+            drawPixelMap(initialX + i*5, initialY, digits::one, 4, 5);
+            break;
+        case 2:
+            drawPixelMap(initialX + i*5, initialY, digits::two, 4, 5);
+            break;
+        case 3:
+            drawPixelMap(initialX + i*5, initialY, digits::three, 4, 5);
+            break;
+        case 4:
+            drawPixelMap(initialX + i*5, initialY, digits::four, 4, 5);
+            break;
+        case 5:
+            drawPixelMap(initialX + i*5, initialY, digits::five, 4, 5);
+            break;
+        case 6:
+            drawPixelMap(initialX + i*5, initialY, digits::six, 4, 5);
+            break;
+        case 7:
+            drawPixelMap(initialX + i*5, initialY, digits::seven, 4, 5);
+            break;
+        case 8:
+            drawPixelMap(initialX + i*5, initialY, digits::eight, 4, 5);
+            break;
+        case 9:
+            drawPixelMap(initialX + i*5, initialY, digits::nine, 4, 5);
+            break;
+        default:
+            drawPixelMap(initialX + i*5, initialY, digits::zero, 4, 5);
+    }
 }
