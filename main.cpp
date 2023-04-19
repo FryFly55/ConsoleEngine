@@ -196,7 +196,7 @@ int triangles[] = {
         0, 1, 4, // bottom face
         1, 5, 4,
 
-        8, 9, 11, // front face
+        /*8, 9, 11, // front face
         9, 10, 11,
         9, 13, 10, // right face
         13, 14, 10,
@@ -207,7 +207,7 @@ int triangles[] = {
         11, 10, 15, // top face
         10, 14, 15,
         8, 9, 12, // bottom face
-        9, 13, 12
+        9, 13, 12*/
 };
 
 const char* crosshair = {
