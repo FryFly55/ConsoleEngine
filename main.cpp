@@ -63,19 +63,6 @@ enum pos {
     Z = 2
 };
 
-class Vertex {
-public:
-    Vertex(float aX, float aY, float aZ) {
-        x = aX;
-        y = aY;
-        z = aZ;
-    }
-    float x;
-    float y;
-    float z;
-
-};
-
 int Error(const wchar_t* msg);
 static BOOL CloseHandler(DWORD evt);
 void draw();
@@ -83,6 +70,8 @@ void getInput();
 void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour);
 void safeDraw(int x, int y, wchar_t chars, COLOUR colour); // function overloading
 void drawDigits(int i, int digit, int initialX, int initialY);
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY);
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, PIXEL_TYPE pixel, COLOUR colour);
 
 // 480, 270, 4, 4 will create a 1920x1080 Window, with 480x270 console pixels, each of which being 4 physical pixels. 512x320 also works
 int screenWidth = 480; // 512
@@ -221,8 +210,20 @@ int triangles[] = {
         9, 13, 12
 };
 
+const char* crosshair = {
+        "..#.."
+        "..#.."
+        "#####"
+        "..#.."
+        "..#.."
+};
+int crosshairWidth = 5;
+int crosshairHeight = 5;
+PIXEL_TYPE crosshairPixelType = PIXEL_SOLID;
+COLOUR crosshairColour = FG_RED;
+
 // FOV in degrees
-const double FOV = 90;
+const double FOV = 70;
 // FOV in radians
 const double radFOV = FOV * (PI/180);
 const double farClippingPlane = 100.0f;
@@ -459,7 +460,7 @@ void draw() {
                 screenSpaceVertices[i*3+2] = z;
 
                 double ratioX = x * (1 / (tan(hFov) * z)); // how much of half a screen wide/high is occupied
-                double ratioY = /*(screenWidth / screenHeight) * */y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
+                double ratioY = /*(screenWidth / screenHeight) * */ y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
 
                 // Now calculate it into screenSpace, populate screenPoints[] array
                 float sX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
@@ -576,7 +577,12 @@ void draw() {
     // I do this last to render it on top of everything else
     safeDraw(0, 0, PIXEL_SOLID, FG_RED);
     safeDraw(screenWidth - 1, screenHeight - 1, PIXEL_SOLID, FG_RED);
-    safeDraw(screenWidth / 2, screenHeight / 2, PIXEL_SOLID, FG_RED);
+    //safeDraw(screenWidth / 2, screenHeight / 2, PIXEL_SOLID, FG_RED); // this draws a primitive crosshair
+
+    // this draws a more advanced crosshair
+    drawPixelMap((screenWidth / 2) - std::floor(crosshairWidth / 2),
+                 (screenHeight / 2) - std::floor(crosshairHeight / 2), crosshair, crosshairWidth, crosshairHeight,
+                 crosshairPixelType, crosshairColour);
 }
 
 // crappy way to get input ik. No idea how to register mouse inputs yet as well.
@@ -759,6 +765,19 @@ void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY) {
         int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
         if (pixelMap[i] == '#') {
             safeDraw(screenX, screenY, PIXEL_SOLID, FG_WHITE);
+        }
+        else {
+            safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
+        }
+    }
+}
+
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, PIXEL_TYPE pixel, COLOUR colour) {
+    for (int i = 0; i < mapX * mapY; i++) {
+        int screenY = y + ((int) i / mapX); // division
+        int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
+        if (pixelMap[i] == '#') {
+            safeDraw(screenX, screenY, pixel, colour);
         }
         else {
             safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
