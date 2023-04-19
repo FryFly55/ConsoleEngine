@@ -2,8 +2,7 @@
  CPU based software rasterizer, built from scratch using only c++ std libs and the windows api.
 
 ## Controls
-WASD to move, J and L to look around, Q and E to change elevation, F and H to change speed, G to reset speed
-Press 1 to disable rendering of the edges
+WASD to move, J and L to look around, Q and E to change elevation, F and H to change speed, G to reset speed, press 1 to disable rendering of the edges
 
 ## TODO-list for later:
 - refactor the code, split it into more files / functions, make it reusable, optimise to the best of my ability
