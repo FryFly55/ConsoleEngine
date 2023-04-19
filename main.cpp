@@ -63,19 +63,6 @@ enum pos {
     Z = 2
 };
 
-class Vertex {
-public:
-    Vertex(float aX, float aY, float aZ) {
-        x = aX;
-        y = aY;
-        z = aZ;
-    }
-    float x;
-    float y;
-    float z;
-
-};
-
 int Error(const wchar_t* msg);
 static BOOL CloseHandler(DWORD evt);
 void draw();
@@ -83,6 +70,8 @@ void getInput();
 void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour);
 void safeDraw(int x, int y, wchar_t chars, COLOUR colour); // function overloading
 void drawDigits(int i, int digit, int initialX, int initialY);
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY);
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, PIXEL_TYPE pixel, COLOUR colour);
 
 // 480, 270, 4, 4 will create a 1920x1080 Window, with 480x270 console pixels, each of which being 4 physical pixels. 512x320 also works
 int screenWidth = 480; // 512
@@ -114,7 +103,7 @@ float vertices[] = {
          -1,  1, 16, // top left back
 
         // second square
-        /*-1,  2, 14,
+        -1,  2, 14,
          1,  2, 14,
          1,  4, 14,
         -1,  4, 14,
@@ -187,7 +176,7 @@ float vertices[] = {
         -5, -4, 26,
         -7, -4, 26,
         -7, -2, 26,
-        -5, -2, 26,*/
+        -5, -2, 26,
 };
 
 // this array stores the indices of all the points that are supposed to be rendered as a triangle.
@@ -205,11 +194,36 @@ int triangles[] = {
         3, 2, 7, // top face
         2, 6, 7,
         0, 1, 4, // bottom face
-        1, 5, 4
+        1, 5, 4,
+
+        /*8, 9, 11, // front face
+        9, 10, 11,
+        9, 13, 10, // right face
+        13, 14, 10,
+        12, 13, 15, // back face
+        13, 14, 15,
+        8, 12, 15, // left face
+        12, 15, 11,
+        11, 10, 15, // top face
+        10, 14, 15,
+        8, 9, 12, // bottom face
+        9, 13, 12*/
 };
 
+const char* crosshair = {
+        "..#.."
+        "..#.."
+        "#####"
+        "..#.."
+        "..#.."
+};
+int crosshairWidth = 5;
+int crosshairHeight = 5;
+PIXEL_TYPE crosshairPixelType = PIXEL_SOLID;
+COLOUR crosshairColour = FG_RED;
+
 // FOV in degrees
-const double FOV = 90;
+const double FOV = 70;
 // FOV in radians
 const double radFOV = FOV * (PI/180);
 const double farClippingPlane = 100.0f;
@@ -396,9 +410,9 @@ void draw() {
     // iterates through the first of three vertex-indices of each triangle
     for (int t = 0; t < sizeof(triangles)/sizeof(int); t += 3) {
         // stores the transformed x,y and z components of each vertex
-        float screenSpaceVertices[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        float screenSpaceVertices[] = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
         // stores the screenX,Y as well as transformed Z component of each vertex / point
-        float screenPoints[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        float screenPoints[] = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
 
         for (int i = 0; i < 3; i++) {
             // one vertex relative to the player
@@ -446,12 +460,17 @@ void draw() {
                 screenSpaceVertices[i*3+2] = z;
 
                 double ratioX = x * (1 / (tan(hFov) * z)); // how much of half a screen wide/high is occupied
-                double ratioY = /*(screenWidth / screenHeight) * */y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
+                double ratioY = /*(screenWidth / screenHeight) * */ y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
 
                 // Now calculate it into screenSpace, populate screenPoints[] array
-                screenPoints[i*3] = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
-                screenPoints[i*3+1] = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
-                screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later.
+                float sX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
+                float sY = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
+                if (sX <= screenWidth && sX >= 0)
+                    screenPoints[i*3] = sX;
+                if (sY <= screenHeight && sY >= 0)
+                    screenPoints[i*3+1] = sY;
+
+                screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later, so it's good to have.
             }
         }
 
@@ -466,6 +485,9 @@ void draw() {
                 targetX = (int)screenPoints[(i+1)*3];
                 targetY = (int)screenPoints[((i+1)*3)+1];
             }
+
+            if (curX < 0 || curY < 0 || targetX < 0 || targetY < 0)
+                continue;
 
             // calculating the distance of each pixel to the next one, just need to draw a line now.
             // Also getting the sign of each delta, and the y's per x as well as x's per y
@@ -506,36 +528,29 @@ void draw() {
                 renderColour = FG_BLUE;
 
             float bothZero = deltaX + deltaY;
-            // render the lines between points
-            if (deltaX < 1 && deltaX > -1 && bothZero != 0) {
-                while (curY != targetY) {
-                    curY += ySign;
-                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
-                }
-            }
-            if (deltaY < 1 && deltaY > -1 && bothZero != 0) {
-                while (curX != targetX) {
-                    curX += xSign;
-                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
-                }
-            }
 
+            bool curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
+            bool curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
             if (abs(deltaX) >= abs(deltaY) && bothZero != 0) {
-                while (curX != targetX && curY != targetY) {
+                while (!curXinProx || !curYinProx) {
                     curX += xSign;
                     yOff += yRat;
                     if (yOff >= curY + ySign)
                         curY = (int) std::floor(yOff);
                     safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                    curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
+                    curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
                 }
             }
             else if (abs(deltaY) > abs(deltaX) && bothZero != 0) {
-                while (curX != targetX && curY != targetY) {
+                while (!curXinProx || !curYinProx) {
                     curY += ySign;
                     xOff += xRat;
                     if (xOff >= curX + xSign)
                         curX = (int) std::floor(xOff);
                     safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                    curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
+                    curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
                 }
             }
         }
@@ -562,7 +577,12 @@ void draw() {
     // I do this last to render it on top of everything else
     safeDraw(0, 0, PIXEL_SOLID, FG_RED);
     safeDraw(screenWidth - 1, screenHeight - 1, PIXEL_SOLID, FG_RED);
-    safeDraw(screenWidth / 2, screenHeight / 2, PIXEL_SOLID, FG_RED);
+    //safeDraw(screenWidth / 2, screenHeight / 2, PIXEL_SOLID, FG_RED); // this draws a primitive crosshair
+
+    // this draws a more advanced crosshair
+    drawPixelMap((screenWidth / 2) - std::floor(crosshairWidth / 2),
+                 (screenHeight / 2) - std::floor(crosshairHeight / 2), crosshair, crosshairWidth, crosshairHeight,
+                 crosshairPixelType, crosshairColour);
 }
 
 // crappy way to get input ik. No idea how to register mouse inputs yet as well.
@@ -641,7 +661,7 @@ static BOOL CloseHandler(DWORD evt)
 }
 
 void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour) {
-    if (y * screenWidth + x < screenWidth * screenHeight) {
+    if (y * screenWidth + x < screenWidth * screenHeight && y >= 0 && x >= 0) {
         screenBuffer[y * screenWidth + x].Char.UnicodeChar = pixelType;
         screenBuffer[y * screenWidth + x].Attributes = colour;
     }
@@ -745,6 +765,19 @@ void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY) {
         int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
         if (pixelMap[i] == '#') {
             safeDraw(screenX, screenY, PIXEL_SOLID, FG_WHITE);
+        }
+        else {
+            safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
+        }
+    }
+}
+
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, PIXEL_TYPE pixel, COLOUR colour) {
+    for (int i = 0; i < mapX * mapY; i++) {
+        int screenY = y + ((int) i / mapX); // division
+        int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
+        if (pixelMap[i] == '#') {
+            safeDraw(screenX, screenY, pixel, colour);
         }
         else {
             safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
