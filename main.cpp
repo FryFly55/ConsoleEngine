@@ -114,7 +114,7 @@ float vertices[] = {
          -1,  1, 16, // top left back
 
         // second square
-        /*-1,  2, 14,
+        -1,  2, 14,
          1,  2, 14,
          1,  4, 14,
         -1,  4, 14,
@@ -187,7 +187,7 @@ float vertices[] = {
         -5, -4, 26,
         -7, -4, 26,
         -7, -2, 26,
-        -5, -2, 26,*/
+        -5, -2, 26,
 };
 
 // this array stores the indices of all the points that are supposed to be rendered as a triangle.
@@ -205,7 +205,20 @@ int triangles[] = {
         3, 2, 7, // top face
         2, 6, 7,
         0, 1, 4, // bottom face
-        1, 5, 4
+        1, 5, 4,
+
+        8, 9, 11, // front face
+        9, 10, 11,
+        9, 13, 10, // right face
+        13, 14, 10,
+        12, 13, 15, // back face
+        13, 14, 15,
+        8, 12, 15, // left face
+        12, 15, 11,
+        11, 10, 15, // top face
+        10, 14, 15,
+        8, 9, 12, // bottom face
+        9, 13, 12
 };
 
 // FOV in degrees
@@ -396,9 +409,9 @@ void draw() {
     // iterates through the first of three vertex-indices of each triangle
     for (int t = 0; t < sizeof(triangles)/sizeof(int); t += 3) {
         // stores the transformed x,y and z components of each vertex
-        float screenSpaceVertices[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        float screenSpaceVertices[] = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
         // stores the screenX,Y as well as transformed Z component of each vertex / point
-        float screenPoints[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        float screenPoints[] = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
 
         for (int i = 0; i < 3; i++) {
             // one vertex relative to the player
@@ -449,8 +462,13 @@ void draw() {
                 double ratioY = /*(screenWidth / screenHeight) * */y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
 
                 // Now calculate it into screenSpace, populate screenPoints[] array
-                screenPoints[i*3] = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
-                screenPoints[i*3+1] = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
+                float sX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
+                float sY = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
+                if (sX <= screenWidth && sX >= 0)
+                    screenPoints[i*3] = sX;
+                if (sY <= screenHeight && sY >= 0)
+                    screenPoints[i*3+1] = sY;
+
                 screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later.
             }
         }
@@ -507,7 +525,7 @@ void draw() {
 
             float bothZero = deltaX + deltaY;
             // render the lines between points
-            if (deltaX < 1 && deltaX > -1 && bothZero != 0) {
+            /*if (deltaX < 1 && deltaX > -1 && bothZero != 0) {
                 while (curY != targetY) {
                     curY += ySign;
                     safeDraw(curX, curY, PIXEL_SOLID, renderColour);
@@ -518,24 +536,30 @@ void draw() {
                     curX += xSign;
                     safeDraw(curX, curY, PIXEL_SOLID, renderColour);
                 }
-            }
+            }*/
 
+            bool curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
+            bool curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
             if (abs(deltaX) >= abs(deltaY) && bothZero != 0) {
-                while (curX != targetX && curY != targetY) {
+                while (!curXinProx || !curYinProx) {
                     curX += xSign;
                     yOff += yRat;
                     if (yOff >= curY + ySign)
                         curY = (int) std::floor(yOff);
                     safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                    curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
+                    curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
                 }
             }
             else if (abs(deltaY) > abs(deltaX) && bothZero != 0) {
-                while (curX != targetX && curY != targetY) {
+                while (!curXinProx || !curYinProx) {
                     curY += ySign;
                     xOff += xRat;
                     if (xOff >= curX + xSign)
                         curX = (int) std::floor(xOff);
                     safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                    curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
+                    curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
                 }
             }
         }
