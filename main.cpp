@@ -469,7 +469,7 @@ void draw() {
                 if (sY <= screenHeight && sY >= 0)
                     screenPoints[i*3+1] = sY;
 
-                screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later.
+                screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later, so it's good to have.
             }
         }
 
@@ -484,6 +484,9 @@ void draw() {
                 targetX = (int)screenPoints[(i+1)*3];
                 targetY = (int)screenPoints[((i+1)*3)+1];
             }
+
+            if (curX < 0 || curY < 0 || targetX < 0 || targetY < 0)
+                continue;
 
             // calculating the distance of each pixel to the next one, just need to draw a line now.
             // Also getting the sign of each delta, and the y's per x as well as x's per y
@@ -524,19 +527,6 @@ void draw() {
                 renderColour = FG_BLUE;
 
             float bothZero = deltaX + deltaY;
-            // render the lines between points
-            /*if (deltaX < 1 && deltaX > -1 && bothZero != 0) {
-                while (curY != targetY) {
-                    curY += ySign;
-                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
-                }
-            }
-            if (deltaY < 1 && deltaY > -1 && bothZero != 0) {
-                while (curX != targetX) {
-                    curX += xSign;
-                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
-                }
-            }*/
 
             bool curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
             bool curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
@@ -665,7 +655,7 @@ static BOOL CloseHandler(DWORD evt)
 }
 
 void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour) {
-    if (y * screenWidth + x < screenWidth * screenHeight) {
+    if (y * screenWidth + x < screenWidth * screenHeight && y >= 0 && x >= 0) {
         screenBuffer[y * screenWidth + x].Char.UnicodeChar = pixelType;
         screenBuffer[y * screenWidth + x].Attributes = colour;
     }
