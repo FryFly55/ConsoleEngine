@@ -453,22 +453,18 @@ void draw() {
                 safeDraw(3, 0, PIXEL_SOLID, FG_RED);
             }
 
-            if (inDistance && inBoundsX && inBoundsY) {
+            if (inDistance && inBoundsX) {
                 // now populate screenSpaceVertices[]
                 screenSpaceVertices[i*3] = x;
                 screenSpaceVertices[i*3+1] = y;
                 screenSpaceVertices[i*3+2] = z;
 
                 double ratioX = x * (1 / (tan(hFov) * z)); // how much of half a screen wide/high is occupied
-                double ratioY = /*(screenWidth / screenHeight) * */ y * (1 / (tan(hFov) * z)); // acc. for aspect ratio
+                double ratioY = y * (1 / (tan(hFov) * z));
 
                 // Now calculate it into screenSpace, populate screenPoints[] array
-                float sX = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
-                float sY = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
-                if (sX <= screenWidth && sX >= 0)
-                    screenPoints[i*3] = sX;
-                if (sY <= screenHeight && sY >= 0)
-                    screenPoints[i*3+1] = sY;
+                screenPoints[i*3] = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
+                screenPoints[i*3+1] = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
 
                 screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later, so it's good to have.
             }
@@ -556,9 +552,16 @@ void draw() {
         }
 
         for (int i = 0; i < 3; i++) {
-            /*screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Char.UnicodeChar = PIXEL_SOLID;
-            screenBuffer[(int)screenPoints[i*3+1] * screenWidth + (int)screenPoints[i*3]].Attributes = FG_GREEN;*/
-            safeDraw((int)screenPoints[i*3], (int)screenPoints[i*3+1], PIXEL_SOLID, FG_GREEN);
+            float x = screenSpaceVertices[i*3];
+            float y = screenSpaceVertices[i*3+1];
+            float z = screenSpaceVertices[i*3+2];
+
+            // check if the point is within bounds before drawing, instead of calculating
+            bool inBoundsX = x < tan(hFov) * z && x > -tan(hFov) * z;
+            bool inBoundsY = y < tan(hFov) * z && y > -tan(hFov) * z;
+
+            if (inBoundsX && inBoundsY)
+                safeDraw((int)screenPoints[i*3], (int)screenPoints[i*3+1], PIXEL_SOLID, FG_GREEN);
         }
     }
 
