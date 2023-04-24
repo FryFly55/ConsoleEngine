@@ -14,7 +14,8 @@
 		"commands" : 
 		[
 			"add_executable",
-			"target_compile_options"
+			"target_compile_options",
+			"include_directories"
 		],
 		"files" : 
 		[
@@ -28,13 +29,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 7,
+				"line" : 12,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 9,
+				"line" : 15,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 7,
 				"parent" : 0
 			}
 		]
@@ -50,9 +57,13 @@
 				{
 					"backtrace" : 2,
 					"fragment" : "-DUNICODE"
-				},
+				}
+			],
+			"includes" : 
+			[
 				{
-					"fragment" : "-std=gnu++14"
+					"backtrace" : 3,
+					"path" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include"
 				}
 			],
 			"language" : "CXX",
@@ -62,11 +73,13 @@
 				[
 					1
 				],
-				"standard" : "14"
+				"standard" : "17"
 			},
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				2
 			]
 		}
 	],
@@ -80,7 +93,7 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-static",
+				"fragment" : "-static -Wall",
 				"role" : "flags"
 			},
 			{
@@ -103,7 +116,9 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				2
 			]
 		}
 	],
@@ -112,7 +127,19 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "main.cpp",
+			"path" : "src/initialiser.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/main.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/rasterizer.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

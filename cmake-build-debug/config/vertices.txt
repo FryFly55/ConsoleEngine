@@ -1,0 +1,23 @@
+d# formatting should be done as follows:
+# write the coordinates of each vertex by typing out the number and setting as comma + space before the next.
+# to make it nicer to look at, it is recommended to write the last digit for all numbers in the same row
+# no more than 3 coordinates per line, and write individual vertices below each other.
+# I recommend naming collections of vertices that resemble and object, and name them the same in the triangles.txt
+# this will make identifying which vertices belong to which mesh a lot easier.
+# Also each line that isn't a comment will be numbered
+# Comments can be made by prefixing a line with a hash symbol
+# inline comments are not possible
+
+# First cube:
+# front
+_0000: -001.00, -001.00, +009.00
+_0001: +001.00, -001.00, +009.00
+_0002: +001.00, +001.00, +009.00
+_0003: -001.00, +001.00, +009.00
+# back
+_0004: -001.00, -001.00, +011.00
+_0005: +001.00, -001.00, +011.00
+_0006: +001.00, +001.00, +011.00
+_0007: -001.00, +001.00, +011.00
+
+# Second cube

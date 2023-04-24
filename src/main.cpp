@@ -12,50 +12,8 @@
 #include <string>
 #include <cmath>
 
-enum COLOUR
-{
-    FG_BLACK		= 0x0000,
-    FG_DARK_BLUE    = 0x0001,
-    FG_DARK_GREEN   = 0x0002,
-    FG_DARK_CYAN    = 0x0003,
-    FG_DARK_RED     = 0x0004,
-    FG_DARK_MAGENTA = 0x0005,
-    FG_DARK_YELLOW  = 0x0006,
-    FG_GREY			= 0x0007, // Thanks MS :-/
-    FG_DARK_GREY    = 0x0008,
-    FG_BLUE			= 0x0009,
-    FG_GREEN		= 0x000A,
-    FG_CYAN			= 0x000B,
-    FG_RED			= 0x000C,
-    FG_MAGENTA		= 0x000D,
-    FG_YELLOW		= 0x000E,
-    FG_WHITE		= 0x000F,
-    BG_BLACK		= 0x0000,
-    BG_DARK_BLUE	= 0x0010,
-    BG_DARK_GREEN	= 0x0020,
-    BG_DARK_CYAN	= 0x0030,
-    BG_DARK_RED		= 0x0040,
-    BG_DARK_MAGENTA = 0x0050,
-    BG_DARK_YELLOW	= 0x0060,
-    BG_GREY			= 0x0070,
-    BG_DARK_GREY	= 0x0080,
-    BG_BLUE			= 0x0090,
-    BG_GREEN		= 0x00A0,
-    BG_CYAN			= 0x00B0,
-    BG_RED			= 0x00C0,
-    BG_MAGENTA		= 0x00D0,
-    BG_YELLOW		= 0x00E0,
-    BG_WHITE		= 0x00F0,
-};
-COLOUR colours[] = {FG_DARK_BLUE, FG_DARK_GREEN, FG_DARK_RED, FG_DARK_MAGENTA, FG_GREEN, FG_MAGENTA, FG_YELLOW, FG_WHITE};
-
-enum PIXEL_TYPE
-{
-    PIXEL_SOLID = 0x2588,
-    PIXEL_THREEQUARTERS = 0x2593,
-    PIXEL_HALF = 0x2592,
-    PIXEL_QUARTER = 0x2591,
-};
+#include "rasterizer.h"
+#include "initialiser.h"
 
 enum pos {
     X = 0,
@@ -67,19 +25,11 @@ int Error(const wchar_t* msg);
 static BOOL CloseHandler(DWORD evt);
 void draw();
 void getInput();
-void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour);
-void safeDraw(int x, int y, wchar_t chars, COLOUR colour); // function overloading
+void safeDraw(int x, int y, Pixel::PIXEL_TYPE pixelType, Pixel::COLOUR colour);
+void safeDraw(int x, int y, wchar_t chars, Pixel::COLOUR colour); // function overloading
 void drawDigits(int i, int digit, int initialX, int initialY);
 void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY);
-void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, PIXEL_TYPE pixel, COLOUR colour);
-
-// 480, 270, 4, 4 will create a 1920x1080 Window, with 480x270 console pixels, each of which being 4 physical pixels. 512x320 also works
-int screenWidth = 480; // 512
-int screenHeight = 270; // 320
-int fontWidth = 4;
-int fontHeight = 4;
-
-const double PI = 3.14159265369;
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, Pixel::PIXEL_TYPE pixel, Pixel::COLOUR colour);
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 HANDLE hConsoleIn = GetStdHandle(STD_INPUT_HANDLE);
@@ -91,173 +41,11 @@ CHAR_INFO *screenBuffer;
 
 const wchar_t* windowTitle = L"Engine";
 
-float vertices[] = {
-        // first square, described from the bottom left, counterclockwise
-        -1, -1, 14, // bottom left front
-         1, -1, 14, // bottom right front
-         1,  1, 14,
-         -1,  1, 14,
-         -1, -1, 16,
-         1, -1, 16,
-         1,  1, 16, // ...
-         -1,  1, 16, // top left back
-
-        // second square
-        -1,  2, 14,
-         1,  2, 14,
-         1,  4, 14,
-        -1,  4, 14,
-        -1,  2, 16,
-         1,  2, 16,
-         1,  4, 16,
-        -1,  4, 16,
-
-        // third square
-        -1, -4, 14,
-         1, -4, 14,
-         1, -2, 14,
-        -1, -2, 14,
-        -1, -4, 16,
-         1, -4, 16,
-         1, -2, 16,
-        -1, -2, 16,
-
-        // right row
-         5, -1, 24,
-         7, -1, 24,
-         7,  1, 24,
-         5,  1, 24,
-         5, -1, 26,
-         7, -1, 26,
-         7,  1, 26,
-         5,  1, 26,
-
-         5,  2, 24,
-         7,  2, 24,
-         7,  4, 24,
-         5,  4, 24,
-         5,  2, 26,
-         7,  2, 26,
-         7,  4, 26,
-         5,  4, 26,
-
-         5, -4, 24,
-         7, -4, 24,
-         7, -2, 24,
-         5, -2, 24,
-         5, -4, 26,
-         7, -4, 26,
-         7, -2, 26,
-         5, -2, 26,
-
-        // left row
-        -5, -1, 24,
-        -7, -1, 24,
-        -7,  1, 24,
-        -5,  1, 24,
-        -5, -1, 26,
-        -7, -1, 26,
-        -7,  1, 26,
-        -5,  1, 26,
-
-        -5,  2, 24,
-        -7,  2, 24,
-        -7,  4, 24,
-        -5,  4, 24,
-        -5,  2, 26,
-        -7,  2, 26,
-        -7,  4, 26,
-        -5,  4, 26,
-
-        -5, -4, 24,
-        -7, -4, 24,
-        -7, -2, 24,
-        -5, -2, 24,
-        -5, -4, 26,
-        -7, -4, 26,
-        -7, -2, 26,
-        -5, -2, 26,
-};
-
-// this array stores the indices of all the points that are supposed to be rendered as a triangle.
-int triangles[] = {
-        // cube consists of 12 triangles, 2 per side
-        // each of the entries references a vertex (3 floats) from the vertices array.
-        0, 1, 3, // first triangle + front face
-        1, 2, 3, // second triangle
-        1, 5, 2, // ... + right face
-        5, 6, 2,
-        4, 5, 7, // back face
-        5, 6, 7,
-        0, 4, 3, // left face
-        4, 7, 3,
-        3, 2, 7, // top face
-        2, 6, 7,
-        0, 1, 4, // bottom face
-        1, 5, 4,
-
-        /*8, 9, 11, // front face
-        9, 10, 11,
-        9, 13, 10, // right face
-        13, 14, 10,
-        12, 13, 15, // back face
-        13, 14, 15,
-        8, 12, 15, // left face
-        12, 15, 11,
-        11, 10, 15, // top face
-        10, 14, 15,
-        8, 9, 12, // bottom face
-        9, 13, 12*/
-};
-
-const char* crosshair = {
-        "..#.."
-        "..#.."
-        "#####"
-        "..#.."
-        "..#.."
-};
-int crosshairWidth = 5;
-int crosshairHeight = 5;
-PIXEL_TYPE crosshairPixelType = PIXEL_SOLID;
-COLOUR crosshairColour = FG_RED;
-
-// FOV in degrees
-const double FOV = 70;
-// FOV in radians
-const double radFOV = FOV * (PI/180);
-const double farClippingPlane = 100.0f;
-
-float playerX = 0.0f;
-float playerY = 0.0f;
-float playerZ = 0.0f;
-double playerAngleX = 0.0f;
-double radPlayerAngleX = 0.0f;
-double playerAngleY = 0.0f;
-double radPlayerAngleY = 0.0f;
-const float playerBaseSpeed = 3.0f;
-float playerSpeed = 3.0f;
-float turnSpeed = 30.0f;
-
-// game variables and toggles
-// starting with the line render option
-bool doLineRender = true;
-float lineToggleCD = 0.5f;
-float lineToggleCounter = 0.0f;
-
-// coloured edges and faces
-bool doColourDebug = false;
-float colourDebugToggleCD = 0.5f;
-float colourDebugCounter = 0.0f;
-
-float dt;
-float fps;
-int fpsOffset = 10; // fps-display distance from the right screen border
-
 // Set everything you need inside the game-loop or draw-cycle here.
-float colourOffset = 0;
 
 int main() {
+    init();
+
     // Set Console output to unicode
     SetConsoleCP(UNICODE);
 
@@ -272,7 +60,7 @@ int main() {
     SetConsoleWindowInfo(hConsole, TRUE, &rectWindow);
 
     // set size of the screen buffer afterwards
-    COORD coord = {(short) screenWidth, (short) screenHeight};
+    COORD coord = {(short) Window::screenWidth, (short) Window::screenHeight};
     if (!SetConsoleScreenBufferSize(hConsole, coord)) {
         Error(L"SetConsoleActiveScreenBuffer: setting screen buffer size failed");
         return 2;
@@ -287,8 +75,8 @@ int main() {
     CONSOLE_FONT_INFOEX cfi;
     cfi.cbSize = sizeof(cfi);
     cfi.nFont = 0;
-    cfi.dwFontSize.X = fontWidth;
-    cfi.dwFontSize.Y = fontHeight;
+    cfi.dwFontSize.X = Window::fontWidth;
+    cfi.dwFontSize.Y = Window::fontHeight;
     cfi.FontFamily = FF_DONTCARE;
     cfi.FontWeight = FW_NORMAL;
     wcscpy_s(cfi.FaceName, L"Consolas");
@@ -304,18 +92,18 @@ int main() {
         Error(L"GetConsoleScreenBufferInfo: failed");
         return 5;
     }
-    if (screenHeight > bufferInfo.dwMaximumWindowSize.Y) {
+    if (Window::screenHeight > bufferInfo.dwMaximumWindowSize.Y) {
         Error(L"[int fontHeight] to big");
         return 6;
     }
-    if (screenWidth > bufferInfo.dwMaximumWindowSize.X) {
+    if (Window::screenWidth > bufferInfo.dwMaximumWindowSize.X) {
         Error(L"[int fontWidth] to big");
         return 7;
     }
 
     // Now set console window size to be bigger again, after changing the buffer.
     // Size now depends on fontSize and resolution/size of the buffer
-    rectWindow = {0, 0, static_cast<SHORT>((short) screenWidth - 1), static_cast<SHORT>((short) screenHeight - 1)};
+    rectWindow = {0, 0, static_cast<SHORT>((short) Window::screenWidth - 1), static_cast<SHORT>((short) Window::screenHeight - 1)};
     if (!SetConsoleWindowInfo(hConsole, TRUE, &rectWindow)) {
         Error(L"SetConsoleWindowInfo, failed after changing window size according to buffer");
         return 8;
@@ -328,46 +116,42 @@ int main() {
     }
 
     // Allocate memory for screen buffer
-    screenBuffer = new CHAR_INFO[screenWidth * screenHeight];
-    std::memset(screenBuffer, 0, sizeof(CHAR_INFO) * screenWidth * screenHeight);
+    screenBuffer = new CHAR_INFO[Window::screenWidth * Window::screenHeight];
+    std::memset(screenBuffer, 0, sizeof(CHAR_INFO) * Window::screenWidth * Window::screenHeight);
 
     SetConsoleCtrlHandler(nullptr, FALSE);
 
     // Game initialisation logic
-    playerSpeed = playerBaseSpeed;
+    GameVar::playerSpeed = GameVar::playerBaseSpeed;
 
     // calculate first dt timestep (or is it a delta-timestep? delta-time-step? delta time-step? To not use time twice?)
-    dt = 0.0f;
+    GameVar::dt = 0.0f;
     auto tpLast = std::chrono::system_clock::now();
 
     // Game loop basically
     while(true) {
         // clear screenBuffer
-        std::memset(screenBuffer, 0, sizeof(CHAR_INFO) * screenWidth * screenHeight);
+        std::memset(screenBuffer, 0, sizeof(CHAR_INFO) * Window::screenWidth * Window::screenHeight);
 
         getInput();
 
         // after getting input, update everything needed inside draw()
-        radPlayerAngleX = playerAngleX * (PI/180);
-        radPlayerAngleY = playerAngleY * (PI/180);
+        GameVar::radPlayerAngleX = GameVar::playerAngleX * (Window::PI/180);
+        GameVar::radPlayerAngleY = GameVar::playerAngleY * (Window::PI/180);
 
         // we need the fps value in draw(), so initialise it earlier.
-        fps = 1 / dt;
+        GameVar::fps = 1 / GameVar::dt;
         // remove the line below if you want fps shown with decimal places (kinda useless in most situations)
-        fps = std::floor(fps + 0.5f); // rounding by flooring the value + 0.5
+        GameVar::fps = std::floor(GameVar::fps + 0.5f); // rounding by flooring the value + 0.5
 
-        lineToggleCounter += dt;
-        colourDebugCounter += dt;
+        GameVar::lineToggleCounter += GameVar::dt;
+        GameVar::colourDebugCounter += GameVar::dt;
 
         draw();
 
         // Refresh screen buffer
         SetConsoleActiveScreenBuffer(hConsole);
-        // The following code will only display in white, and interpret the char as well as the attribute for each
-        // character as its own unicode entity, thus rendering two characters for each element in screenBuffer. Apart
-        // from that it works though.
-        /*DWORD byteWriteCount;
-        WriteConsoleOutputCharacterA(hConsole, reinterpret_cast<LPCSTR>(screenBuffer), screenWidth * screenHeight, {0, 0}, &byteWriteCount);*/
+
         PSMALL_RECT pRect = &rectWindow;
         const _CHAR_INFO * copyBuffer = screenBuffer;
         WriteConsoleOutputW(hConsole, copyBuffer, coord,{0, 0}, pRect);
@@ -376,7 +160,7 @@ int main() {
         auto tpCurrent = std::chrono::system_clock::now();
         std::chrono::duration<float> elapsedTime = tpCurrent - tpLast;
         tpLast = tpCurrent;
-        dt = elapsedTime.count();
+        GameVar::dt = elapsedTime.count();
     }
 
     return 0;
@@ -388,27 +172,27 @@ void draw() {
 
     // draw the ten debug lamps on top green by default. Also add the scale thingy below
     for (int j = 1; j < 11; j++) {
-        screenBuffer[j].Char.UnicodeChar = PIXEL_SOLID;
-        screenBuffer[j].Attributes = FG_GREEN;
+        screenBuffer[j].Char.UnicodeChar = Pixel::PIXEL_SOLID;
+        screenBuffer[j].Attributes = Pixel::FG_GREEN;
         if (j % 2 == 0) {
             /*screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
             screenBuffer[screenWidth + j].Attributes = FG_WHITE;*/
-            safeDraw(j, 1, PIXEL_SOLID, FG_WHITE);
+            safeDraw(j, 1, Pixel::PIXEL_SOLID, Pixel::FG_WHITE);
         }
         else {
             /*screenBuffer[screenWidth + j].Char.UnicodeChar = PIXEL_SOLID;
             screenBuffer[screenWidth + j].Attributes = FG_DARK_BLUE;*/
-            safeDraw(j, 1, PIXEL_SOLID, FG_BLACK);
+            safeDraw(j, 1, Pixel::PIXEL_SOLID, Pixel::FG_BLACK);
         }
     }
 
     // only needs to be calculated once technically, but in case I ever want it to be changed dynamically during
     // runtime, it's calculated every frame.
-    double hFov = (FOV / 2) * (PI/180);
+    double hFov = (GameVar::FOV / 2) * (Window::PI/180);
 
     // todo: arrays are filled with garbage values, if something fails and those are accessed, the program may crash!
     // iterates through the first of three vertex-indices of each triangle
-    for (int t = 0; t < sizeof(triangles)/sizeof(int); t += 3) {
+    for (int t = 0; t < sizeof(Renderer::triangles)/sizeof(int); t += 3) {
         // stores the transformed x,y and z components of each vertex
         float screenSpaceVertices[] = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
         // stores the screenX,Y as well as transformed Z component of each vertex / point
@@ -416,14 +200,14 @@ void draw() {
 
         for (int i = 0; i < 3; i++) {
             // one vertex relative to the player
-            int point = triangles[t+i];
-            float x = vertices[point*3] - playerX;
-            float y = vertices[point*3+1] - playerY;
-            float z = vertices[point*3+2] - playerZ;
+            int point = Renderer::triangles[t+i];
+            float x = Renderer::vertices[point*3] - GameVar::playerX;
+            float y = Renderer::vertices[point*3+1] - GameVar::playerY;
+            float z = Renderer::vertices[point*3+2] - GameVar::playerZ;
 
             // transform (rotate) the vertices directly in here, before filling in screenSpaceVertices[]
-            float xPos = x * cos(radPlayerAngleX) - z  * sin(radPlayerAngleX);
-            float zPos = x * sin(radPlayerAngleX) + z * cos(radPlayerAngleX);
+            float xPos = x * cos(GameVar::radPlayerAngleX) - z  * sin(GameVar::radPlayerAngleX);
+            float zPos = x * sin(GameVar::radPlayerAngleX) + z * cos(GameVar::radPlayerAngleX);
             x = xPos;
             z = zPos;
 
@@ -433,24 +217,24 @@ void draw() {
             }
 
             // calculate the screenX and screenY of each point, check if they are within bounds beforehand.
-            bool inDistance = z < farClippingPlane;
+            bool inDistance = z < GameVar::farClippingPlane;
             bool inBoundsX = x < tan(hFov) * z && x > -tan(hFov) * z;
             bool inBoundsY = y < tan(hFov) * z && y > -tan(hFov) * z;
 
             if (!inDistance) { // this is just a bunch of debug code todo: remove later.
                 /*screenBuffer[1].Char.UnicodeChar = PIXEL_SOLID;
                 screenBuffer[1].Attributes = FG_RED;*/
-                safeDraw(1, 0, PIXEL_SOLID, FG_RED);
+                safeDraw(1, 0, Pixel::PIXEL_SOLID, Pixel::FG_RED);
             }
             if (!inBoundsX) {
                 /*screenBuffer[2].Char.UnicodeChar = PIXEL_SOLID;
                 screenBuffer[2].Attributes = FG_RED;*/
-                safeDraw(2, 0, PIXEL_SOLID, FG_RED);
+                safeDraw(2, 0, Pixel::PIXEL_SOLID, Pixel::FG_RED);
             }
             if (!inBoundsY) {
                 /*screenBuffer[3].Char.UnicodeChar = PIXEL_SOLID;
                 screenBuffer[3].Attributes = FG_RED;*/
-                safeDraw(3, 0, PIXEL_SOLID, FG_RED);
+                safeDraw(3, 0, Pixel::PIXEL_SOLID, Pixel::FG_RED);
             }
 
             if (inDistance && inBoundsX) {
@@ -463,15 +247,15 @@ void draw() {
                 double ratioY = y * (1 / (tan(hFov) * z));
 
                 // Now calculate it into screenSpace, populate screenPoints[] array
-                screenPoints[i*3] = (screenWidth / 2) + (int)(ratioX * screenWidth * 0.5f);
-                screenPoints[i*3+1] = (screenHeight / 2) + (int)(ratioY * screenWidth * 0.5f);
+                screenPoints[i*3] = (Window::screenWidth / 2) + (int)(ratioX * Window::screenWidth * 0.5f);
+                screenPoints[i*3+1] = (Window::screenHeight / 2) + (int)(ratioY * Window::screenWidth * 0.5f);
 
                 screenPoints[i*3+2] = z; // maybe I will normalise/scale z somehow later, so it's good to have.
             }
         }
 
         // Now that all corners of the triangle are calculated, we can start drawing it.
-        for (int i = 0; i < 3 && doLineRender; i++) {
+        for (int i = 0; i < 3 && GameVar::doLineRender; i++) {
             int curX = (int)screenPoints[i*3]; // should always be int values, the array is only float because of z
             int curY = (int)screenPoints[i*3+1];
             int targetX = screenPoints[0];
@@ -510,18 +294,18 @@ void draw() {
 
             // rendering in different colors to help differentiate faces. (edges are used by more than one triangle,
             // so it isn't always 100% perfect, but still helps to find bugs)
-            COLOUR renderColour = FG_RED;
+            Pixel::COLOUR renderColour = Pixel::FG_RED;
             float triangle = t/3;
             if (triangle == 0 || triangle == 2)
-                renderColour = FG_WHITE;
+                renderColour = Pixel::FG_WHITE;
             else if (triangle == 1 || triangle == 3)
-                renderColour = FG_BLUE;
+                renderColour = Pixel::FG_BLUE;
             else if (triangle > 3)
-                renderColour = FG_YELLOW;
+                renderColour = Pixel::FG_YELLOW;
 
             // set the std colour
-            if (!doColourDebug)
-                renderColour = FG_BLUE;
+            if (!GameVar::doColourDebug)
+                renderColour = Pixel::FG_BLUE;
 
             float bothZero = deltaX + deltaY;
 
@@ -533,7 +317,7 @@ void draw() {
                     yOff += yRat;
                     if (yOff >= curY + ySign)
                         curY = (int) std::floor(yOff);
-                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                    safeDraw(curX, curY, Pixel::PIXEL_SOLID, renderColour);
                     curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
                     curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
                 }
@@ -544,7 +328,7 @@ void draw() {
                     xOff += xRat;
                     if (xOff >= curX + xSign)
                         curX = (int) std::floor(xOff);
-                    safeDraw(curX, curY, PIXEL_SOLID, renderColour);
+                    safeDraw(curX, curY, Pixel::PIXEL_SOLID, renderColour);
                     curXinProx = curX <= targetX + 1 && curX >= targetX - 1;
                     curYinProx = curY <= targetY + 1 && curY >= targetY - 1;
                 }
@@ -561,86 +345,86 @@ void draw() {
             bool inBoundsY = y < tan(hFov) * z && y > -tan(hFov) * z;
 
             if (inBoundsX && inBoundsY)
-                safeDraw((int)screenPoints[i*3], (int)screenPoints[i*3+1], PIXEL_SOLID, FG_GREEN);
+                safeDraw((int)screenPoints[i*3], (int)screenPoints[i*3+1], Pixel::PIXEL_SOLID, Pixel::FG_GREEN);
         }
     }
 
     // render the fps-counter
-    std::string sFps = std::to_string(fps);
+    std::string sFps = std::to_string(GameVar::fps);
     int digits = sFps.length(); // u_long would be better, but int is fine for our purposes.
     // I will assume that the fps will never exceed 6 digits (unlikely anyway considering my (non-) optimisation)
     for (int i = 0; i < digits && i < 6; i++) {
         int digit = sFps[i] - 48; // converts a char to a number value, by shifting it 48 ascii positions
         if (digit <= 9 && digit >= 0) {
-            drawDigits(i, digit, screenWidth - (6 * 4) - fpsOffset, 0);
+            drawDigits(i, digit, Window::screenWidth - (6 * 4) - GameVar::fpsOffset, 0);
         }
     }
 
     // draw pixels to the corners to mark the bounds of screenBuffer array
     // I do this last to render it on top of everything else
-    safeDraw(0, 0, PIXEL_SOLID, FG_RED);
-    safeDraw(screenWidth - 1, screenHeight - 1, PIXEL_SOLID, FG_RED);
+    safeDraw(0, 0, Pixel::PIXEL_SOLID, Pixel::FG_RED);
+    safeDraw(Window::screenWidth - 1, Window::screenHeight - 1, Pixel::PIXEL_SOLID, Pixel::FG_RED);
     //safeDraw(screenWidth / 2, screenHeight / 2, PIXEL_SOLID, FG_RED); // this draws a primitive crosshair
 
     // this draws a more advanced crosshair
-    drawPixelMap((screenWidth / 2) - std::floor(crosshairWidth / 2),
-                 (screenHeight / 2) - std::floor(crosshairHeight / 2), crosshair, crosshairWidth, crosshairHeight,
-                 crosshairPixelType, crosshairColour);
+    drawPixelMap((Window::screenWidth / 2) - std::floor(UI::crosshairWidth / 2),
+                 (Window::screenHeight / 2) - std::floor(UI::crosshairHeight / 2), UI::crosshair, UI::crosshairWidth,
+                 UI::crosshairHeight, UI::crosshairPixelType, UI::crosshairColour);
 }
 
 // crappy way to get input ik. No idea how to register mouse inputs yet as well.
 void getInput() {
     // basic movement, always relative to the players rotation
     if (GetAsyncKeyState((unsigned short)'W') & 0x8000) {
-        playerX += sinf(radPlayerAngleX) * playerSpeed * dt;
-        playerZ += cosf(radPlayerAngleX) * playerSpeed * dt;
+        GameVar::playerX += sinf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
+        GameVar::playerZ += cosf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
     }
     if (GetAsyncKeyState((unsigned short)'S') & 0x8000) {
-        playerX -= sinf(radPlayerAngleX) * playerSpeed * dt;
-        playerZ -= cosf(radPlayerAngleX) * playerSpeed * dt;
+        GameVar::playerX -= sinf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
+        GameVar::playerZ -= cosf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
     }
     if (GetAsyncKeyState((unsigned short)'A') & 0x8000) {
-        playerX -= cosf(radPlayerAngleX) * playerSpeed * dt;
-        playerZ += sinf(radPlayerAngleX) * playerSpeed * dt;
+        GameVar::playerX -= cosf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
+        GameVar::playerZ += sinf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
     }
     if (GetAsyncKeyState((unsigned short)'D') & 0x8000) {
-        playerX += cosf(radPlayerAngleX) * playerSpeed * dt;
-        playerZ -= sinf(radPlayerAngleX) * playerSpeed * dt;
+        GameVar::playerX += cosf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
+        GameVar::playerZ -= sinf(GameVar::radPlayerAngleX) * GameVar::playerSpeed * GameVar::dt;
     }
 
     //move up and down
     if (GetAsyncKeyState((unsigned short)'E') & 0x8000)
-        playerY -= playerSpeed * dt;
+        GameVar::playerY -= GameVar::playerSpeed * GameVar::dt;
     if (GetAsyncKeyState((unsigned short)'Q') & 0x8000)
-        playerY += playerSpeed * dt;
+        GameVar::playerY += GameVar::playerSpeed * GameVar::dt;
 
     // change movement speed.
     if (GetAsyncKeyState((unsigned short)'F') & 0x8000)
-        playerSpeed -= 5.0f * dt;
+        GameVar::playerSpeed -= 5.0f * GameVar::dt;
     if (GetAsyncKeyState((unsigned short)'G') & 0x8000)
-        playerSpeed = playerBaseSpeed;
+        GameVar::playerSpeed = GameVar::playerBaseSpeed;
     if (GetAsyncKeyState((unsigned short)'H') & 0x8000)
-        playerSpeed += 5.0f * dt;
+        GameVar::playerSpeed += 5.0f * GameVar::dt;
 
     // Rotation horizontal
     if (GetAsyncKeyState((unsigned short)'J') & 0x8000)
-        playerAngleX -= turnSpeed * dt;
+        GameVar::playerAngleX -= GameVar::turnSpeed * GameVar::dt;
     if (GetAsyncKeyState((unsigned short) 'L') & 0x8000)
-        playerAngleX += turnSpeed * dt;
+        GameVar::playerAngleX += GameVar::turnSpeed * GameVar::dt;
 
     // and vertical
     if (GetAsyncKeyState((unsigned short)'I') & 0x8000)
-        playerAngleY += turnSpeed * dt;
+        GameVar::playerAngleY += GameVar::turnSpeed * GameVar::dt;
     if (GetAsyncKeyState((unsigned short)'K') & 0x8000)
-        playerAngleY -= turnSpeed * dt;
+        GameVar::playerAngleY -= GameVar::turnSpeed * GameVar::dt;
 
-    if ((GetAsyncKeyState((unsigned short)'1') & 0x8000) && lineToggleCounter > lineToggleCD) {
-        doLineRender = !doLineRender;
-        lineToggleCounter = 0.0f;
+    if ((GetAsyncKeyState((unsigned short)'1') & 0x8000) && GameVar::lineToggleCounter > GameVar::lineToggleCD) {
+        GameVar::doLineRender = !GameVar::doLineRender;
+        GameVar::lineToggleCounter = 0.0f;
     }
-    if ((GetAsyncKeyState((unsigned short)'2') & 0x8000) && colourDebugCounter > colourDebugToggleCD) {
-        doColourDebug = !doColourDebug;
-        colourDebugCounter = 0.0f;
+    if ((GetAsyncKeyState((unsigned short)'2') & 0x8000) && GameVar::colourDebugCounter > GameVar::colourDebugToggleCD) {
+        GameVar::doColourDebug = !GameVar::doColourDebug;
+        GameVar::colourDebugCounter = 0.0f;
     }
 }
 
@@ -663,17 +447,17 @@ static BOOL CloseHandler(DWORD evt)
     return false;
 }
 
-void safeDraw(int x, int y, PIXEL_TYPE pixelType, COLOUR colour) {
-    if (y * screenWidth + x < screenWidth * screenHeight && y >= 0 && x >= 0) {
-        screenBuffer[y * screenWidth + x].Char.UnicodeChar = pixelType;
-        screenBuffer[y * screenWidth + x].Attributes = colour;
+void safeDraw(int x, int y, Pixel::PIXEL_TYPE pixelType, Pixel::COLOUR colour) {
+    if (y * Window::screenWidth + x < Window::screenWidth * Window::screenHeight && y >= 0 && x >= 0) {
+        screenBuffer[y * Window::screenWidth + x].Char.UnicodeChar = pixelType;
+        screenBuffer[y * Window::screenWidth + x].Attributes = colour;
     }
 }
 
-void safeDraw(int x, int y, wchar_t chars, COLOUR colour) {
-    if (y * screenWidth + x < screenWidth * screenHeight) {
-        screenBuffer[y * screenWidth + x].Char.UnicodeChar = chars;
-        screenBuffer[y * screenWidth + x].Char.UnicodeChar = colour;
+void safeDraw(int x, int y, wchar_t chars, Pixel::COLOUR colour) {
+    if (y * Window::screenWidth + x < Window::screenWidth * Window::screenHeight) {
+        screenBuffer[y * Window::screenWidth + x].Char.UnicodeChar = chars;
+        screenBuffer[y * Window::screenWidth + x].Char.UnicodeChar = colour;
     }
 }
 
@@ -767,15 +551,15 @@ void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY) {
         int screenY = y + ((int) i / mapX); // division
         int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
         if (pixelMap[i] == '#') {
-            safeDraw(screenX, screenY, PIXEL_SOLID, FG_WHITE);
+            safeDraw(screenX, screenY, Pixel::PIXEL_SOLID, Pixel::FG_WHITE);
         }
         else {
-            safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
+            safeDraw(screenX, screenY, Pixel::PIXEL_SOLID, Pixel::FG_BLACK);
         }
     }
 }
 
-void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, PIXEL_TYPE pixel, COLOUR colour) {
+void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, Pixel::PIXEL_TYPE pixel, Pixel::COLOUR colour) {
     for (int i = 0; i < mapX * mapY; i++) {
         int screenY = y + ((int) i / mapX); // division
         int screenX = x + (i % mapX); // and remainder, hope it gets optimised by the compiler to not divide twice
@@ -783,7 +567,7 @@ void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, PIXEL_
             safeDraw(screenX, screenY, pixel, colour);
         }
         else {
-            safeDraw(screenX, screenY, PIXEL_SOLID, FG_BLACK);
+            safeDraw(screenX, screenY, Pixel::PIXEL_SOLID, Pixel::FG_BLACK);
         }
     }
 }

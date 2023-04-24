@@ -49,11 +49,26 @@ cmake_ninja_workdir = C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/Con
 
 build cmake_object_order_depends_target_ConsoleEngine: phony || CMakeFiles/ConsoleEngine.dir
 
-build CMakeFiles/ConsoleEngine.dir/main.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/main.cpp || cmake_object_order_depends_target_ConsoleEngine
-  DEP_FILE = CMakeFiles\ConsoleEngine.dir\main.cpp.obj.d
-  FLAGS = -g -DUNICODE -std=gnu++14
+build CMakeFiles/ConsoleEngine.dir/src/initialiser.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/initialiser.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\initialiser.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include
   OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
-  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/main.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\main.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/rasterizer.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\rasterizer.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
 
 
 # =============================================================================
@@ -63,9 +78,9 @@ build CMakeFiles/ConsoleEngine.dir/main.cpp.obj: CXX_COMPILER__ConsoleEngine_Deb
 #############################################
 # Link the executable ConsoleEngine.exe
 
-build ConsoleEngine.exe: CXX_EXECUTABLE_LINKER__ConsoleEngine_Debug CMakeFiles/ConsoleEngine.dir/main.cpp.obj
+build ConsoleEngine.exe: CXX_EXECUTABLE_LINKER__ConsoleEngine_Debug CMakeFiles/ConsoleEngine.dir/src/initialiser.cpp.obj CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj
   FLAGS = -g
-  LINK_FLAGS = -static
+  LINK_FLAGS = -static -Wall
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
   POST_BUILD = cd .

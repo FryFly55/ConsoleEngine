@@ -1,0 +1,25 @@
+# same formatting rules apply as in vertices.txt
+# 3 vertices a row (use the index), forming one triangle
+# lines that aren't comments will (well, have to) be numbered
+
+# First cube
+# front face
+_0000: 0000, 0001, 0002
+_0001: 0000, 0002, 0003
+# left face
+_0002: 0001, 0005, 0006
+_0003: 0001, 0006, 0002
+# back face
+_0004: 0005, 0004, 0007
+_0005: 0005, 0007, 0006
+# right face
+_0006: 0004, 0000, 0003
+_0007: 0004, 0003, 0007
+# top face
+_0008: 0003, 0002, 0006
+_0009: 0003, 0006, 0007
+# bottom face
+_0010: 0004, 0005, 0001
+_0011: 0004, 0001, 0000
+
+# Second cube (very fun to do this manually)

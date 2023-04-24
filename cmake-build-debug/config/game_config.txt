@@ -1,0 +1,31 @@
+# All global variables needed at the time of initialisation are stored here
+# neatly sorted into categories
+# don't surround strings with quotation marks
+
+# Window
+screenWidth=480
+screenHeight=270
+fontWidth=4
+fontHeight=4
+windowTitle=ConsoleEngine
+
+# Mathematic constansts (why ever you'd wanna change those)
+PI=3.14159265369
+
+# Player variables
+playerX=0.0
+playerY=0.0
+playerZ=0.0
+
+playerAngleX=0.0
+playerAngleY=0.0
+playerSpeed=3.0
+turnSpeed=30.0
+
+# "Gameplay" mechanics and render settings
+fov=70.0
+farClippingPlane=100.0
+doLineRender=0
+lineToggleCD=0.5
+doColourDebug=0
+colourDebugCD=0.5
