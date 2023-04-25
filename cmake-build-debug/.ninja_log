@@ -1,13 +1,10 @@
 # ninja log v5
-1033	1111	7021636122311529	untitled.exe	261af487ef5b78b9
-287	563	7040552751169517	ConsoleEngine.exe	be2ac989a0086c1e
-6	47	7040487477507755	CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj	de35afbe0974545f
-3	299	7040495343983445	CMakeFiles/ConsoleEngine.dir/src/initialiser.cpp.obj	4ccbb707eae81e41
-0	249	7040553312875891	build.ninja	a242ca7641c6e282
+1051	1327	7041283685116748	ConsoleEngine.exe	25819cfd3e81a21a
+7	47	7041283672374211	CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj	edf0a8d8bba1b6f1
+10	317	7041283675066715	CMakeFiles/ConsoleEngine.dir/src/initialiser.cpp.obj	37c133e0abb581a6
+0	249	7041295105140623	build.ninja	a242ca7641c6e282
 10	58	7039011710468226	CMakeFiles/ConsoleEngine.dir/src/inputTesting.cpp.obj	1182f32df56eee4f
-3	1058	7040489544213006	CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj	9c1b4f9d3b5fc987
+1	1049	7041283682394153	CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj	b0999a44631ddd9
 0	285	7040552748446890	CMakeFiles/ConsoleEngine.dir/TestSrc/FileReader.cpp.obj	c7f8ada447c8d6a7
-9	46	7040553360841144	CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj	de35afbe0974545f
-0	328	7040553363663843	CMakeFiles/ConsoleEngine.dir/src/initialiser.cpp.obj	4ccbb707eae81e41
-4	1305	7040553373418440	CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj	9c1b4f9d3b5fc987
-1307	1609	7040553376413291	ConsoleEngine.exe	25819cfd3e81a21a
+3	273	7041294421050445	CMakeFiles/Editor.dir/editorSrc/main.cpp.obj	7b5e5a4c447324d9
+273	543	7041294423702939	Editor.exe	d8f774f053272199

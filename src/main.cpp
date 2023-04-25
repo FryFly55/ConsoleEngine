@@ -140,12 +140,15 @@ int main() {
         GameVar::radPlayerAngleY = GameVar::playerAngleY * (Window::PI/180);
 
         // we need the fps value in draw(), so initialise it earlier.
-        GameVar::fps = 1 / GameVar::dt;
+        GameVar::fps = 0.1f / GameVar::dt; // I tried 1 / dt, but that gave results between 200 and 300, and it feels
+        // more like 20 to 30 fps to me, especially when it gets lower you notice it.
         // remove the line below if you want fps shown with decimal places (kinda useless in most situations)
-        GameVar::fps = std::floor(GameVar::fps + 0.5f); // rounding by flooring the value + 0.5
+        if (!GameVar::showFpsDecimals)
+            GameVar::fps = std::floor(GameVar::fps + 0.5f); // rounding by flooring the value + 0.5
 
         GameVar::lineToggleCounter += GameVar::dt;
         GameVar::colourDebugCounter += GameVar::dt;
+        GameVar::fpsDecimalDebugCounter += GameVar::dt;
 
         draw();
 
@@ -192,7 +195,7 @@ void draw() {
 
     // todo: arrays are filled with garbage values, if something fails and those are accessed, the program may crash!
     // iterates through the first of three vertex-indices of each triangle
-    for (int t = 0; t < sizeof(Renderer::triangles)/sizeof(int); t += 3) {
+    for (int t = 0; t < Renderer::cTriangles; t += 3) {
         // stores the transformed x,y and z components of each vertex
         float screenSpaceVertices[] = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
         // stores the screenX,Y as well as transformed Z component of each vertex / point
@@ -358,6 +361,9 @@ void draw() {
         if (digit <= 9 && digit >= 0) {
             drawDigits(i, digit, Window::screenWidth - (6 * 4) - GameVar::fpsOffset, 0);
         }
+        if (sFps[i] == '.') {
+            drawDigits(i, -1, Window::screenWidth - (6 * 4) - GameVar::fpsOffset, 0);
+        }
     }
 
     // draw pixels to the corners to mark the bounds of screenBuffer array
@@ -425,6 +431,10 @@ void getInput() {
     if ((GetAsyncKeyState((unsigned short)'2') & 0x8000) && GameVar::colourDebugCounter > GameVar::colourDebugToggleCD) {
         GameVar::doColourDebug = !GameVar::doColourDebug;
         GameVar::colourDebugCounter = 0.0f;
+    }
+    if ((GetAsyncKeyState((unsigned short)'3') & 0x8000) && GameVar::fpsDecimalDebugCounter > GameVar::fpsDecimalDebugToggleCD) {
+        GameVar::showFpsDecimals = !GameVar::showFpsDecimals;
+        GameVar::fpsDecimalDebugCounter = 0.0f;
     }
 }
 
@@ -542,6 +552,14 @@ const char* nine = {
         "...#"
         ".###"
 };
+
+const char* dot = {
+        "...."
+        "...."
+        "...."
+        "##.."
+        "##.."
+};
 }
 
 
@@ -572,10 +590,13 @@ void drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY, Pixel:
     }
 }
 
-// x, y mark the top left corner
+// x, y mark the top left corner. When digit is -1 it's going to draw a decimal point
 void drawDigits(int i, int digit, int initialX, int initialY) {
     // todo: make an array implementation, for now a switch statement will do though
     switch(digit) {
+        case -1:
+            drawPixelMap(initialX + i*5, initialY, digits::dot, 4, 5);
+            break;
         case 0:
             drawPixelMap(initialX + i*5, initialY, digits::zero, 4, 5);
             break;

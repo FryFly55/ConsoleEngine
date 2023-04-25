@@ -45,6 +45,11 @@ namespace GameVar {
     inline float colourDebugToggleCD = 0.5f;
     inline float colourDebugCounter = 0.0f;
 
+    // show fps decimal places
+    inline bool showFpsDecimals = false;
+    inline float fpsDecimalDebugToggleCD = 0.5f;
+    inline float fpsDecimalDebugCounter = 0.0f;
+
     inline float dt;
     inline float fps;
     inline int fpsOffset = 10; // fps-display distance from the right screen border

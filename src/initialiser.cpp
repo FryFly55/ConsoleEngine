@@ -83,6 +83,67 @@ void initTriangles() {
     fTriangles.close();
 }
 
+float getFloatFromRow(std::string row) {
+    std::string sub;
+    bool passedEquals = false;
+    for (int i = 0; i < row.size(); i++) {
+        if (row[i] == '=') {
+            passedEquals = true;
+            continue;
+        }
+        if (passedEquals) {
+            sub += row[i];
+        }
+    }
+
+    return std::stof(sub);
+}
+
+bool getBoolFromRow(std::string row) {
+    for (int i = 0; i < row.size(); i++) {
+        if (row[i] == '=') {
+            if (row[i+1] == 'f' || row[i+1] == '0')
+                return false;
+            else
+                return true;
+        }
+    }
+
+    return false;
+}
+
+bool getIntFromRow(std::string row) {
+    std::string sub;
+    bool passedEquals = false;
+    for (int i = 0; i < row.size(); i++) {
+        if (row[i] == '=') {
+            passedEquals = true;
+            continue;
+        }
+        if (passedEquals) {
+            sub += row[i];
+        }
+    }
+
+    return std::stoi(sub);
+}
+
+double getDoubleFromRow(std::string row) {
+    std::string sub;
+    bool passedEquals = false;
+    for (int i = 0; i < row.size(); i++) {
+        if (row[i] == '=') {
+            passedEquals = true;
+            continue;
+        }
+        if (passedEquals) {
+            sub += row[i];
+        }
+    }
+
+    return std::stod(sub);
+}
+
 void initGame() {
 
 }

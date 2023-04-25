@@ -15,7 +15,9 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1,
+						2
 					]
 				}
 			],
@@ -30,7 +32,9 @@
 					"name" : "ConsoleEngine",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1,
+						2
 					]
 				}
 			],
@@ -39,8 +43,22 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ConsoleEngine::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ConsoleEngine-Debug-0f15c9711f2ea62bf340.json",
+					"jsonFile" : "target-ConsoleEngine-Debug-85f3616562cea7a64988.json",
 					"name" : "ConsoleEngine",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Editor::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Editor-Debug-bdd064a8e30fd6fe2c6d.json",
+					"name" : "Editor",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Testing::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Testing-Debug-ee11207d441195d7c92d.json",
+					"name" : "Testing",
 					"projectIndex" : 0
 				}
 			]

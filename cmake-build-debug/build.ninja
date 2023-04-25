@@ -52,21 +52,21 @@ build cmake_object_order_depends_target_ConsoleEngine: phony || CMakeFiles/Conso
 build CMakeFiles/ConsoleEngine.dir/src/initialiser.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/initialiser.cpp || cmake_object_order_depends_target_ConsoleEngine
   DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\initialiser.cpp.obj.d
   FLAGS = -g -DUNICODE
-  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/editorInclude -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/testInclude
   OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
 
 build CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/main.cpp || cmake_object_order_depends_target_ConsoleEngine
   DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\main.cpp.obj.d
   FLAGS = -g -DUNICODE
-  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/editorInclude -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/testInclude
   OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
 
 build CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/rasterizer.cpp || cmake_object_order_depends_target_ConsoleEngine
   DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\rasterizer.cpp.obj.d
   FLAGS = -g -DUNICODE
-  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/editorInclude -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/testInclude
   OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
 
@@ -88,6 +88,76 @@ build ConsoleEngine.exe: CXX_EXECUTABLE_LINKER__ConsoleEngine_Debug CMakeFiles/C
   TARGET_FILE = ConsoleEngine.exe
   TARGET_IMPLIB = libConsoleEngine.dll.a
   TARGET_PDB = ConsoleEngine.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target Editor
+
+
+#############################################
+# Order-only phony target for Editor
+
+build cmake_object_order_depends_target_Editor: phony || CMakeFiles/Editor.dir
+
+build CMakeFiles/Editor.dir/editorSrc/main.cpp.obj: CXX_COMPILER__Editor_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/editorSrc/main.cpp || cmake_object_order_depends_target_Editor
+  DEP_FILE = CMakeFiles\Editor.dir\editorSrc\main.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/editorInclude -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/testInclude
+  OBJECT_DIR = CMakeFiles\Editor.dir
+  OBJECT_FILE_DIR = CMakeFiles\Editor.dir\editorSrc
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target Editor
+
+
+#############################################
+# Link the executable Editor.exe
+
+build Editor.exe: CXX_EXECUTABLE_LINKER__Editor_Debug CMakeFiles/Editor.dir/editorSrc/main.cpp.obj
+  FLAGS = -g
+  LINK_FLAGS = -static -Wall
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\Editor.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = Editor.exe
+  TARGET_IMPLIB = libEditor.dll.a
+  TARGET_PDB = Editor.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target Testing
+
+
+#############################################
+# Order-only phony target for Testing
+
+build cmake_object_order_depends_target_Testing: phony || CMakeFiles/Testing.dir
+
+build CMakeFiles/Testing.dir/TestSrc/FileReader.cpp.obj: CXX_COMPILER__Testing_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/TestSrc/FileReader.cpp || cmake_object_order_depends_target_Testing
+  DEP_FILE = CMakeFiles\Testing.dir\TestSrc\FileReader.cpp.obj.d
+  FLAGS = -g
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/editorInclude -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/testInclude
+  OBJECT_DIR = CMakeFiles\Testing.dir
+  OBJECT_FILE_DIR = CMakeFiles\Testing.dir\TestSrc
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target Testing
+
+
+#############################################
+# Link the executable Testing.exe
+
+build Testing.exe: CXX_EXECUTABLE_LINKER__Testing_Debug CMakeFiles/Testing.dir/TestSrc/FileReader.cpp.obj
+  FLAGS = -g
+  LINK_FLAGS = -static -Wall
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\Testing.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = Testing.exe
+  TARGET_IMPLIB = libTesting.dll.a
+  TARGET_PDB = Testing.exe.dbg
 
 
 #############################################
@@ -117,6 +187,10 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build ConsoleEngine: phony ConsoleEngine.exe
 
+build Editor: phony Editor.exe
+
+build Testing: phony Testing.exe
+
 # =============================================================================
 # Folder targets.
 
@@ -125,7 +199,7 @@ build ConsoleEngine: phony ConsoleEngine.exe
 #############################################
 # Folder: C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/cmake-build-debug
 
-build all: phony ConsoleEngine.exe
+build all: phony ConsoleEngine.exe Editor.exe Testing.exe
 
 # =============================================================================
 # Built-in targets

@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "ConsoleEngine.exe"
+			"path" : "Editor.exe"
 		},
 		{
-			"path" : "ConsoleEngine.pdb"
+			"path" : "Editor.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -29,13 +29,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 12,
+				"line" : 16,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 15,
+				"line" : 17,
 				"parent" : 0
 			},
 			{
@@ -64,6 +64,14 @@
 				{
 					"backtrace" : 3,
 					"path" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/editorInclude"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/testInclude"
 				}
 			],
 			"language" : "CXX",
@@ -77,13 +85,11 @@
 			},
 			"sourceIndexes" : 
 			[
-				0,
-				1,
-				2
+				0
 			]
 		}
 	],
-	"id" : "ConsoleEngine::@6890427a1f51a3e7e1df",
+	"id" : "Editor::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -103,8 +109,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "ConsoleEngine",
-	"nameOnDisk" : "ConsoleEngine.exe",
+	"name" : "Editor",
+	"nameOnDisk" : "Editor.exe",
 	"paths" : 
 	{
 		"build" : ".",
@@ -116,9 +122,7 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0,
-				1,
-				2
+				0
 			]
 		}
 	],
@@ -127,19 +131,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/initialiser.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "src/main.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "src/rasterizer.cpp",
+			"path" : "editorSrc/main.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

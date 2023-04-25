@@ -1,6 +1,7 @@
 # All global variables needed at the time of initialisation are stored here
 # neatly sorted into categories
-# don't surround strings with quotation marks
+# don't surround strings with quotation marks, the parser will just read everything after the equals sign
+# which is why it's important to have no trailing whitespace at the end of your lines
 
 # Window
 screenWidth=480
@@ -9,7 +10,7 @@ fontWidth=4
 fontHeight=4
 windowTitle=ConsoleEngine
 
-# Mathematic constansts (why ever you'd wanna change those)
+# Mathematical constansts (why ever you'd wanna change those)
 PI=3.14159265369
 
 # Player variables
