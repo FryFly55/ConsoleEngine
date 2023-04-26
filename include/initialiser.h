@@ -9,11 +9,11 @@
 
 namespace Window {
 // 480, 270, 4, 4 will create a 1920x1080 Window, with 480x270 console pixels, each of which being 4 physical pixels. 512x320 also works
-    inline int screenWidth = 480; // 512
-    inline int screenHeight = 270; // 320
+    inline int screenWidth = 480; // 512, alt. 480
+    inline int screenHeight = 270; // 320, alt 270
     inline int fontWidth = 4;
     inline int fontHeight = 4;
-    inline const double PI = 3.14159265369;
+    inline double PI = 3.14159265369;
 }
 
 namespace GameVar {

@@ -12,7 +12,7 @@ std::string verticesPath = "config/vertices.txt";
 std::string trianglesPath = "config/triangles.txt";
 
 int main() {
-    
+
 
     return 0;
 }

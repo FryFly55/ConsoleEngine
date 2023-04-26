@@ -4,29 +4,35 @@
 # which is why it's important to have no trailing whitespace at the end of your lines
 
 # Window
-screenWidth=480
-screenHeight=270
-fontWidth=4
-fontHeight=4
-windowTitle=ConsoleEngine
+_0000: screenWidth=480
+_0001: screenHeight=270
+_0002: fontWidth=4
+_0003: fontHeight=4
+_0004: windowTitle=ConsoleEngine
 
 # Mathematical constansts (why ever you'd wanna change those)
-PI=3.14159265369
+_0005: PI=3.14159265369
 
 # Player variables
-playerX=0.0
-playerY=0.0
-playerZ=0.0
+_0006: playerX=0.0
+_0007: playerY=0.0
+_0008: playerZ=0.0
 
-playerAngleX=0.0
-playerAngleY=0.0
-playerSpeed=3.0
-turnSpeed=30.0
+_0009: playerAngleX=0.0
+_0010: playerAngleY=0.0
+_0011: playerSpeed=3.0
+_0012: turnSpeed=30.0
 
 # "Gameplay" mechanics and render settings
-fov=70.0
-farClippingPlane=100.0
-doLineRender=0
-lineToggleCD=0.5
-doColourDebug=0
-colourDebugCD=0.5
+_0013: fov=70.0
+_0014: farClippingPlane("render Distance")=100.0
+_0015: doLineRender=0
+_0016: lineToggleCD=0.5
+_0017: doColourDebug=0
+_0018: colourDebugCD=0.5
+_0019: showFpsDecimals=0
+_0020: fpsDecimalToggleCD=0.5
+# the crosshair as a one dimensional string (Will improve it later I promise)
+_0021: crossHair=..#....#..#####..#....#..
+_0022: crossHairWidth=5
+_0023: crossHairHeight=5

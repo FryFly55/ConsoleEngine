@@ -7,7 +7,7 @@
 #include <list>
 #include "initialiser.h"
 #include "rasterizer.h"
-#include <string>
+#include <vector>
 
 // will set up all config variables at application start
 
@@ -87,12 +87,12 @@ float getFloatFromRow(std::string row) {
     std::string sub;
     bool passedEquals = false;
     for (int i = 0; i < row.size(); i++) {
+        if (passedEquals) {
+            sub += row[i];
+        }
         if (row[i] == '=') {
             passedEquals = true;
             continue;
-        }
-        if (passedEquals) {
-            sub += row[i];
         }
     }
 
@@ -112,16 +112,16 @@ bool getBoolFromRow(std::string row) {
     return false;
 }
 
-bool getIntFromRow(std::string row) {
+int getIntFromRow(std::string row) {
     std::string sub;
     bool passedEquals = false;
     for (int i = 0; i < row.size(); i++) {
+        if (passedEquals) {
+            sub += row[i];
+        }
         if (row[i] == '=') {
             passedEquals = true;
             continue;
-        }
-        if (passedEquals) {
-            sub += row[i];
         }
     }
 
@@ -132,12 +132,12 @@ double getDoubleFromRow(std::string row) {
     std::string sub;
     bool passedEquals = false;
     for (int i = 0; i < row.size(); i++) {
+        if (passedEquals) {
+            sub += row[i];
+        }
         if (row[i] == '=') {
             passedEquals = true;
             continue;
-        }
-        if (passedEquals) {
-            sub += row[i];
         }
     }
 
@@ -145,7 +145,41 @@ double getDoubleFromRow(std::string row) {
 }
 
 void initGame() {
+    std::vector<std::string> rows;
+    std::ifstream fConfig(config::configPath);
+    std::string row;
+    while (std::getline(fConfig, row)) {
+        if (row[0] == '#' || row.size() < 2)
+            continue;
+        rows.push_back(row);
+        std::cout << row << std::endl;
+    }
 
+    Window::screenWidth = getIntFromRow(rows.at(0));
+    Window::screenHeight = getIntFromRow(rows.at(1));
+    Window::fontWidth = getIntFromRow(rows.at(2));
+    Window::fontHeight = getIntFromRow(rows.at(3));
+    Window::PI = getDoubleFromRow(rows.at(5));
+
+    GameVar::FOV = getDoubleFromRow(rows.at(13));
+    GameVar::farClippingPlane = getDoubleFromRow(rows.at(14));
+    GameVar::playerX = getFloatFromRow(rows.at(6));
+    GameVar::playerY = getFloatFromRow(rows.at(7));
+    GameVar::playerZ = getFloatFromRow(rows.at(8));
+    GameVar::playerAngleX = getFloatFromRow(rows.at(9));
+    GameVar::playerAngleY = getFloatFromRow(rows.at(10));
+    GameVar::playerBaseSpeed = getFloatFromRow(rows.at(11));
+    GameVar::turnSpeed = getFloatFromRow(rows.at(12));
+    GameVar::doLineRender = getBoolFromRow(rows.at(15));
+    GameVar::lineToggleCD = getFloatFromRow(rows.at(16));
+    GameVar::doColourDebug = getBoolFromRow(rows.at(17));
+    GameVar::colourDebugToggleCD = getFloatFromRow(rows.at(18));
+    GameVar::showFpsDecimals = getBoolFromRow(rows.at(19));
+    GameVar::fpsDecimalDebugToggleCD = getFloatFromRow(rows.at(20));
+
+    // UI::crosshair = getStringFromRow(); todo: implement this
+    UI::crosshairWidth = getIntFromRow(rows.at(22));
+    UI::crosshairHeight = getIntFromRow(rows.at(23));
 }
 
 void init() {

@@ -5,6 +5,8 @@
 #ifndef CONSOLEENGINE_RASTERIZER_H
 #define CONSOLEENGINE_RASTERIZER_H
 
+#include "initialiser.h"
+
 namespace Pixel {
     enum COLOUR
     {
@@ -39,7 +41,7 @@ namespace Pixel {
         BG_RED			= 0x00C0,
         BG_MAGENTA		= 0x00D0,
         BG_YELLOW		= 0x00E0,
-        BG_WHITE		= 0x00F0,
+        BG_WHITE		= 0x00F0,ds
     };
     inline COLOUR colours[] = {FG_DARK_BLUE, FG_DARK_GREEN, FG_DARK_RED, FG_DARK_MAGENTA, FG_GREEN, FG_MAGENTA, FG_YELLOW, FG_WHITE};
 
@@ -60,6 +62,8 @@ namespace Renderer {
 // stores which vertices are connected (as triangles)
     inline int triangles[125*12*3]; // 125 cubes * 12 triangles per cube * 3 points per triangle
     inline int cTriangles = 0;
+
+    void rasterize();
 }
 
 namespace UI {
