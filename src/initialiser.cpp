@@ -18,7 +18,7 @@ void initVertices() {
     std::cout << "Vertices" << std::endl;
     while (std::getline(fVertex, row)) {
         // filter out wrongly formatted, empty or commented lines
-        if (row[0] == '#' || row.size() != 32)
+        if (row[0] == '#' || row.size() != 25 || row[0] == '[')
             continue;
 
         std::cout << row << std::endl;
@@ -26,13 +26,13 @@ void initVertices() {
         std::string sx;
         std::string sy;
         std::string sz;
-        for (int i = 7; i < 14; i++) {
+        for (int i = 0; i < 7; i++) {
             sx += row[i];
         }
-        for (int i = 16; i < 23; i++) {
+        for (int i = 9; i < 16; i++) {
             sy += row[i];
         }
-        for (int i = 25; i < 32; i++) {
+        for (int i = 18; i < 25; i++) {
             sz += row[i];
         }
         float x = (float) std::stod(sx);
@@ -54,7 +54,7 @@ void initTriangles() {
     std::cout << "Triangles" << std::endl;
     while (std::getline(fTriangles, row)) {
         // filter out wrongly formatted, empty or commented lines
-        if (row[0] == '#' || row.size() != 23)
+        if (row[0] == '#' || row.size() != 16 || row[0] == '[')
             continue;
 
         std::cout << row << std::endl;
@@ -62,13 +62,13 @@ void initTriangles() {
         std::string sx;
         std::string sy;
         std::string sz;
-        for (int i = 7; i < 11; i++) {
+        for (int i = 0; i < 4; i++) {
             sx += row[i];
         }
-        for (int i = 13; i < 17; i++) {
+        for (int i = 6; i < 10; i++) {
             sy += row[i];
         }
-        for (int i = 19; i < 23; i++) {
+        for (int i = 12; i < 16; i++) {
             sz += row[i];
         }
         int x = std::stoi(sx);
