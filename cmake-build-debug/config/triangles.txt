@@ -1,7 +1,7 @@
 # same formatting rules apply as in vertices.txt
 # 3 vertices a row (use the index), forming one triangle
 
-$cTriangles=12, cObj=1
+$ cTriangles=12; cObj=1;
 
 [12-OBJECT]-0
 # First cube

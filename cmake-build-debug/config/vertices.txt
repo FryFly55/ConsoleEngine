@@ -5,21 +5,22 @@
 # I recommend naming collections of vertices that resemble and object, and name them the same in the triangles.txt
 # this will make identifying which vertices belong to which mesh a lot easier.
 # Also each line that isn't a comment will be numbered
-# Comments can be made by prefixing a line with a hash symbol
+# Comments can be made by prefixing a line with a hash symbol, those will be ignored by the editor
+# comments made using a slash (/) will be associated with the object Tag before it.
 # inline comments are not possible
 # Each object should be declared using [cVertices-OBJECT]-ID, where ID is a custom identifier (can be string or numeral)
 # while this is not strictly necessary, it will ease working with the editor and deleting objects.
 
-$, cVertices=8, cObj=1
+$ cVertices=8; cObj=1;
 
 [8-OBJECT]-0
-# First cube:
-# front
+/ First cube:
+/ front
 -001.00, -001.00, +009.00
 +001.00, -001.00, +009.00
 +001.00, +001.00, +009.00
 -001.00, +001.00, +009.00
-# back
+/ back
 -001.00, -001.00, +011.00
 +001.00, -001.00, +011.00
 +001.00, +001.00, +011.00

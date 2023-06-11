@@ -18,7 +18,7 @@ void initVertices() {
     std::cout << "Vertices" << std::endl;
     while (std::getline(fVertex, row)) {
         // filter out wrongly formatted, empty or commented lines
-        if (row[0] == '#' || row.size() != 25 || row[0] == '[')
+        if (row[0] == '#' || row.size() != 25 || row[0] == '[' || row[0] == '/')
             continue;
 
         std::cout << row << std::endl;
@@ -54,7 +54,7 @@ void initTriangles() {
     std::cout << "Triangles" << std::endl;
     while (std::getline(fTriangles, row)) {
         // filter out wrongly formatted, empty or commented lines
-        if (row[0] == '#' || row.size() != 16 || row[0] == '[')
+        if (row[0] == '#' || row.size() != 16 || row[0] == '[' || row[0] == '/')
             continue;
 
         std::cout << row << std::endl;

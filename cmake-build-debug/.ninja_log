@@ -14,3 +14,14 @@
 364	646	7044825703177136	Testing.exe	e0a77224dd63ef6c
 3	367	7044825962303064	CMakeFiles/Testing.dir/TestSrc/FileReader.cpp.obj	2a602f3a93532dd1
 367	649	7044825965081511	Testing.exe	e0a77224dd63ef6c
+9	572	7060531062837340	CMakeFiles/Editor.dir/editorSrc/main.cpp.obj	7b5e5a4c447324d9
+572	1122	7060531068307298	Editor.exe	d8f774f053272199
+3	1165	7060531068777723	CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj	edf0a8d8bba1b6f1
+1165	1455	7060531071628935	ConsoleEngine.exe	25819cfd3e81a21a
+15	535	7062139171988851	CMakeFiles/Editor.dir/editorSrc/main.cpp.obj	7b5e5a4c447324d9
+10	550	7062139172148996	CMakeFiles/ConsoleEngine.dir/src/initialiser.cpp.obj	37c133e0abb581a6
+535	944	7062139176052746	Editor.exe	d8f774f053272199
+3	1122	7062139177860754	CMakeFiles/ConsoleEngine.dir/src/rasterizer.cpp.obj	edf0a8d8bba1b6f1
+1122	1427	7062139180869581	ConsoleEngine.exe	25819cfd3e81a21a
+3	656	7062273134917085	CMakeFiles/Editor.dir/editorSrc/main.cpp.obj	7b5e5a4c447324d9
+656	1177	7062273140082034	Editor.exe	d8f774f053272199
