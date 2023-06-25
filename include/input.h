@@ -1,0 +1,8 @@
+//
+// Created by FryFly55 on 16.06.2023.
+//
+
+#ifndef CONSOLEENGINE_INPUT_H
+#define CONSOLEENGINE_INPUT_H
+
+#endif //CONSOLEENGINE_INPUT_H
