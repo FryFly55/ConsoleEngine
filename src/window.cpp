@@ -93,14 +93,16 @@ namespace Window {
 
         // Now set console window size to be bigger again, after changing the buffer.
         // Size now depends on fontSize and resolution/size of the buffer
-        m_rectWindow = {0, 0, static_cast<SHORT>((short) m_screenWidth - 1), static_cast<SHORT>((short) m_screenHeight - 1)};
+        m_rectWindow = {0, 0, static_cast<SHORT>((short) m_screenWidth - 1),
+                        static_cast<SHORT>((short) m_screenHeight - 1)};
         if (!SetConsoleWindowInfo(m_hConsole, TRUE, &m_rectWindow)) {
             Window::Error(L"SetConsoleWindowInfo, failed after changing window size according to buffer");
             return 8;
         }
 
         // allow mouse inputs
-        if (!SetConsoleMode(m_hConsoleIn, ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT)) {
+        if (!SetConsoleMode(m_hConsoleIn,
+                            ENABLE_EXTENDED_FLAGS | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT)) {
             Window::Error(L"SetConsoleMode: allowing mouse input failed");
             return 9;
         }
@@ -121,7 +123,8 @@ namespace Window {
         SetConsoleActiveScreenBuffer(m_hConsole);
         PSMALL_RECT pRect = &m_rectWindow;
         const _CHAR_INFO* copyBuffer = m_screenBuffer;
-        WriteConsoleOutputW(m_hConsole, copyBuffer, m_coord, {0, 0}, pRect);
+        WriteConsoleOutputW(m_hConsole, copyBuffer, m_coord, {0, 0},
+                            pRect);
         // clear it after we're done
         std::memset(m_screenBuffer, 0, sizeof(CHAR_INFO) * m_screenWidth * m_screenHeight);
 
@@ -131,7 +134,8 @@ namespace Window {
     int Window::Error(const wchar_t* msg)
     {
         wchar_t buf[256];
-        FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(),
+                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                       buf, 256, NULL);
         SetConsoleActiveScreenBuffer(m_hOriginalConsole);
         wprintf(L"ERROR: %s\n\t%s\n", msg, buf);

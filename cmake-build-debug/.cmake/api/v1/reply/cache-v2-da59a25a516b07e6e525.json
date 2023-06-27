@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/cmake-build-debug"
+			"value" : "c:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -707,7 +707,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine"
+			"value" : "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1327,7 +1327,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/cmake-build-debug"
+			"value" : "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/cmake-build-debug"
 		},
 		{
 			"name" : "ConsoleEngine_IS_TOP_LEVEL",
@@ -1351,7 +1351,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine"
+			"value" : "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine"
 		}
 	],
 	"kind" : "cache",

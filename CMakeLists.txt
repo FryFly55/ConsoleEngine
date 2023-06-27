@@ -9,5 +9,5 @@ include_directories(include)
 file(GLOB_RECURSE Sources "src/*.cpp")
 
 
-add_executable(ConsoleEngine ${Sources})
+add_executable(ConsoleEngine ${Sources} src/Camera.cpp include/Camera.h)
 target_compile_options(ConsoleEngine PRIVATE -DUNICODE)

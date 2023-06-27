@@ -56,10 +56,10 @@ RM = "C:\Program Files\JetBrains\CLion 2022.2\bin\cmake\win\bin\cmake.exe" -E rm
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\FryFly55\SavesExportsDaten\Programmieren\C++\ConsoleEngineGit\ConsoleEngine
+CMAKE_SOURCE_DIR = C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\FryFly55\SavesExportsDaten\Programmieren\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\FryFly55\SavesExportsDaten\Programmieren\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles C:\Users\FryFly55\SavesExportsDaten\Programmieren\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\FryFly55\SavesExportsDaten\Programmieren\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -127,6 +127,30 @@ ConsoleEngine: cmake_check_build_system
 ConsoleEngine/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/build
 .PHONY : ConsoleEngine/fast
+
+src/Camera.obj: src/Camera.cpp.obj
+.PHONY : src/Camera.obj
+
+# target to build an object file
+src/Camera.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj
+.PHONY : src/Camera.cpp.obj
+
+src/Camera.i: src/Camera.cpp.i
+.PHONY : src/Camera.i
+
+# target to preprocess a source file
+src/Camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.i
+.PHONY : src/Camera.cpp.i
+
+src/Camera.s: src/Camera.cpp.s
+.PHONY : src/Camera.s
+
+# target to generate assembly for a file
+src/Camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.s
+.PHONY : src/Camera.cpp.s
 
 src/input.obj: src/input.cpp.obj
 .PHONY : src/input.obj
@@ -353,6 +377,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... ConsoleEngine
+	@echo ... src/Camera.obj
+	@echo ... src/Camera.i
+	@echo ... src/Camera.s
 	@echo ... src/input.obj
 	@echo ... src/input.i
 	@echo ... src/input.s

@@ -8,8 +8,8 @@
 #include "math.h"
 
 namespace Worldspace {
-    int rotate(vec3<float> vec, float* vertices[]);
-    int relate(vec3<float> vec, float* vertices[]);
+    int rotate(vec3<float> vec, float vertices[]);
+    int relate(vec3<float> vec, float vertices[]);
 }
 
 #endif //CONSOLEENGINE_WORLDSPACE_H

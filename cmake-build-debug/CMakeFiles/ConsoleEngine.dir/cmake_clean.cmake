@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj"
+  "CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj"
   "CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj"

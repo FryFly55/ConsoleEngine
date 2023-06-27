@@ -6,9 +6,12 @@
 
 #include "renderer.h"
 #include "worldspace.h"
+#include "scene.h"
 
 int Renderer::rasterize() {
     // transforming worldspace coordinates into viewspace coordinates
-    Worldspace::relate();
-    Worldspace::rotate();
+    vec3<float> playerPos = {0, 0, 0};
+    vec3<float> angles = {10, -10, 0};
+    Worldspace::relate(playerPos, Scene::vertices);
+    Worldspace::rotate(angles, Scene::vertices);
 }

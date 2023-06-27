@@ -63,7 +63,7 @@
 			[
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/include"
+					"path" : "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/include"
 				}
 			],
 			"language" : "CXX",
@@ -85,7 +85,8 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				9
 			]
 		}
 	],
@@ -130,12 +131,26 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				9
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				10
 			]
 		}
 	],
 	"sources" : 
 	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/Camera.cpp",
+			"sourceGroupIndex" : 0
+		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
@@ -189,6 +204,11 @@
 			"compileGroupIndex" : 0,
 			"path" : "src/worldspace.cpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/Camera.h",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"
