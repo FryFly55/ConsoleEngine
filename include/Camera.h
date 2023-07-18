@@ -5,15 +5,17 @@
 #ifndef CONSOLEENGINE_CAMERA_H
 #define CONSOLEENGINE_CAMERA_H
 
+#pragma once
+
 #include "math.h"
 
 namespace Camera {
-    struct vec3<double> position;
-    struct vec3<double> lookVector;
+    extern struct vec3<double> position;
+    extern struct vec3<double> lookVector;
 
-    double FOV;
-    double farClippingPlane;
-    double nearClippingPlane;
+    extern double FOV;
+    extern double farClippingPlane;
+    extern double nearClippingPlane;
 
     int init(vec3<double> pos, vec3<double> vLook,
              double aFOV, double aNear, double aFar);

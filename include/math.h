@@ -5,6 +5,8 @@
 #ifndef CONSOLEENGINE_MATH_H
 #define CONSOLEENGINE_MATH_H
 
+#pragma once
+
 template<typename T>
 struct vec2 {
     T x;

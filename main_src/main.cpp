@@ -15,10 +15,10 @@
 #include "window.h"
 
 int main() {
-    Window::Window(320, 180, 4, 4);
-    Window::createWindow();
+    int rtn = Window::createWindow();
+    if (rtn != 0) { return rtn; }
 
-    while (true) {
-        Window::updateWindow();
-    }
+    Window::run();
+
+    return 0;
 }

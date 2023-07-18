@@ -1,10 +1,12 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj"
+  "CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj"
   "CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj.d"
+  "CMakeFiles/ConsoleEngine.dir/src/glad.c.obj"
+  "CMakeFiles/ConsoleEngine.dir/src/glad.c.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj"
   "CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj.d"
-  "CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj"
-  "CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/math.cpp.obj"
   "CMakeFiles/ConsoleEngine.dir/src/math.cpp.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.obj"
@@ -26,6 +28,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang CXX)
+foreach(lang C CXX)
   include(CMakeFiles/ConsoleEngine.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()

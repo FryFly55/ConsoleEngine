@@ -128,12 +128,124 @@ ConsoleEngine/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/build
 .PHONY : ConsoleEngine/fast
 
+#=============================================================================
+# Target rules for targets named TestEngine
+
+# Build rule for target.
+TestEngine: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 TestEngine
+.PHONY : TestEngine
+
+# fast build rule for target.
+TestEngine/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/build
+.PHONY : TestEngine/fast
+
+#=============================================================================
+# Target rules for targets named Old
+
+# Build rule for target.
+Old: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Old
+.PHONY : Old
+
+# fast build rule for target.
+Old/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Old.dir\build.make CMakeFiles/Old.dir/build
+.PHONY : Old/fast
+
+#=============================================================================
+# Target rules for targets named OldGL
+
+# Build rule for target.
+OldGL: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 OldGL
+.PHONY : OldGL
+
+# fast build rule for target.
+OldGL/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/build
+.PHONY : OldGL/fast
+
+main_src/main.obj: main_src/main.cpp.obj
+.PHONY : main_src/main.obj
+
+# target to build an object file
+main_src/main.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj
+.PHONY : main_src/main.cpp.obj
+
+main_src/main.i: main_src/main.cpp.i
+.PHONY : main_src/main.i
+
+# target to preprocess a source file
+main_src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.i
+.PHONY : main_src/main.cpp.i
+
+main_src/main.s: main_src/main.cpp.s
+.PHONY : main_src/main.s
+
+# target to generate assembly for a file
+main_src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.s
+.PHONY : main_src/main.cpp.s
+
+old_src/old.obj: old_src/old.cpp.obj
+.PHONY : old_src/old.obj
+
+# target to build an object file
+old_src/old.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Old.dir\build.make CMakeFiles/Old.dir/old_src/old.cpp.obj
+.PHONY : old_src/old.cpp.obj
+
+old_src/old.i: old_src/old.cpp.i
+.PHONY : old_src/old.i
+
+# target to preprocess a source file
+old_src/old.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Old.dir\build.make CMakeFiles/Old.dir/old_src/old.cpp.i
+.PHONY : old_src/old.cpp.i
+
+old_src/old.s: old_src/old.cpp.s
+.PHONY : old_src/old.s
+
+# target to generate assembly for a file
+old_src/old.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Old.dir\build.make CMakeFiles/Old.dir/old_src/old.cpp.s
+.PHONY : old_src/old.cpp.s
+
+old_src/oldGl.obj: old_src/oldGl.cpp.obj
+.PHONY : old_src/oldGl.obj
+
+# target to build an object file
+old_src/oldGl.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/old_src/oldGl.cpp.obj
+.PHONY : old_src/oldGl.cpp.obj
+
+old_src/oldGl.i: old_src/oldGl.cpp.i
+.PHONY : old_src/oldGl.i
+
+# target to preprocess a source file
+old_src/oldGl.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/old_src/oldGl.cpp.i
+.PHONY : old_src/oldGl.cpp.i
+
+old_src/oldGl.s: old_src/oldGl.cpp.s
+.PHONY : old_src/oldGl.s
+
+# target to generate assembly for a file
+old_src/oldGl.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/old_src/oldGl.cpp.s
+.PHONY : old_src/oldGl.cpp.s
+
 src/Camera.obj: src/Camera.cpp.obj
 .PHONY : src/Camera.obj
 
 # target to build an object file
 src/Camera.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/Camera.cpp.obj
 .PHONY : src/Camera.cpp.obj
 
 src/Camera.i: src/Camera.cpp.i
@@ -142,6 +254,7 @@ src/Camera.i: src/Camera.cpp.i
 # target to preprocess a source file
 src/Camera.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/Camera.cpp.i
 .PHONY : src/Camera.cpp.i
 
 src/Camera.s: src/Camera.cpp.s
@@ -150,7 +263,38 @@ src/Camera.s: src/Camera.cpp.s
 # target to generate assembly for a file
 src/Camera.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/Camera.cpp.s
 .PHONY : src/Camera.cpp.s
+
+src/glad.obj: src/glad.c.obj
+.PHONY : src/glad.obj
+
+# target to build an object file
+src/glad.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/glad.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/glad.c.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/src/glad.c.obj
+.PHONY : src/glad.c.obj
+
+src/glad.i: src/glad.c.i
+.PHONY : src/glad.i
+
+# target to preprocess a source file
+src/glad.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/glad.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/glad.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/src/glad.c.i
+.PHONY : src/glad.c.i
+
+src/glad.s: src/glad.c.s
+.PHONY : src/glad.s
+
+# target to generate assembly for a file
+src/glad.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/glad.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/glad.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/src/glad.c.s
+.PHONY : src/glad.c.s
 
 src/input.obj: src/input.cpp.obj
 .PHONY : src/input.obj
@@ -158,6 +302,7 @@ src/input.obj: src/input.cpp.obj
 # target to build an object file
 src/input.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/input.cpp.obj
 .PHONY : src/input.cpp.obj
 
 src/input.i: src/input.cpp.i
@@ -166,6 +311,7 @@ src/input.i: src/input.cpp.i
 # target to preprocess a source file
 src/input.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/input.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/input.cpp.i
 .PHONY : src/input.cpp.i
 
 src/input.s: src/input.cpp.s
@@ -174,31 +320,8 @@ src/input.s: src/input.cpp.s
 # target to generate assembly for a file
 src/input.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/input.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/input.cpp.s
 .PHONY : src/input.cpp.s
-
-src/main.obj: src/main.cpp.obj
-.PHONY : src/main.obj
-
-# target to build an object file
-src/main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/main.cpp.obj
-.PHONY : src/main.cpp.obj
-
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
 
 src/math.obj: src/math.cpp.obj
 .PHONY : src/math.obj
@@ -206,6 +329,7 @@ src/math.obj: src/math.cpp.obj
 # target to build an object file
 src/math.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/math.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/math.cpp.obj
 .PHONY : src/math.cpp.obj
 
 src/math.i: src/math.cpp.i
@@ -214,6 +338,7 @@ src/math.i: src/math.cpp.i
 # target to preprocess a source file
 src/math.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/math.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/math.cpp.i
 .PHONY : src/math.cpp.i
 
 src/math.s: src/math.cpp.s
@@ -222,6 +347,7 @@ src/math.s: src/math.cpp.s
 # target to generate assembly for a file
 src/math.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/math.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/math.cpp.s
 .PHONY : src/math.cpp.s
 
 src/renderer.obj: src/renderer.cpp.obj
@@ -230,6 +356,7 @@ src/renderer.obj: src/renderer.cpp.obj
 # target to build an object file
 src/renderer.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/renderer.cpp.obj
 .PHONY : src/renderer.cpp.obj
 
 src/renderer.i: src/renderer.cpp.i
@@ -238,6 +365,7 @@ src/renderer.i: src/renderer.cpp.i
 # target to preprocess a source file
 src/renderer.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/renderer.cpp.i
 .PHONY : src/renderer.cpp.i
 
 src/renderer.s: src/renderer.cpp.s
@@ -246,6 +374,7 @@ src/renderer.s: src/renderer.cpp.s
 # target to generate assembly for a file
 src/renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/renderer.cpp.s
 .PHONY : src/renderer.cpp.s
 
 src/scene.obj: src/scene.cpp.obj
@@ -254,6 +383,7 @@ src/scene.obj: src/scene.cpp.obj
 # target to build an object file
 src/scene.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/scene.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/scene.cpp.obj
 .PHONY : src/scene.cpp.obj
 
 src/scene.i: src/scene.cpp.i
@@ -262,6 +392,7 @@ src/scene.i: src/scene.cpp.i
 # target to preprocess a source file
 src/scene.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/scene.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/scene.cpp.i
 .PHONY : src/scene.cpp.i
 
 src/scene.s: src/scene.cpp.s
@@ -270,6 +401,7 @@ src/scene.s: src/scene.cpp.s
 # target to generate assembly for a file
 src/scene.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/scene.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/scene.cpp.s
 .PHONY : src/scene.cpp.s
 
 src/screenspace.obj: src/screenspace.cpp.obj
@@ -278,6 +410,7 @@ src/screenspace.obj: src/screenspace.cpp.obj
 # target to build an object file
 src/screenspace.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/screenspace.cpp.obj
 .PHONY : src/screenspace.cpp.obj
 
 src/screenspace.i: src/screenspace.cpp.i
@@ -286,6 +419,7 @@ src/screenspace.i: src/screenspace.cpp.i
 # target to preprocess a source file
 src/screenspace.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/screenspace.cpp.i
 .PHONY : src/screenspace.cpp.i
 
 src/screenspace.s: src/screenspace.cpp.s
@@ -294,6 +428,7 @@ src/screenspace.s: src/screenspace.cpp.s
 # target to generate assembly for a file
 src/screenspace.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/screenspace.cpp.s
 .PHONY : src/screenspace.cpp.s
 
 src/viewspace.obj: src/viewspace.cpp.obj
@@ -302,6 +437,7 @@ src/viewspace.obj: src/viewspace.cpp.obj
 # target to build an object file
 src/viewspace.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/viewspace.cpp.obj
 .PHONY : src/viewspace.cpp.obj
 
 src/viewspace.i: src/viewspace.cpp.i
@@ -310,6 +446,7 @@ src/viewspace.i: src/viewspace.cpp.i
 # target to preprocess a source file
 src/viewspace.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/viewspace.cpp.i
 .PHONY : src/viewspace.cpp.i
 
 src/viewspace.s: src/viewspace.cpp.s
@@ -318,6 +455,7 @@ src/viewspace.s: src/viewspace.cpp.s
 # target to generate assembly for a file
 src/viewspace.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/viewspace.cpp.s
 .PHONY : src/viewspace.cpp.s
 
 src/window.obj: src/window.cpp.obj
@@ -326,6 +464,7 @@ src/window.obj: src/window.cpp.obj
 # target to build an object file
 src/window.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/window.cpp.obj
 .PHONY : src/window.cpp.obj
 
 src/window.i: src/window.cpp.i
@@ -334,6 +473,7 @@ src/window.i: src/window.cpp.i
 # target to preprocess a source file
 src/window.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/window.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/window.cpp.i
 .PHONY : src/window.cpp.i
 
 src/window.s: src/window.cpp.s
@@ -342,6 +482,7 @@ src/window.s: src/window.cpp.s
 # target to generate assembly for a file
 src/window.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/window.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/window.cpp.s
 .PHONY : src/window.cpp.s
 
 src/worldspace.obj: src/worldspace.cpp.obj
@@ -350,6 +491,7 @@ src/worldspace.obj: src/worldspace.cpp.obj
 # target to build an object file
 src/worldspace.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/worldspace.cpp.obj
 .PHONY : src/worldspace.cpp.obj
 
 src/worldspace.i: src/worldspace.cpp.i
@@ -358,6 +500,7 @@ src/worldspace.i: src/worldspace.cpp.i
 # target to preprocess a source file
 src/worldspace.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/worldspace.cpp.i
 .PHONY : src/worldspace.cpp.i
 
 src/worldspace.s: src/worldspace.cpp.s
@@ -366,7 +509,32 @@ src/worldspace.s: src/worldspace.cpp.s
 # target to generate assembly for a file
 src/worldspace.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/worldspace.cpp.s
 .PHONY : src/worldspace.cpp.s
+
+test_src/testMain.obj: test_src/testMain.cpp.obj
+.PHONY : test_src/testMain.obj
+
+# target to build an object file
+test_src/testMain.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/test_src/testMain.cpp.obj
+.PHONY : test_src/testMain.cpp.obj
+
+test_src/testMain.i: test_src/testMain.cpp.i
+.PHONY : test_src/testMain.i
+
+# target to preprocess a source file
+test_src/testMain.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/test_src/testMain.cpp.i
+.PHONY : test_src/testMain.cpp.i
+
+test_src/testMain.s: test_src/testMain.cpp.s
+.PHONY : test_src/testMain.s
+
+# target to generate assembly for a file
+test_src/testMain.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/test_src/testMain.cpp.s
+.PHONY : test_src/testMain.cpp.s
 
 # Help Target
 help:
@@ -377,15 +545,27 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... ConsoleEngine
+	@echo ... Old
+	@echo ... OldGL
+	@echo ... TestEngine
+	@echo ... main_src/main.obj
+	@echo ... main_src/main.i
+	@echo ... main_src/main.s
+	@echo ... old_src/old.obj
+	@echo ... old_src/old.i
+	@echo ... old_src/old.s
+	@echo ... old_src/oldGl.obj
+	@echo ... old_src/oldGl.i
+	@echo ... old_src/oldGl.s
 	@echo ... src/Camera.obj
 	@echo ... src/Camera.i
 	@echo ... src/Camera.s
+	@echo ... src/glad.obj
+	@echo ... src/glad.i
+	@echo ... src/glad.s
 	@echo ... src/input.obj
 	@echo ... src/input.i
 	@echo ... src/input.s
-	@echo ... src/main.obj
-	@echo ... src/main.i
-	@echo ... src/main.s
 	@echo ... src/math.obj
 	@echo ... src/math.i
 	@echo ... src/math.s
@@ -407,6 +587,9 @@ help:
 	@echo ... src/worldspace.obj
 	@echo ... src/worldspace.i
 	@echo ... src/worldspace.s
+	@echo ... test_src/testMain.obj
+	@echo ... test_src/testMain.i
+	@echo ... test_src/testMain.s
 .PHONY : help
 
 
