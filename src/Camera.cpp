@@ -3,6 +3,7 @@
 //
 
 #include "Camera.h"
+#include "math.h"
 
 namespace Camera {
     int init(vec3<double> pos, vec3<double> vLook, double aFOV, double aNear, double aFar) {
@@ -11,6 +12,7 @@ namespace Camera {
         FOV = aFOV;
         farClippingPlane = aFar;
         nearClippingPlane = aNear;
+        rFOV = FOV * (PI / 180);
 
         return 0;
     }
@@ -19,6 +21,7 @@ namespace Camera {
     struct vec3<double> lookVector;
 
     double FOV;
+    double rFOV;
     double farClippingPlane;
     double nearClippingPlane;
 }

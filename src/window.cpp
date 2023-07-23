@@ -12,9 +12,11 @@
 #include <cstring>
 #include <string>
 #include <cmath>
+#include <chrono>
 
 #include "renderer.h"
 #include "Camera.h"
+#include "input.h"
 
 namespace Window {
     const int screenWidth = 200;
@@ -23,6 +25,8 @@ namespace Window {
     const int pixelHeight = 8;
     const int windowWidth = screenWidth * pixelWidth;
     const int windowHeight = screenHeight * pixelHeight;
+
+    double dt = 0;
 
     GLFWwindow* m_window;
 
@@ -49,9 +53,9 @@ namespace Window {
 
         glViewport(0, 0, windowWidth, windowHeight);
         glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+        glfwSetKeyCallback(m_window, Input::keyCallBack);
 
         Camera::init({0, 0, 0}, {0, 0, 1}, 90, 0.1, 100);
-        Renderer::initBuffers();
 
         return 0;
     }
@@ -72,6 +76,8 @@ namespace Window {
 
         glDrawPixels(windowWidth, windowHeight, GL_RGB, GL_UNSIGNED_BYTE, m_screenBuffer);
 
+        Input::updateKeyState();
+
         glfwSwapBuffers(m_window);
         glfwPollEvents();
 
@@ -80,7 +86,12 @@ namespace Window {
 
     int run() {
         while (!glfwWindowShouldClose(m_window)) {
+            auto tpLast = std::chrono::system_clock::now();
             updateWindow();
+            auto tpCurrent = std::chrono::system_clock::now();
+            std::chrono::duration<float> elapsedTime = tpCurrent - tpLast;
+            tpLast = tpCurrent;
+            dt = elapsedTime.count();
         }
 
         glfwTerminate();

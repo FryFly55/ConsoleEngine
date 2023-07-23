@@ -1,8 +1,0 @@
-//
-// Created by FryFly55 on 16.06.2023.
-//
-
-#ifndef CONSOLEENGINE_VIEWSPACE_H
-#define CONSOLEENGINE_VIEWSPACE_H
-
-#endif //CONSOLEENGINE_VIEWSPACE_H

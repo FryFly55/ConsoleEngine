@@ -7,18 +7,18 @@
 #include "scene.h"
 
 namespace Scene {
-    std::vector<float> vertices = {
-            -1, -1, -1,
-            +1, -1, -1,
-            +1, +1, -1,
-            -1, +1, -1,
-            -1, -1, +1,
-            +1, -1, +1,
-            +1, +1, +1,
-            -1, +1, +1,
+    float vertices[24] = {
+            -1, -1, +3,
+            +1, -1, +3,
+            +1, +1, +3,
+            -1, +1, +3,
+            -1, -1, +5,
+            +1, -1, +5,
+            +1, +1, +5,
+            -1, +1, +5,
     };
 
-    std::vector<int> triangles = {
+    int triangles[] = {
             0, 1, 3, // front
             1, 3, 2,
             1, 5, 2, // right

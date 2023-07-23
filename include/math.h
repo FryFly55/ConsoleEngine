@@ -7,6 +7,8 @@
 
 #pragma once
 
+const double PI = 3.14159265359;
+
 template<typename T>
 struct vec2 {
     T x;
@@ -56,7 +58,7 @@ struct vec2 {
         return res;
     }
 
-    int scalarProd(vec2 const& vec) {
+    T scalarProd(vec2 const& vec) {
         vec2 res;
         res.x = x * vec.x;
         res.y = y * vec.y;
@@ -119,7 +121,7 @@ struct vec3 {
         res.z = z / a;
         return res;
     }
-    int scalarProd(vec3 const& vec) {
+    T scalarProd(vec3 const& vec) {
         vec3 res;
         res.x = x * vec.x;
         res.y = y * vec.y;
@@ -191,7 +193,7 @@ struct vec4 {
         return res;
     }
 
-    int scalarProd(vec4 const& vec) {
+    T scalarProd(vec4 const& vec) {
         vec4 res;
         res.x = x * vec.x;
         res.y = y * vec.y;
@@ -203,23 +205,69 @@ struct vec4 {
 
 template <typename T>
 struct mat2 {
-    vec2<T> vec0;
-    vec2<T> vec1;
+    T elm[2*2];
+
+    template<typename Z>
+    mat2 operator*(Z const& a) {
+        mat2 res;
+        for (int i = 0; i < 2*2; i++) {
+            res[i] = elm[i] * a;
+        }
+        return res;
+    }
+
+    mat2 operator+(mat2 const& mat) {
+        mat2 res;
+        for (int i = 0; i < 2*2; i++) {
+            res[i] = elm[i] + mat.elm[i];
+        }
+        return res;
+    }
+
+    mat2 operator-(mat2 const& mat) {
+        mat2 res;
+        for (int i = 0; i < 2*2; i++) {
+            res[i] = elm[i] - mat.elm[i];
+        }
+        return res;
+    }
+
+    mat2 operator*(mat2 const& mat) {
+        mat2 res =
+                {
+                        {elm[0] * elm[3] + mat.elm[0] * mat.elm[1]},
+                        {elm[0] * elm[1] + mat.elm[1] * mat.elm[3]},
+                        {elm[0] * elm[2] + mat.elm[2] * mat.elm[3]},
+                        {elm[2] * elm[3] + mat.elm[3] * mat.elm[1]}
+                };
+        return res;
+    }
+
+    vec2<T> operator*(vec2<T> const& vec) {
+        vec2<T> res =
+                {
+                        {elm[0] * vec.x + elm[1] * vec.y},
+                        {elm[2] * vec.x + elm[3] * vec.y}
+                };
+        return res;
+    }
 };
 
 template <typename T>
 struct mat3 {
-    vec3<T> vec0;
-    vec3<T> vec1;
-    vec3<T> vec2;
+    vec3<T> column0;
+    vec3<T> column;
+    vec3<T> column2;
 };
 
 template <typename T>
 struct mat4 {
-    vec4<T> vec0;
-    vec4<T> vec1;
-    vec4<T> vec2;
-    vec4<T> vec3;
+    vec4<T> column0;
+    vec4<T> column1;
+    vec4<T> column2;
+    vec4<T> column3;
 };
+
+
 
 #endif //CONSOLEENGINE_MATH_H

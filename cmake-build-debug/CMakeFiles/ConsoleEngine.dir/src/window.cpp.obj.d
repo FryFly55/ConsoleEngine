@@ -406,5 +406,6 @@ CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj: \
  C:/PROGRA~1/JETBRA~1/CLION2~1.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/tr1/poly_laguerre.tcc \
  C:/PROGRA~1/JETBRA~1/CLION2~1.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/tr1/riemann_zeta.tcc \
  C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/include/renderer.h \
+ C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/include/math.h \
  C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/include/Camera.h \
- C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/include/math.h
+ C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/include/input.h

@@ -10,8 +10,8 @@
 #include <vector>
 
 namespace Scene {
-    extern std::vector<float> vertices;
-    extern std::vector<int> triangles;
+    extern float vertices[];
+    extern int triangles[];
 }
 
 #endif //CONSOLEENGINE_SCENE_H

@@ -29,6 +29,8 @@ namespace Window {
     extern const int windowWidth;
     extern const int windowHeight;
 
+    extern double dt;
+
     extern GLubyte* m_screenBuffer;
 }
 

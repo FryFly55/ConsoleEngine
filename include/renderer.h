@@ -9,6 +9,7 @@
 
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
+#include "math.h"
 
 namespace Renderer {
 
@@ -16,11 +17,12 @@ namespace Renderer {
     int rasterize();
     // scales the abstracted screenBuffer to fit the openGL one
     int scale();
-    int initBuffers();
     int safeDraw(int x, int y, struct Colour colour);
     int fastDraw(int x, int y, struct Colour colour);
-    int safeSetPixel(int x, int y, struct Colour colour);
-    int fastSetPixel(int x, int y, struct Colour colour);
+    int oSafeDraw(int x, int y, struct Colour colour);
+    int oFastDraw(int x, int y, struct Colour colour);
+    int drawLine(vec2<int> start, vec2<int> end, struct Colour colour);
+    int oDrawLine(vec2<int> start, vec2<int> end, struct Colour colour);
 
     struct Colour {
         GLubyte r;

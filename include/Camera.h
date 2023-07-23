@@ -14,6 +14,7 @@ namespace Camera {
     extern struct vec3<double> lookVector;
 
     extern double FOV;
+    extern double rFOV;
     extern double farClippingPlane;
     extern double nearClippingPlane;
 

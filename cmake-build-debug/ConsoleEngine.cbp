@@ -258,19 +258,7 @@
 			<Option target="ConsoleEngine"/>
 			<Option target="TestEngine"/>
 		</Unit>
-		<Unit filename="C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/src/screenspace.cpp">
-			<Option target="ConsoleEngine"/>
-			<Option target="TestEngine"/>
-		</Unit>
-		<Unit filename="C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/src/viewspace.cpp">
-			<Option target="ConsoleEngine"/>
-			<Option target="TestEngine"/>
-		</Unit>
 		<Unit filename="C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/src/window.cpp">
-			<Option target="ConsoleEngine"/>
-			<Option target="TestEngine"/>
-		</Unit>
-		<Unit filename="C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/src/worldspace.cpp">
 			<Option target="ConsoleEngine"/>
 			<Option target="TestEngine"/>
 		</Unit>

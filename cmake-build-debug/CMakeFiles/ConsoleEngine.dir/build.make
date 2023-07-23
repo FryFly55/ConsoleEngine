@@ -143,41 +143,11 @@ CMakeFiles/ConsoleEngine.dir/src/scene.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ConsoleEngine.dir/src/scene.cpp.s"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\scene.cpp -o CMakeFiles\ConsoleEngine.dir\src\scene.cpp.s
 
-CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/flags.make
-CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/includes_CXX.rsp
-CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj: ../src/screenspace.cpp
-CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj -MF CMakeFiles\ConsoleEngine.dir\src\screenspace.cpp.obj.d -o CMakeFiles\ConsoleEngine.dir\src\screenspace.cpp.obj -c C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\screenspace.cpp
-
-CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\screenspace.cpp > CMakeFiles\ConsoleEngine.dir\src\screenspace.cpp.i
-
-CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\screenspace.cpp -o CMakeFiles\ConsoleEngine.dir\src\screenspace.cpp.s
-
-CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/flags.make
-CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/includes_CXX.rsp
-CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj: ../src/viewspace.cpp
-CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj -MF CMakeFiles\ConsoleEngine.dir\src\viewspace.cpp.obj.d -o CMakeFiles\ConsoleEngine.dir\src\viewspace.cpp.obj -c C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\viewspace.cpp
-
-CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\viewspace.cpp > CMakeFiles\ConsoleEngine.dir\src\viewspace.cpp.i
-
-CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\viewspace.cpp -o CMakeFiles\ConsoleEngine.dir\src\viewspace.cpp.s
-
 CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj: CMakeFiles/ConsoleEngine.dir/flags.make
 CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj: CMakeFiles/ConsoleEngine.dir/includes_CXX.rsp
 CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj: ../src/window.cpp
 CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj: CMakeFiles/ConsoleEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj -MF CMakeFiles\ConsoleEngine.dir\src\window.cpp.obj.d -o CMakeFiles\ConsoleEngine.dir\src\window.cpp.obj -c C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\window.cpp
 
 CMakeFiles/ConsoleEngine.dir/src/window.cpp.i: cmake_force
@@ -188,26 +158,11 @@ CMakeFiles/ConsoleEngine.dir/src/window.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ConsoleEngine.dir/src/window.cpp.s"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\window.cpp -o CMakeFiles\ConsoleEngine.dir\src\window.cpp.s
 
-CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/flags.make
-CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/includes_CXX.rsp
-CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj: ../src/worldspace.cpp
-CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj: CMakeFiles/ConsoleEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj -MF CMakeFiles\ConsoleEngine.dir\src\worldspace.cpp.obj.d -o CMakeFiles\ConsoleEngine.dir\src\worldspace.cpp.obj -c C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\worldspace.cpp
-
-CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\worldspace.cpp > CMakeFiles\ConsoleEngine.dir\src\worldspace.cpp.i
-
-CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\worldspace.cpp -o CMakeFiles\ConsoleEngine.dir\src\worldspace.cpp.s
-
 CMakeFiles/ConsoleEngine.dir/src/glad.c.obj: CMakeFiles/ConsoleEngine.dir/flags.make
 CMakeFiles/ConsoleEngine.dir/src/glad.c.obj: CMakeFiles/ConsoleEngine.dir/includes_C.rsp
 CMakeFiles/ConsoleEngine.dir/src/glad.c.obj: ../src/glad.c
 CMakeFiles/ConsoleEngine.dir/src/glad.c.obj: CMakeFiles/ConsoleEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/ConsoleEngine.dir/src/glad.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/ConsoleEngine.dir/src/glad.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ConsoleEngine.dir/src/glad.c.obj -MF CMakeFiles\ConsoleEngine.dir\src\glad.c.obj.d -o CMakeFiles\ConsoleEngine.dir\src\glad.c.obj -c C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\src\glad.c
 
 CMakeFiles/ConsoleEngine.dir/src/glad.c.i: cmake_force
@@ -222,7 +177,7 @@ CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj: CMakeFiles/ConsoleEngine.dir
 CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj: CMakeFiles/ConsoleEngine.dir/includes_CXX.rsp
 CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj: ../main_src/main.cpp
 CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj: CMakeFiles/ConsoleEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj -MF CMakeFiles\ConsoleEngine.dir\main_src\main.cpp.obj.d -o CMakeFiles\ConsoleEngine.dir\main_src\main.cpp.obj -c C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\main_src\main.cpp
 
 CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.i: cmake_force
@@ -240,10 +195,7 @@ ConsoleEngine_OBJECTS = \
 "CMakeFiles/ConsoleEngine.dir/src/math.cpp.obj" \
 "CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.obj" \
 "CMakeFiles/ConsoleEngine.dir/src/scene.cpp.obj" \
-"CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj" \
-"CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj" \
 "CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj" \
-"CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj" \
 "CMakeFiles/ConsoleEngine.dir/src/glad.c.obj" \
 "CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj"
 
@@ -255,10 +207,7 @@ ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/math.cpp.obj
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.obj
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/scene.cpp.obj
-ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj
-ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj
-ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/src/glad.c.obj
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/build.make
@@ -266,7 +215,7 @@ ConsoleEngine.exe: ../lib/libglfw3.a
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/linklibs.rsp
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/objects1.rsp
 ConsoleEngine.exe: CMakeFiles/ConsoleEngine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable ConsoleEngine.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable ConsoleEngine.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\ConsoleEngine.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

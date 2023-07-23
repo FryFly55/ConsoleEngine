@@ -404,60 +404,6 @@ src/scene.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/scene.cpp.s
 .PHONY : src/scene.cpp.s
 
-src/screenspace.obj: src/screenspace.cpp.obj
-.PHONY : src/screenspace.obj
-
-# target to build an object file
-src/screenspace.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.obj
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/screenspace.cpp.obj
-.PHONY : src/screenspace.cpp.obj
-
-src/screenspace.i: src/screenspace.cpp.i
-.PHONY : src/screenspace.i
-
-# target to preprocess a source file
-src/screenspace.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/screenspace.cpp.i
-.PHONY : src/screenspace.cpp.i
-
-src/screenspace.s: src/screenspace.cpp.s
-.PHONY : src/screenspace.s
-
-# target to generate assembly for a file
-src/screenspace.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/screenspace.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/screenspace.cpp.s
-.PHONY : src/screenspace.cpp.s
-
-src/viewspace.obj: src/viewspace.cpp.obj
-.PHONY : src/viewspace.obj
-
-# target to build an object file
-src/viewspace.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.obj
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/viewspace.cpp.obj
-.PHONY : src/viewspace.cpp.obj
-
-src/viewspace.i: src/viewspace.cpp.i
-.PHONY : src/viewspace.i
-
-# target to preprocess a source file
-src/viewspace.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/viewspace.cpp.i
-.PHONY : src/viewspace.cpp.i
-
-src/viewspace.s: src/viewspace.cpp.s
-.PHONY : src/viewspace.s
-
-# target to generate assembly for a file
-src/viewspace.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/viewspace.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/viewspace.cpp.s
-.PHONY : src/viewspace.cpp.s
-
 src/window.obj: src/window.cpp.obj
 .PHONY : src/window.obj
 
@@ -484,33 +430,6 @@ src/window.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/window.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/window.cpp.s
 .PHONY : src/window.cpp.s
-
-src/worldspace.obj: src/worldspace.cpp.obj
-.PHONY : src/worldspace.obj
-
-# target to build an object file
-src/worldspace.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.obj
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/worldspace.cpp.obj
-.PHONY : src/worldspace.cpp.obj
-
-src/worldspace.i: src/worldspace.cpp.i
-.PHONY : src/worldspace.i
-
-# target to preprocess a source file
-src/worldspace.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/worldspace.cpp.i
-.PHONY : src/worldspace.cpp.i
-
-src/worldspace.s: src/worldspace.cpp.s
-.PHONY : src/worldspace.s
-
-# target to generate assembly for a file
-src/worldspace.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/worldspace.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/worldspace.cpp.s
-.PHONY : src/worldspace.cpp.s
 
 test_src/testMain.obj: test_src/testMain.cpp.obj
 .PHONY : test_src/testMain.obj
@@ -575,18 +494,9 @@ help:
 	@echo ... src/scene.obj
 	@echo ... src/scene.i
 	@echo ... src/scene.s
-	@echo ... src/screenspace.obj
-	@echo ... src/screenspace.i
-	@echo ... src/screenspace.s
-	@echo ... src/viewspace.obj
-	@echo ... src/viewspace.i
-	@echo ... src/viewspace.s
 	@echo ... src/window.obj
 	@echo ... src/window.i
 	@echo ... src/window.s
-	@echo ... src/worldspace.obj
-	@echo ... src/worldspace.i
-	@echo ... src/worldspace.s
 	@echo ... test_src/testMain.obj
 	@echo ... test_src/testMain.i
 	@echo ... test_src/testMain.s
