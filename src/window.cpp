@@ -3,26 +3,21 @@
 //
 
 #include "window.h"
+#include "commons.h"
 #include <iostream>
-#include <windows.h>
 #include <chrono>
 #include <list>
 #include <thread>
-#include <atomic>
 #include <cstring>
 #include <string>
-#include <cmath>
-#include <chrono>
 
-#include "renderer.h"
 #include "Camera.h"
-#include "input.h"
 
 namespace Window {
-    const int screenWidth = 200;
-    const int screenHeight = 125;
-    const int pixelWidth = 8;
-    const int pixelHeight = 8;
+    const int screenWidth = 300;
+    const int screenHeight = 188;
+    const int pixelWidth = 6;
+    const int pixelHeight = 6;
     const int windowWidth = screenWidth * pixelWidth;
     const int windowHeight = screenHeight * pixelHeight;
 
@@ -37,7 +32,8 @@ namespace Window {
     int createWindow() {
         glfwInit();
 
-        GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Rasterizer", NULL, NULL);
+        GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight, "Rasterizer",
+                                              NULL, NULL);
         m_window = window;
         if (m_window == NULL) {
             std::cout << "Failed to create GLFW window" << std::endl;
@@ -55,7 +51,8 @@ namespace Window {
         glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
         glfwSetKeyCallback(m_window, Input::keyCallBack);
 
-        Camera::init({0, 0, 0}, {0, 0, 1}, 90, 0.1, 100);
+        Camera::init({0, 0, 0}, {0, 0, 1}, 120, 0.1,
+                     100, 4, 20);
 
         return 0;
     }
@@ -67,12 +64,15 @@ namespace Window {
         std::memset(Renderer::screen, 0, sizeof(GLubyte) *
         screenWidth * screenHeight * 3);
 
+        Camera::update();
+
         // change abstracted screenBuffer here
         // keep in mind that all changes to the original screenBuffer must happen
         // after Renderer::scale()
         Renderer::rasterize();
         Renderer::scale(); // scales the renderer screenBuffer to fit the window one
         // change original screenBuffer here
+        Renderer::oRasterize();
 
         glDrawPixels(windowWidth, windowHeight, GL_RGB, GL_UNSIGNED_BYTE, m_screenBuffer);
 
@@ -105,6 +105,6 @@ namespace Window {
     }
 
     void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-        glViewport(0, 0, width, height);
+        glViewport(0, 0, width * pixelWidth, height * pixelHeight);
     }
 }

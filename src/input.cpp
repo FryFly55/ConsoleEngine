@@ -45,7 +45,7 @@ bool Input::keyJustReleased(int key) {
     return keyBuffer[key] == KEY_JUST_RELEASED;
 }
 
-bool Input::keyPressedOrHeld(int key) {
+bool Input::getKey(int key) {
     return keyBuffer[key] == KEY_PRESSED || keyBuffer[key] == KEY_HELD;
 }
 

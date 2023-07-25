@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/TestEngine.dir/src/renderer.cpp.obj.d"
   "CMakeFiles/TestEngine.dir/src/scene.cpp.obj"
   "CMakeFiles/TestEngine.dir/src/scene.cpp.obj.d"
+  "CMakeFiles/TestEngine.dir/src/util.cpp.obj"
+  "CMakeFiles/TestEngine.dir/src/util.cpp.obj.d"
   "CMakeFiles/TestEngine.dir/src/window.cpp.obj"
   "CMakeFiles/TestEngine.dir/src/window.cpp.obj.d"
   "CMakeFiles/TestEngine.dir/test_src/testMain.cpp.obj"

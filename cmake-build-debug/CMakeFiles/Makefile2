@@ -86,12 +86,12 @@ clean: CMakeFiles/OldGL.dir/clean
 CMakeFiles/ConsoleEngine.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9 "Built target ConsoleEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target ConsoleEngine"
 .PHONY : CMakeFiles/ConsoleEngine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ConsoleEngine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 10
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/ConsoleEngine.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/ConsoleEngine.dir/rule
@@ -112,12 +112,12 @@ CMakeFiles/ConsoleEngine.dir/clean:
 CMakeFiles/TestEngine.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=15,16,17,18,19,20,21,22,23 "Built target TestEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=16,17,18,19,20,21,22,23,24,25 "Built target TestEngine"
 .PHONY : CMakeFiles/TestEngine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/TestEngine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 10
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/TestEngine.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/TestEngine.dir/rule
@@ -138,7 +138,7 @@ CMakeFiles/TestEngine.dir/clean:
 CMakeFiles/Old.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Old.dir\build.make CMakeFiles/Old.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Old.dir\build.make CMakeFiles/Old.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=10,11 "Built target Old"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=11,12 "Built target Old"
 .PHONY : CMakeFiles/Old.dir/all
 
 # Build rule for subdir invocation for target.
@@ -164,7 +164,7 @@ CMakeFiles/Old.dir/clean:
 CMakeFiles/OldGL.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\OldGL.dir\build.make CMakeFiles/OldGL.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=12,13,14 "Built target OldGL"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\fried\Documents\SavesExportsDaten\Programming\C++\ConsoleEngineGit\ConsoleEngine\cmake-build-debug\CMakeFiles --progress-num=13,14,15 "Built target OldGL"
 .PHONY : CMakeFiles/OldGL.dir/all
 
 # Build rule for subdir invocation for target.

@@ -3,9 +3,10 @@
  */
 
 /*
- * Does not work anymore, My guess is that windows deprecated some older
+ * Broken somewhow, My guess is that windows deprecated some older
  * legacy api features, that were needed for the project to work.
  * Anyway, resizing font, window and screenBuffer does not work anymore.
+ * There is however a more recent version using openGL available.
  */
 
 #include <windows.h>

@@ -13,8 +13,10 @@
 
 namespace Renderer {
 
-
+    // controls changes to abstracted screenBuffer
     int rasterize();
+    // controls changes to original screenBuffer, overwrites rasterize()
+    int oRasterize();
     // scales the abstracted screenBuffer to fit the openGL one
     int scale();
     int safeDraw(int x, int y, struct Colour colour);
@@ -23,6 +25,11 @@ namespace Renderer {
     int oFastDraw(int x, int y, struct Colour colour);
     int drawLine(vec2<int> start, vec2<int> end, struct Colour colour);
     int oDrawLine(vec2<int> start, vec2<int> end, struct Colour colour);
+    int safeDrawLine(vec2<int> start, vec2<int> end, struct Colour colour);
+    int drawPixelMap(int x, int y, const char* pixelMap, int mapX,
+                     int mapY, Colour colour, bool center);
+    int oDrawPixelMap(int x, int y, const char* pixelMap, int mapX,
+                      int mapY, Colour colour, bool center);
 
     struct Colour {
         GLubyte r;

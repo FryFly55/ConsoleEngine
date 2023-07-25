@@ -23,7 +23,7 @@ namespace Input {
     bool keyHeld(int key);
     bool keyReleased(int key);
     bool keyJustReleased(int key);
-    bool keyPressedOrHeld(int key);
+    bool getKey(int key);
     keyState getKeyState(int key);
 }
 

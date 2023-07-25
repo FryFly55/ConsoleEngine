@@ -17,9 +17,14 @@ namespace Camera {
     extern double rFOV;
     extern double farClippingPlane;
     extern double nearClippingPlane;
+    extern float angle;
+    extern float radAngle;
+    extern float speed;
+    extern float turnSpeed;
 
     int init(vec3<double> pos, vec3<double> vLook,
-             double aFOV, double aNear, double aFar);
+             double aFOV, double aNear, double aFar, float aSpeed, float aTurnSpeed);
+    int update();
 }
 
 #endif //CONSOLEENGINE_CAMERA_H

@@ -6,4 +6,7 @@
 
 int main() {
     std::cout << "Test build" << std::endl;
+
+    bool test = abs(11) > abs(11);
+    std::cout << test << std::endl;
 }

@@ -5,31 +5,109 @@
 //
 
 #include "renderer.h"
+#include "commons.h"
 #include "scene.h"
 #include "Camera.h"
-#include "window.h"
 #include <cmath>
-#include "input.h"
+
+using namespace Util;
 
 namespace Renderer {
     GLubyte* screen = new GLubyte[Window::screenWidth * Window::screenHeight * 3];
+
+    const char* testMap = "   ##   "
+                          "   ##   "
+                          "   ##   "
+                          "########"
+                          "########"
+                          "   ##   "
+                          "   ##   "
+                          "   ##   ";
+
+    bool sColour = true;
 }
 
 int Renderer::rasterize() {
-    for (int i = 0; i < 22; i+=3) {
-        float ratioX = 1 / (tan(Camera::rFOV / 2) * Scene::vertices[i+2] * Scene::vertices[i]);
-        float ratioY = 1 / (tan(Camera::rFOV / 2) * Scene::vertices[i+2] * Scene::vertices[i+1]);
+    for (int t = 0; t < 34; t += 3) {
+        // stores transformed x, y and z components of each vertex in screenSpace
+        float screenSpaceVertices[9];
+        // stores transformed x, y and z components of each vertex in viewspace
+        float viewSpaceVertices[9];
+        // stores the screenX, Y and transformed Z-Component of each vertex
+        int screenPoints[6];
+        // stores the screen coordinates of each vertex on the screen-plane, even if it's not in screen space
+        int planePoints[6];
+        // stores depth for every screenPoint
+        float depthBuffer[3];
+        for (int v = 0; v < 3; v++) {
+            // transforming into viewspace
+            int point = Scene::triangles[t + v];
+            float x = Scene::vertices[point*3] - Camera::position.x;
+            float y = Scene::vertices[point*3 + 1] - Camera::position.y;
+            float z = Scene::vertices[point*3 + 2] - Camera::position.z;
 
-        int screenX = (Window::screenWidth / 2) + (int)(ratioX * Window::screenWidth * 0.5f);
-        int screenY = (Window::screenHeight / 2) + (int)(ratioY * Window::screenWidth * 0.5f);
+            float xPos = x * cos(Camera::radAngle) - z * sin(Camera::radAngle);
+            float zPos = x * sin(Camera::radAngle) + z * cos(Camera::radAngle);
+            x = xPos;
+            z = zPos;
 
-        Colour colour = WHITE;
-        if (Input::keyPressedOrHeld(GLFW_KEY_SPACE)) {
-            colour = FULL_RED;
+            viewSpaceVertices[v*3] = x;
+            viewSpaceVertices[v*3+1] = y;
+            viewSpaceVertices[v*3+2] = z;
+
+            float ratioX = x * ((Window::screenWidth / 2) / (tan(Camera::rFOV / 2) * z));
+            float ratioY = y * ((Window::screenWidth / 2) / (tan(Camera::rFOV / 2) * z));
+
+            int screenX = (int)(Window::screenWidth / 2) + (int)(ratioX);
+            int screenY = (int)(Window::screenHeight / 2) + (int)(ratioY);
+
+            planePoints[v*2] = screenX;
+            planePoints[v*2+1] = screenY;
+
+            // clipping to screenSpace
+            bool inDistance = z < Camera::farClippingPlane;
+            bool inBoundsX = (x < 1 / tan(Camera::rFOV / 2) * z) && (x > 1 / -tan(Camera::rFOV / 2) * z);
+            bool inBoundsY = (y < 1 / tan(Camera::rFOV / 2) * z) && (y > 1 / -tan(Camera::rFOV / 2) * z);
+            if (inDistance && inBoundsX && inBoundsY) {
+                screenSpaceVertices[v*3] = x;
+                screenSpaceVertices[v*3+1] = y;
+                screenSpaceVertices[v*3+2] = z;
+
+                screenPoints[v*2] = screenX;
+                screenPoints[v*2+1] = screenY;
+                depthBuffer[v] = z;
+
+                Colour colour = WHITE;
+                if (Input::keyPressed(GLFW_KEY_SPACE)) {
+                    flip(sColour);
+                }
+                if (!sColour)
+                    colour = FULL_RED;
+
+                safeDraw(screenX, screenY, colour);
+            }
         }
 
-        safeDraw(screenX, screenY, colour);
+        for (int v = 0; v < 3; v++) {
+            if (v == 2) {
+                safeDrawLine({planePoints[v*2], planePoints[v*2+1]},
+                         {planePoints[0], planePoints[1]},
+                         WHITE);
+            }
+            else {
+                safeDrawLine({planePoints[v*2], planePoints[v*2+1]},
+                         {planePoints[(v+1)*2], planePoints[(v+1)*2+1]},
+                         WHITE);
+            }
+        }
     }
+
+    return 0;
+}
+
+int Renderer::oRasterize() {
+    oDrawPixelMap(Window::windowWidth / 2, Window::windowHeight / 2, testMap,
+                  8, 8, FULL_GREEN, true);
 
     return 0;
 }
@@ -58,20 +136,26 @@ int Renderer::scale() {
 }
 
 int Renderer::safeDraw(int x, int y, struct Colour colour) {
-    if (y < Window::screenHeight && x < Window::screenWidth) {
+    if (y < Window::screenHeight && x < Window::screenWidth && y >= 0 && x >= 0) {
         Renderer::screen[y * Window::screenWidth * 3 + x * 3] = colour.r;
         Renderer::screen[y * Window::screenWidth * 3 + x * 3 + 1] = colour.g;
         Renderer::screen[y * Window::screenWidth * 3 + x * 3 + 2] = colour.b;
+    }
+    else {
+        return 1; // coordinates outside of range
     }
 
     return 0;
 }
 
 int Renderer::oSafeDraw(int x, int y, struct Colour colour) {
-    if (y < Window::windowHeight && x < Window::windowWidth) {
+    if (y < Window::windowHeight && x < Window::windowWidth && y >= 0 && x >= 0) {
         Window::m_screenBuffer[y * Window::windowWidth * 3 + x * 3] = colour.r;
         Window::m_screenBuffer[y * Window::windowWidth * 3 + x * 3 + 1] = colour.g;
         Window::m_screenBuffer[y * Window::windowWidth * 3 + x * 3 + 2] = colour.b;
+    }
+    else {
+        return 1; // coordinates outside of range
     }
 
     return 0;
@@ -134,7 +218,7 @@ int Renderer::drawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
             curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
         }
     }
-    else if (abs(deltaY) > abs(deltaX) && bothZero != 0) {
+    else if (bothZero != 0) {
         while (!curXinProx || !curYinProx) {
             start.y += ySign;
             xOff += xRat;
@@ -188,7 +272,7 @@ int Renderer::oDrawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
             curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
         }
     }
-    else if (abs(deltaY) > abs(deltaX) && bothZero != 0) {
+    else if (bothZero != 0) {
         while (!curXinProx || !curYinProx) {
             start.y += ySign;
             xOff += xRat;
@@ -196,6 +280,102 @@ int Renderer::oDrawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
             oFastDraw(start.x, start.y, colour);
             curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
             curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+        }
+    }
+
+    return 0;
+}
+
+int Renderer::safeDrawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
+
+    // calculating the distance of each pixel to the next one, just need to draw a line now.
+    // Also getting the sign of each delta, and the y's per x as well as x's per y
+    float deltaX = end.x - start.x;
+    float deltaY = end.y - start.y;
+
+    float xRat = deltaX/abs(deltaY);
+    if (deltaX < 1 && deltaX > -1)
+        xRat = 0;
+    float yRat = deltaY/abs(deltaX);
+    if (deltaY < 1 && deltaY > -1)
+        yRat = 0;
+
+    /*int xSign = 0;
+    int ySign = 0;
+    if (deltaX != 0)
+        xSign = (int) (deltaX / abs(deltaX)); // calculate it now to save performance, is either 1, -1
+    if (deltaY != 0)
+        ySign = (int) (deltaY / abs(deltaY));*/
+
+    // Technically division by zero can occur here, but if deltaX is zero,
+    // xSign isn't going to be used and vice versa. So it does not matter.
+    int xSign = (int) (deltaX / abs(deltaX));
+    int ySign = (int) (deltaY / abs(deltaY));
+
+    // whenever it passes the threshold to a new pixel, round off and draw.
+    float xOff = start.x;
+    float yOff = start.y;
+
+    float bothZero = deltaX + deltaY;
+
+    bool curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
+    bool curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+    if (abs(deltaX) >= abs(deltaY) && bothZero != 0) {
+        while (!curXinProx || !curYinProx) {
+            start.x += xSign;
+            yOff += yRat;
+            start.y = (int) std::floor(yOff);
+            if (safeDraw(start.x, start.y, colour) == 1) {
+                return 1;
+            }
+            curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
+            curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+        }
+    }
+    else if (bothZero != 0) {
+        while (!curXinProx || !curYinProx) {
+            start.y += ySign;
+            xOff += xRat;
+            start.x = (int) std::floor(xOff);
+            if (safeDraw(start.x, start.y, colour)) {
+                return 1;
+            }
+            curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
+            curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+        }
+    }
+
+    return 0;
+}
+
+int Renderer::drawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY,
+                           Colour colour, bool center) {
+    if (center) {
+        y -= mapY / 2;
+        x -= mapX / 2;
+    }
+    for (int i = 0; i < mapX * mapY; i++) {
+        int screenY = y + (mapY - ((int) i / mapX));
+        int screenX = x + (i % mapX);
+        if (pixelMap[i] == '#') {
+            safeDraw(screenX, screenY, colour);
+        }
+    }
+
+    return 0;
+}
+
+int Renderer::oDrawPixelMap(int x, int y, const char* pixelMap, int mapX, int mapY,
+                            Colour colour, bool center) {
+    if (center) {
+        y -= mapY / 2;
+        x -= mapX / 2;
+    }
+    for (int i = 0; i < mapX * mapY; i++) {
+        int screenY = y + (mapY - ((int) i / mapX));
+        int screenX = x + (i % mapX);
+        if (pixelMap[i] == '#') {
+            oSafeDraw(screenX, screenY, colour);
         }
     }
 

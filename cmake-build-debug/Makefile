@@ -404,6 +404,33 @@ src/scene.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/scene.cpp.s
 .PHONY : src/scene.cpp.s
 
+src/util.obj: src/util.cpp.obj
+.PHONY : src/util.obj
+
+# target to build an object file
+src/util.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/util.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/util.cpp.obj
+.PHONY : src/util.cpp.obj
+
+src/util.i: src/util.cpp.i
+.PHONY : src/util.i
+
+# target to preprocess a source file
+src/util.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/util.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/util.cpp.i
+.PHONY : src/util.cpp.i
+
+src/util.s: src/util.cpp.s
+.PHONY : src/util.s
+
+# target to generate assembly for a file
+src/util.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ConsoleEngine.dir\build.make CMakeFiles/ConsoleEngine.dir/src/util.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TestEngine.dir\build.make CMakeFiles/TestEngine.dir/src/util.cpp.s
+.PHONY : src/util.cpp.s
+
 src/window.obj: src/window.cpp.obj
 .PHONY : src/window.obj
 
@@ -494,6 +521,9 @@ help:
 	@echo ... src/scene.obj
 	@echo ... src/scene.i
 	@echo ... src/scene.s
+	@echo ... src/util.obj
+	@echo ... src/util.i
+	@echo ... src/util.s
 	@echo ... src/window.obj
 	@echo ... src/window.i
 	@echo ... src/window.s

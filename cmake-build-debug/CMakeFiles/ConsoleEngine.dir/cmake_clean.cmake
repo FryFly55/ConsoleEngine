@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/scene.cpp.obj"
   "CMakeFiles/ConsoleEngine.dir/src/scene.cpp.obj.d"
+  "CMakeFiles/ConsoleEngine.dir/src/util.cpp.obj"
+  "CMakeFiles/ConsoleEngine.dir/src/util.cpp.obj.d"
   "CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj"
   "CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj.d"
   "ConsoleEngine.exe"
