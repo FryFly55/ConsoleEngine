@@ -3,6 +3,7 @@
 //
 
 #include "Camera.h"
+#include "commons.h"
 #include "math.h"
 #include "input.h"
 #include <cmath>
@@ -40,6 +41,24 @@ namespace Camera {
 }
 
 int Camera::update() {
+    // rotation
+    if (Input::getKey(GLFW_KEY_J)) {
+        angle -= turnSpeed * Window::dt;
+    }
+    if (Input::getKey(GLFW_KEY_L)) {
+        angle += turnSpeed * Window::dt;
+    }
+    angle += Input::dCursorX * Window::dt;
+    // angle should only ever be between -360 and 360, technically not necessary but might prevent bugs in the future.
+    // only 2 additional if statements every frame, so performance hit is minimal
+    if (angle >= 360) {
+        angle = angle - 360;
+    }
+    else if (angle <= -360) {
+        angle = angle + 360;
+    }
+    radAngle = angle * (PI / 180);
+
     // sideways movement
     if (Input::getKey(GLFW_KEY_W)) {
         position.x += sinf(radAngle) * speed * Window::dt;
@@ -65,15 +84,6 @@ int Camera::update() {
     if (Input::getKey(GLFW_KEY_E)) {
         position.y += speed * Window::dt;
     }
-
-    // rotation
-    if (Input::getKey(GLFW_KEY_J)) {
-        angle -= turnSpeed * Window::dt;
-    }
-    if (Input::getKey(GLFW_KEY_L)) {
-        angle += turnSpeed * Window::dt;
-    }
-    radAngle = angle * (PI / 180);
 
     return 0;
 }

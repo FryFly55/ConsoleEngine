@@ -25,21 +25,27 @@ namespace Renderer {
                           "   ##   ";
 
     bool sColour = true;
+
+    int sPosX = 150;
+    int sPosY = 94;
 }
 
 int Renderer::rasterize() {
+    // todo: fix bug where lines don't render at 45° angle
+    // todo: fix bug where some lines are drawn to points outside the screen and others aren't
     for (int t = 0; t < 34; t += 3) {
-        // stores transformed x, y and z components of each vertex in screenSpace
-        float screenSpaceVertices[9];
-        // stores transformed x, y and z components of each vertex in viewspace
-        float viewSpaceVertices[9];
-        // stores the screenX, Y and transformed Z-Component of each vertex
-        int screenPoints[6];
-        // stores the screen coordinates of each vertex on the screen-plane, even if it's not in screen space
-        int planePoints[6];
-        // stores depth for every screenPoint
-        float depthBuffer[3];
+        // stores transformed x, y and z components of each vertex in screenSpace, plus one element to verify validity
+        float screenSpaceVertices[12];
+        // stores transformed x, y and z components of each vertex in viewspace + validity verification
+        float viewSpaceVertices[12];
+        // stores the screenX, Y and transformed Z-Component of each vertex + verify
+        int screenPoints[9];
+        // stores the screen coordinates of each vertex on the screen-plane, even if it's not in screen space + verify
+        int planePoints[9];
+        // stores depth for every screenPoint + verify
+        float depthBuffer[6];
         for (int v = 0; v < 3; v++) {
+            bool zAllowed = true;
             // transforming into viewspace
             int point = Scene::triangles[t + v];
             float x = Scene::vertices[point*3] - Camera::position.x;
@@ -51,53 +57,63 @@ int Renderer::rasterize() {
             x = xPos;
             z = zPos;
 
-            viewSpaceVertices[v*3] = x;
-            viewSpaceVertices[v*3+1] = y;
-            viewSpaceVertices[v*3+2] = z;
-
-            float ratioX = x * ((Window::screenWidth / 2) / (tan(Camera::rFOV / 2) * z));
-            float ratioY = y * ((Window::screenWidth / 2) / (tan(Camera::rFOV / 2) * z));
-
-            int screenX = (int)(Window::screenWidth / 2) + (int)(ratioX);
-            int screenY = (int)(Window::screenHeight / 2) + (int)(ratioY);
-
-            planePoints[v*2] = screenX;
-            planePoints[v*2+1] = screenY;
+            viewSpaceVertices[v*4] = 1; // one => verified, anything but one => unverified
+            viewSpaceVertices[v*4+1] = x;
+            viewSpaceVertices[v*4+2] = y;
+            viewSpaceVertices[v*4+3] = z;
 
             // clipping to screenSpace
-            bool inDistance = z < Camera::farClippingPlane;
+            bool inDistance = z < Camera::farClippingPlane && z > Camera::nearClippingPlane;
             bool inBoundsX = (x < 1 / tan(Camera::rFOV / 2) * z) && (x > 1 / -tan(Camera::rFOV / 2) * z);
             bool inBoundsY = (y < 1 / tan(Camera::rFOV / 2) * z) && (y > 1 / -tan(Camera::rFOV / 2) * z);
-            if (inDistance && inBoundsX && inBoundsY) {
-                screenSpaceVertices[v*3] = x;
-                screenSpaceVertices[v*3+1] = y;
-                screenSpaceVertices[v*3+2] = z;
+            if (inDistance) {
+                float ratioX = x * ((Window::screenWidth / 2) / (tan(Camera::rFOV / 2) * z));
+                float ratioY = y * ((Window::screenWidth / 2) / (tan(Camera::rFOV / 2) * z));
 
-                screenPoints[v*2] = screenX;
-                screenPoints[v*2+1] = screenY;
-                depthBuffer[v] = z;
+                int screenX = (int)(Window::screenWidth / 2) + (int)(ratioX);
+                int screenY = (int)(Window::screenHeight / 2) + (int)(ratioY);
 
-                Colour colour = WHITE;
-                if (Input::keyPressed(GLFW_KEY_SPACE)) {
-                    flip(sColour);
+
+                planePoints[v*3] = 1;
+                planePoints[v*3+1] = screenX;
+                planePoints[v*3+2] = screenY;
+
+                if (inBoundsX && inBoundsY) {
+                    screenSpaceVertices[v*4] = 1;
+                    screenSpaceVertices[v*4+1] = x;
+                    screenSpaceVertices[v*4+2] = y;
+                    screenSpaceVertices[v*4+3] = z;
+
+                    screenPoints[v*3] = 1;
+                    screenPoints[v*3+1] = screenX;
+                    screenPoints[v*3+2] = screenY;
+                    depthBuffer[v*2] = 1;
+                    depthBuffer[v*2+1] = z;
+
+                    Colour colour = WHITE;
+                    if (Input::keyPressed(GLFW_KEY_SPACE)) {
+                        flip(sColour);
+                    }
+                    if (!sColour)
+                        colour = FULL_RED;
+
+                    safeDraw(screenX, screenY, colour);
                 }
-                if (!sColour)
-                    colour = FULL_RED;
-
-                safeDraw(screenX, screenY, colour);
             }
         }
 
         for (int v = 0; v < 3; v++) {
-            if (v == 2) {
-                safeDrawLine({planePoints[v*2], planePoints[v*2+1]},
-                         {planePoints[0], planePoints[1]},
-                         WHITE);
-            }
-            else {
-                safeDrawLine({planePoints[v*2], planePoints[v*2+1]},
-                         {planePoints[(v+1)*2], planePoints[(v+1)*2+1]},
-                         WHITE);
+            if (planePoints[v*3] == 1) {
+                if (v == 2) {
+                    safeDrawLine({planePoints[v*3+1], planePoints[v*3+2]},
+                                 {planePoints[1], planePoints[2]},
+                                 WHITE);
+                }
+                else {
+                    safeDrawLine({planePoints[v*3+1], planePoints[v*3+2]},
+                                 {planePoints[(v+1)*3+1], planePoints[(v+1)*3+2]},
+                                 WHITE);
+                }
             }
         }
     }
@@ -106,6 +122,7 @@ int Renderer::rasterize() {
 }
 
 int Renderer::oRasterize() {
+    // crosshair
     oDrawPixelMap(Window::windowWidth / 2, Window::windowHeight / 2, testMap,
                   8, 8, FULL_GREEN, true);
 

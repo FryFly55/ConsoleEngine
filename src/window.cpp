@@ -15,13 +15,14 @@
 
 namespace Window {
     const int screenWidth = 300;
-    const int screenHeight = 188;
+    const int screenHeight = 200;
     const int pixelWidth = 6;
     const int pixelHeight = 6;
     const int windowWidth = screenWidth * pixelWidth;
     const int windowHeight = screenHeight * pixelHeight;
 
     double dt = 0;
+    float fps = 0;
 
     GLFWwindow* m_window;
 
@@ -42,6 +43,8 @@ namespace Window {
         }
         glfwMakeContextCurrent(m_window);
 
+        glfwWindowHint(GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             std::cout << "Failed to initialize GLAD" << std::endl;
             return -1;
@@ -50,6 +53,9 @@ namespace Window {
         glViewport(0, 0, windowWidth, windowHeight);
         glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
         glfwSetKeyCallback(m_window, Input::keyCallBack);
+        glfwSetMouseButtonCallback(m_window, Input::mouseButtonCallBack);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetCursorPosCallback(m_window, Input::mouseCursorCallBack);
 
         Camera::init({0, 0, 0}, {0, 0, 1}, 120, 0.1,
                      100, 4, 20);
@@ -92,6 +98,8 @@ namespace Window {
             std::chrono::duration<float> elapsedTime = tpCurrent - tpLast;
             tpLast = tpCurrent;
             dt = elapsedTime.count();
+            fps = 1 / dt;
+            std::cout << fps << std::endl;
         }
 
         glfwTerminate();

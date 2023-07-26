@@ -30,6 +30,7 @@ namespace Window {
     extern const int windowHeight;
 
     extern double dt;
+    extern float fps;
 
     extern GLubyte* m_screenBuffer;
 }
