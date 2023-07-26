@@ -304,7 +304,11 @@ int Renderer::oDrawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
 }
 
 int Renderer::safeDrawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
-
+    bool safeCheck = true;
+    if (start.x < Window::screenWidth && start.x > 0 && start.y < Window::screenHeight && start.y > 0 &&
+            end.x < Window::screenWidth && end.x > 0 && end.y < Window::screenHeight && end.y > 0) {
+        safeCheck = false;
+    }
     // calculating the distance of each pixel to the next one, just need to draw a line now.
     // Also getting the sign of each delta, and the y's per x as well as x's per y
     float deltaX = end.x - start.x;
@@ -338,27 +342,51 @@ int Renderer::safeDrawLine(vec2<int> start, vec2<int> end, struct Colour colour)
     bool curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
     bool curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
     if (abs(deltaX) >= abs(deltaY) && bothZero != 0) {
-        while (!curXinProx || !curYinProx) {
-            start.x += xSign;
-            yOff += yRat;
-            start.y = (int) std::floor(yOff);
-            if (safeDraw(start.x, start.y, colour) == 1) {
-                return 1;
+        if (safeCheck) {
+            while (!curXinProx || !curYinProx) {
+                start.x += xSign;
+                yOff += yRat;
+                start.y = (int) std::floor(yOff);
+                if (safeDraw(start.x, start.y, colour)) {
+                    return 1;
+                }
+                curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
+                curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
             }
-            curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
-            curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+        }
+        else {
+            while (!curXinProx || !curYinProx) {
+                start.x += xSign;
+                yOff += yRat;
+                start.y = (int) std::floor(yOff);
+                fastDraw(start.x, start.y, colour);
+                curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
+                curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+            }
         }
     }
     else if (bothZero != 0) {
-        while (!curXinProx || !curYinProx) {
-            start.y += ySign;
-            xOff += xRat;
-            start.x = (int) std::floor(xOff);
-            if (safeDraw(start.x, start.y, colour)) {
-                return 1;
+        if (safeCheck) {
+            while (!curXinProx || !curYinProx) {
+                start.y += ySign;
+                xOff += xRat;
+                start.x = (int) std::floor(xOff);
+                if (safeDraw(start.x, start.y, colour)) {
+                    return 1;
+                }
+                curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
+                curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
             }
-            curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
-            curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+        }
+        else {
+            while (!curXinProx || !curYinProx) {
+                start.y += ySign;
+                xOff += xRat;
+                start.x = (int) std::floor(xOff);
+                fastDraw(start.x, start.y, colour);
+                curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
+                curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
+            }
         }
     }
 
