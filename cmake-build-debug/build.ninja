@@ -49,11 +49,68 @@ cmake_ninja_workdir = C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/Con
 
 build cmake_object_order_depends_target_ConsoleEngine: phony || CMakeFiles/ConsoleEngine.dir
 
-build CMakeFiles/ConsoleEngine.dir/main.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/main.cpp || cmake_object_order_depends_target_ConsoleEngine
-  DEP_FILE = CMakeFiles\ConsoleEngine.dir\main.cpp.obj.d
-  FLAGS = -g -DUNICODE -std=gnu++14
+build CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/Camera.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\Camera.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
   OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
-  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/input.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\input.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/math.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/math.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\math.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/renderer.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\renderer.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/scene.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/scene.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\scene.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/util.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/util.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\util.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/window.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\window.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/src/glad.c.obj: C_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/glad.c || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\src\glad.c.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\src
+
+build CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj: CXX_COMPILER__ConsoleEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/main_src/main.cpp || cmake_object_order_depends_target_ConsoleEngine
+  DEP_FILE = CMakeFiles\ConsoleEngine.dir\main_src\main.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\ConsoleEngine.dir\main_src
 
 
 # =============================================================================
@@ -63,16 +120,184 @@ build CMakeFiles/ConsoleEngine.dir/main.cpp.obj: CXX_COMPILER__ConsoleEngine_Deb
 #############################################
 # Link the executable ConsoleEngine.exe
 
-build ConsoleEngine.exe: CXX_EXECUTABLE_LINKER__ConsoleEngine_Debug CMakeFiles/ConsoleEngine.dir/main.cpp.obj
+build ConsoleEngine.exe: CXX_EXECUTABLE_LINKER__ConsoleEngine_Debug CMakeFiles/ConsoleEngine.dir/src/Camera.cpp.obj CMakeFiles/ConsoleEngine.dir/src/input.cpp.obj CMakeFiles/ConsoleEngine.dir/src/math.cpp.obj CMakeFiles/ConsoleEngine.dir/src/renderer.cpp.obj CMakeFiles/ConsoleEngine.dir/src/scene.cpp.obj CMakeFiles/ConsoleEngine.dir/src/util.cpp.obj CMakeFiles/ConsoleEngine.dir/src/window.cpp.obj CMakeFiles/ConsoleEngine.dir/src/glad.c.obj CMakeFiles/ConsoleEngine.dir/main_src/main.cpp.obj | ../lib/libglfw3.a
   FLAGS = -g
   LINK_FLAGS = -static
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = ../lib/libglfw3.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ConsoleEngine.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
   TARGET_FILE = ConsoleEngine.exe
   TARGET_IMPLIB = libConsoleEngine.dll.a
   TARGET_PDB = ConsoleEngine.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target TestEngine
+
+
+#############################################
+# Order-only phony target for TestEngine
+
+build cmake_object_order_depends_target_TestEngine: phony || CMakeFiles/TestEngine.dir
+
+build CMakeFiles/TestEngine.dir/src/Camera.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/Camera.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\Camera.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+build CMakeFiles/TestEngine.dir/src/input.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/input.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\input.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+build CMakeFiles/TestEngine.dir/src/math.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/math.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\math.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+build CMakeFiles/TestEngine.dir/src/renderer.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/renderer.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\renderer.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+build CMakeFiles/TestEngine.dir/src/scene.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/scene.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\scene.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+build CMakeFiles/TestEngine.dir/src/util.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/util.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\util.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+build CMakeFiles/TestEngine.dir/src/window.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/window.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\window.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+build CMakeFiles/TestEngine.dir/test_src/testMain.cpp.obj: CXX_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/test_src/testMain.cpp || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\test_src\testMain.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\test_src
+
+build CMakeFiles/TestEngine.dir/src/glad.c.obj: C_COMPILER__TestEngine_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/glad.c || cmake_object_order_depends_target_TestEngine
+  DEP_FILE = CMakeFiles\TestEngine.dir\src\glad.c.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TestEngine.dir\src
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target TestEngine
+
+
+#############################################
+# Link the executable TestEngine.exe
+
+build TestEngine.exe: CXX_EXECUTABLE_LINKER__TestEngine_Debug CMakeFiles/TestEngine.dir/src/Camera.cpp.obj CMakeFiles/TestEngine.dir/src/input.cpp.obj CMakeFiles/TestEngine.dir/src/math.cpp.obj CMakeFiles/TestEngine.dir/src/renderer.cpp.obj CMakeFiles/TestEngine.dir/src/scene.cpp.obj CMakeFiles/TestEngine.dir/src/util.cpp.obj CMakeFiles/TestEngine.dir/src/window.cpp.obj CMakeFiles/TestEngine.dir/test_src/testMain.cpp.obj CMakeFiles/TestEngine.dir/src/glad.c.obj | ../lib/libglfw3.a
+  FLAGS = -g
+  LINK_FLAGS = -static
+  LINK_LIBRARIES = ../lib/libglfw3.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\TestEngine.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = TestEngine.exe
+  TARGET_IMPLIB = libTestEngine.dll.a
+  TARGET_PDB = TestEngine.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target Old
+
+
+#############################################
+# Order-only phony target for Old
+
+build cmake_object_order_depends_target_Old: phony || CMakeFiles/Old.dir
+
+build CMakeFiles/Old.dir/old_src/old.cpp.obj: CXX_COMPILER__Old_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/old_src/old.cpp || cmake_object_order_depends_target_Old
+  DEP_FILE = CMakeFiles\Old.dir\old_src\old.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./legacyInclude -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\Old.dir
+  OBJECT_FILE_DIR = CMakeFiles\Old.dir\old_src
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target Old
+
+
+#############################################
+# Link the executable Old.exe
+
+build Old.exe: CXX_EXECUTABLE_LINKER__Old_Debug CMakeFiles/Old.dir/old_src/old.cpp.obj
+  FLAGS = -g
+  LINK_FLAGS = -static
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\Old.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = Old.exe
+  TARGET_IMPLIB = libOld.dll.a
+  TARGET_PDB = Old.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target OldGL
+
+
+#############################################
+# Order-only phony target for OldGL
+
+build cmake_object_order_depends_target_OldGL: phony || CMakeFiles/OldGL.dir
+
+build CMakeFiles/OldGL.dir/old_src/oldGl.cpp.obj: CXX_COMPILER__OldGL_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/old_src/oldGl.cpp || cmake_object_order_depends_target_OldGL
+  DEP_FILE = CMakeFiles\OldGL.dir\old_src\oldGl.cpp.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\OldGL.dir
+  OBJECT_FILE_DIR = CMakeFiles\OldGL.dir\old_src
+
+build CMakeFiles/OldGL.dir/src/glad.c.obj: C_COMPILER__OldGL_Debug C$:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/src/glad.c || cmake_object_order_depends_target_OldGL
+  DEP_FILE = CMakeFiles\OldGL.dir\src\glad.c.obj.d
+  FLAGS = -g -DUNICODE
+  INCLUDES = -IC:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include
+  OBJECT_DIR = CMakeFiles\OldGL.dir
+  OBJECT_FILE_DIR = CMakeFiles\OldGL.dir\src
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target OldGL
+
+
+#############################################
+# Link the executable OldGL.exe
+
+build OldGL.exe: CXX_EXECUTABLE_LINKER__OldGL_Debug CMakeFiles/OldGL.dir/old_src/oldGl.cpp.obj CMakeFiles/OldGL.dir/src/glad.c.obj | ../lib/libglfw3.a
+  FLAGS = -g
+  LINK_FLAGS = -static
+  LINK_LIBRARIES = ../lib/libglfw3.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\OldGL.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = OldGL.exe
+  TARGET_IMPLIB = libOldGL.dll.a
+  TARGET_PDB = OldGL.exe.dbg
 
 
 #############################################
@@ -102,6 +327,12 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build ConsoleEngine: phony ConsoleEngine.exe
 
+build Old: phony Old.exe
+
+build OldGL: phony OldGL.exe
+
+build TestEngine: phony TestEngine.exe
+
 # =============================================================================
 # Folder targets.
 
@@ -110,7 +341,7 @@ build ConsoleEngine: phony ConsoleEngine.exe
 #############################################
 # Folder: C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/cmake-build-debug
 
-build all: phony ConsoleEngine.exe
+build all: phony ConsoleEngine.exe TestEngine.exe Old.exe OldGL.exe
 
 # =============================================================================
 # Built-in targets

@@ -25,9 +25,6 @@ namespace Renderer {
                           "   ##   ";
 
     bool sColour = true;
-
-    int sPosX = 150;
-    int sPosY = 94;
 }
 
 int Renderer::rasterize() {
