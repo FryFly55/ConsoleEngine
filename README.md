@@ -7,9 +7,13 @@ made of the render pipeline, I only use ```glDrawPixels()``` to draw my own buff
 other code is still either mine or the std libs of c++
 
 ## Controls
-WASD to move, Q/E to change elevation, and either the mouse/touchpad or the J/L keys to look around.
-touchpads can sometimes be buggy, where you will look around very slowly, since the raw motion is never 0.
-I will test if this Issue persists with mice and fix it if it does. Idc for touchpads that much.
+**WASD** to move, **Q/E** to change elevation, and either the **mouse/touchpad** or the **J/L** keys to 
+look around.
+
+## Open bugs for me to fix
+- the touchpad/mouse controls are buggy, where even if you don't move your mouse you will always slowly look
+around.
+- lines disappear when the vertex they are being drawn to goes out of frame. (But only sometimes??)
 
 ## TODO-list for later:
 - face rendering

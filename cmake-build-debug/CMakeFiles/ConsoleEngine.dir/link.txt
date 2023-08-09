@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2022.2\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\ConsoleEngine.dir/objects.a
+C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\ar.exe qc CMakeFiles\ConsoleEngine.dir/objects.a @CMakeFiles\ConsoleEngine.dir\objects1.rsp
+C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\G__~1.EXE -g -static -Wl,--whole-archive CMakeFiles\ConsoleEngine.dir/objects.a -Wl,--no-whole-archive -o ConsoleEngine.exe -Wl,--out-implib,libConsoleEngine.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ConsoleEngine.dir\linklibs.rsp

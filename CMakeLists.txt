@@ -7,9 +7,9 @@ set(CMAKE_EXE_LINKER_FLAGS "-static")
 # Set the path to the directory containing libglfw3.a
 # todo: make this path relative, idk from where the commands are executed though
 # on my laptop:
-#set(GLFW_LIBRARY_DIR "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/lib")
+set(GLFW_LIBRARY_DIR "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/lib")
 # on my desktop:
-set(GLFW_LIBRARY_DIR "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/lib")
+#set(GLFW_LIBRARY_DIR "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/lib")
 
 # Set the path to the include directory
 set(INCLUDE_DIR "./include")

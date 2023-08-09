@@ -83,6 +83,7 @@ namespace Window {
         glDrawPixels(windowWidth, windowHeight, GL_RGB, GL_UNSIGNED_BYTE, m_screenBuffer);
 
         Input::updateKeyState();
+        Input::updateMouseState();
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();

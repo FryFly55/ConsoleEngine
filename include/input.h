@@ -31,6 +31,7 @@ namespace Input {
                              int action, int mods);
     void mouseCursorCallBack(GLFWwindow* window, double xPos, double yPos);
     int updateKeyState();
+    int updateMouseState();
     // keyboard functions
     bool keyPressed(int key);
     bool keyHeld(int key);

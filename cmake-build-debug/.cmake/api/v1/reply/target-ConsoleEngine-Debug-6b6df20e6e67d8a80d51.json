@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "TestEngine.exe"
+			"path" : "ConsoleEngine.exe"
 		},
 		{
-			"path" : "TestEngine.pdb"
+			"path" : "ConsoleEngine.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -30,25 +30,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 40,
+				"line" : 30,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 46,
+				"line" : 36,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 42,
+				"line" : 32,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 44,
+				"line" : 34,
 				"parent" : 0
 			}
 		]
@@ -70,7 +70,7 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include"
+					"path" : "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/./include"
 				}
 			],
 			"language" : "CXX",
@@ -91,7 +91,7 @@
 				4,
 				5,
 				6,
-				7
+				8
 			]
 		},
 		{
@@ -109,17 +109,17 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "C:/Users/FryFly55/SavesExportsDaten/Programmieren/C++/ConsoleEngineGit/ConsoleEngine/./include"
+					"path" : "C:/Users/fried/Documents/SavesExportsDaten/Programming/C++/ConsoleEngineGit/ConsoleEngine/./include"
 				}
 			],
 			"language" : "C",
 			"sourceIndexes" : 
 			[
-				8
+				7
 			]
 		}
 	],
-	"id" : "TestEngine::@6890427a1f51a3e7e1df",
+	"id" : "ConsoleEngine::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -144,8 +144,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "TestEngine",
-	"nameOnDisk" : "TestEngine.exe",
+	"name" : "ConsoleEngine",
+	"nameOnDisk" : "ConsoleEngine.exe",
 	"paths" : 
 	{
 		"build" : ".",
@@ -215,14 +215,14 @@
 		},
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "test_src/testMain.cpp",
+			"compileGroupIndex" : 1,
+			"path" : "src/glad.c",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 1,
-			"path" : "src/glad.c",
+			"compileGroupIndex" : 0,
+			"path" : "main_src/main.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
