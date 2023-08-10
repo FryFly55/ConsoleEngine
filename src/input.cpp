@@ -15,9 +15,6 @@ namespace Input {
      double dCursorY = 0;
      double lastCursorX = 0;
      double lastCursorY = 0;
-
-     double minDeltaX = 0;
-     double minDeltaY = 0;
 }
 
 void Input::keyCallBack(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -35,10 +32,6 @@ void Input::mouseButtonCallBack(GLFWwindow *window, int button, int action, int 
 void Input::mouseCursorCallBack(GLFWwindow *window, double xPos, double yPos) {
     dCursorX = xPos - lastCursorX;
     dCursorY = yPos - lastCursorY;
-    if (dCursorX < minDeltaX && dCursorX > -minDeltaX)
-        dCursorX = 0;
-    if (dCursorY < minDeltaY && dCursorY > -minDeltaY)
-        dCursorY = 0;
     cursorX = xPos;
     cursorY = yPos;
     lastCursorX = xPos;

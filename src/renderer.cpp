@@ -28,8 +28,18 @@ namespace Renderer {
 }
 
 int Renderer::rasterize() {
-    // todo: fix bug where lines don't render at 45° angle
+    /*
+     * Especially in the later pipelines (which I am yet to implement), but also in this one, I try to always
+     * keep the data stored at the lowest scope where it is needed, this might mean that triangles can't access
+     * the data of other triangles, which is why I plan to have two different render pipelines, one ram efficient
+     * one, where the triangles are rendered consecutively which means that only the data necessary for one triangle
+     * is in ram at the same time, and one where they are rendered in parallel, which means that each triangle can
+     * read and write data from other triangles, perhaps even at different stages in the render pipeline. This
+     * approach is likely to get very ram intensive as the complexity of a scene increases.
+     */
+
     // todo: fix bug where some lines are drawn to points outside the screen and others aren't
+    // looping through all the triangles --------------------------------------
     for (int t = 0; t < 34; t += 3) {
         // stores transformed x, y and z components of each vertex in screenSpace, plus one element to verify validity
         float screenSpaceVertices[12];
@@ -41,6 +51,7 @@ int Renderer::rasterize() {
         int planePoints[9];
         // stores depth for every screenPoint + verify
         float depthBuffer[6];
+        // looping through every vertex in a triangle ---------------------------------------------
         for (int v = 0; v < 3; v++) {
             bool zAllowed = true;
             // transforming into viewspace
@@ -218,7 +229,7 @@ int Renderer::drawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
     float xOff = start.x;
     float yOff = start.y;
 
-    float bothZero = deltaX + deltaY;
+    float bothZero = abs(deltaX) + abs(deltaY);
 
     bool curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
     bool curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
@@ -272,7 +283,7 @@ int Renderer::oDrawLine(vec2<int> start, vec2<int> end, struct Colour colour) {
     float xOff = start.x;
     float yOff = start.y;
 
-    float bothZero = deltaX + deltaY;
+    float bothZero = abs(deltaX) + abs(deltaY);
 
     bool curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
     bool curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
@@ -334,7 +345,7 @@ int Renderer::safeDrawLine(vec2<int> start, vec2<int> end, struct Colour colour)
     float xOff = start.x;
     float yOff = start.y;
 
-    float bothZero = deltaX + deltaY;
+    float bothZero = abs(deltaX) + abs(deltaY);
 
     bool curXinProx = start.x <= end.x + 1 && start.x >= end.x - 1;
     bool curYinProx = start.y <= end.y + 1 && start.y >= end.y - 1;
